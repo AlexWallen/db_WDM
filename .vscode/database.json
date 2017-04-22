@@ -1,0 +1,11 @@
+{
+	"extension.databases": [
+		{
+			"type": "mysql",
+			"name": "mybraadb.cwqg0wxijz8a.us-west-2.rds.amazonaws.com (mysql)",
+			"host": "mybraadb.cwqg0wxijz8a.us-west-2.rds.amazonaws.com:3306",
+			"user": "Alex_Wallen",
+			"password": "siksdg7725nng"
+		}
+	]
+}

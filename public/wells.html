@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<style>
+    body {
+        background-image: url("https://i.ytimg.com/vi/8myYyMg1fFE/maxresdefault.jpg");
+        background-color: #cccccc;
+        color: #ffffff;
+        text-shadow: 1px 1px #000000, -1px 1px #000000, 1px -1px #000000, -1px -1px #000000
+    }
+</style>
+
+<body>
+    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.5/angular.min.js"></script>
+    <div ng-app="myApp" ng-controller="cntrl">
+        <form>
+            <!--Owner ID: <input type="text" ng-model="id" name="ownerid"-->
+            Aquifer Code: <input type="text" ng-model="aquifer_code">
+            Type Code: <input type="text" ng-model="type_code">
+            Owner ID: <input type="text" ng-model="owner_id">
+            Location ID: <input type="text" ng-model="location_id">
+            Pump Type: <input type="text" ng-model="pump_type">
+            Usage: <input type="text" ng-model="usage">
+            Bottom Elevation: <input type="text" ng-model="bottom_elevation">
+            Top Elevation: <input type="text" ng-model="top_elevation">
+            Water Elevation: <input type="text" ng-model="water_elevation">
+            Casing ID: <input type="text" ng-model="casing_id">
+            Diameter: <input type="text" ng-model="diameter">
+            Top Depth: <input type="text" ng-model="top_depth">
+            Bottom Depth: <input type="text" ng-model="bottom_depth">
+            Remarks: <input type="text" ng-model="remarks">
+            <input type="button" value="{{btnName}}" ng-click="insertWell()"> {{msg}}
+            <input type="button" value="Display All" ng-click="displayWells()">
+        </form>
+        <table>
+            <thead>
+                <tr>
+                    <th>Well ID</td>
+                    <th>Aquifer Code</th>
+                    <th>Type Code</th>
+                    <th>Owner ID</th>
+                    <th>Location ID</th>
+                    <th>Pump Type</td>
+                    <th>Usage</td>
+                    <th>Bottom Elevation</td>
+                    <th>Top Elevation</td>
+                    <th>Water Elevation</td>
+                    <th>Casing ID</td>
+                    <th>Diameter</td>
+                    <th>Top Depth</td>
+                    <th>Bottom Depth</td>
+                    <th>Remarks</td>
+                </tr>
+            </thead>
+            <tbody>
+                <tr ng-repeat="well in data">
+                    <td>{{well.well_id}}</td>
+                    <td>{{well.aquifer_code}}</td>
+                    <td>{{well.type_code}}</td>
+                    <td>{{well.owner_id}}</td>
+                    <td>{{well.location_id}}</td>
+                    <td>{{well.pump_type}}</td>
+                    <td>{{well.usage}}</td>
+                    <td>{{well.bottom_elevation}}</td>
+                    <td>{{well.top_elevation}}</td>
+                    <td>{{well.water_elevation}}</td>
+                    <td>{{well.casing_id}}</td>
+                    <td>{{well.diameter}}</td>
+                    <td>{{well.top_depth}}</td>
+                    <td>{{well.bottom_depth}}</td>
+                    <td>{{well.remarks}}
+                        <td><button ng-click="deleteWell(well.well_id);">Delete</button></td>
+                        <td><button ng-click="editWell(well.well_id);">Edit</button></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    <script>
+        var app = angular.module('myApp', []);
+        app.controller('cntrl', function ($scope, $http) {
+            $scope.btnName = "Insert";
+
+            $scope.insertWell = function () {
+                $http.post("/wells/add", { 'latitude': $scope.latitude, 'longitude': $scope.longitude, 'state': $scope.state, 'county': $scope.county })
+                    .success(function () {
+                        $scope.msg = "Data Inserted";
+                        $scope.displayLocations();
+                    })
+            }
+
+            $scope.displayWells = function () {
+                $http.get("/wells/all")
+                    .success(function (data) {
+                        $scope.data = data
+                        console.log('Got Data');
+                    })
+            }
+
+            $scope.deleteLocation = function (id) {
+                var url = "/location/delete/";
+                $http.delete(url.concat(id))
+                    .success(function () {
+                        $scope.msg = "Data Deletion successful";
+                        $scope.displayLocations();
+                    })
+            }
+
+            $scope.editLocation = function (id) {
+                var url = "/location/edit/"
+                $http.put(url.concat(id), { 'latitude': $scope.latitude, 'longitude': $scope.longitude, 'state': $scope.state, 'county': $scope.county })
+                    .success(function () {
+                        $scope.msg = "Data Edit successful";
+                        $scope.displayLocations();
+                    })
+                $scope.displayLocations();
+            }
+        });
+    </script>
+</body>
+
+</html>

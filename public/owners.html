@@ -60,6 +60,7 @@
                 $http.get("/owners/all")
                     .success(function (data) {
                         $scope.data = data
+                        console.log('Got Owners');
                     })
             }
 

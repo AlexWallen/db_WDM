@@ -25,7 +25,7 @@
     $app->put('/location/edit/{location_id}', function($request){
         require_once('db.php');
         $get_id = $request->getAttribute('location_id');
-        $query = "UPDATE lOCATION SET latitude = ?, longitude = ?, state = ?, county = ? WHERE id = $get_id";
+        $query = "UPDATE Location SET latitude = ?, longitude = ?, state = ?, county = ? WHERE id = $get_id";
         $stmt = $conn->prepare($query);
         $stmt->bind_param("ddss",$lat,$long,$state,$county);
         $lat = $request->getParsedBody()['latitude'];

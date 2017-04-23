@@ -13,28 +13,32 @@
     <div ng-app="myApp" ng-controller="cntrl">
         <form>
             <!--Owner ID: <input type="text" ng-model="id" name="ownerid"-->
-            Owner Name: <input type="text" ng-model="name" name="ownername" ng-disabled="obj.idisable"> Owner Type:
-            <input
-                type="text" ng-model="type" name="ownertype">
-                <input type="button" value="{{btnName}}" ng-click="insertOwner()"> {{msg}}
-                <input type="button" value="Display All" ng-click="displayOwners()">
+            Latitude: <input type="text" ng-model="latitude" name="locLat">
+            Longitude: <input type="text" ng-model="longitude" name="locLong">
+            State: <input type="text" ng-model="state" name="locState">
+            County: <input type="text" ng-model="county" name="locCounty">
+            <input type="button" value="{{btnName}}" ng-click="insertLocation()"> {{msg}}
+            <input type="button" value="Display All" ng-click="displayLocations()">
         </form>
         <table>
             <thead>
                 <tr>
                     <th>ID</td>
-                        <th>Name</th>
-                        <th>Type</th>
+                    <th>Latitude</th>
+                    <th>Longitude</th>
+                    <th>State</th>
+                    <th>County</th>
                 </tr>
             </thead>
             <tbody>
-                <tr ng-repeat="owner in data">
-                    <td>{{owner.id}}</td>
-                    <td>{{owner.name}}</td>
-                    <td>{{owner.type}}
-                        <td><button ng-click="deleteOwner(owner.id);">Delete</button></td>
-                        <td><button ng-click="editOwner(owner.id);">Edit</button></td>
-
+                <tr ng-repeat="location in data">
+                    <td>{{location.id}}</td>
+                    <td>{{location.latitude}}</td>
+                    <td>{{location.longitude}}</td>
+                    <td>{{location.state}}</td>
+                    <td>{{location.county}}
+                        <td><button ng-click="deleteLocation(location.id);">Delete</button></td>
+                        <td><button ng-click="editLocation(location.id);">Edit</button></td>
                 </tr>
             </tbody>
         </table>
@@ -45,38 +49,38 @@
             $scope.obj = { 'idisable': false };
             $scope.btnName = "Insert";
 
-            $scope.insertOwner = function () {
-                $http.post("/owners/add", { 'name': $scope.name, 'type': $scope.type })
+            $scope.insertLocation = function () {
+                $http.post("/location/add", { 'latitude': $scope.latitude, 'longitude': $scope.longitude, 'state': $scope.state, 'county':$scope.county })
                     .success(function () {
                         $scope.msg = "Data Inserted";
-                        $scope.displayOwners();
+                        $scope.displayLocations();
                     })
             }
 
-            $scope.displayOwners = function () {
-                $http.get("/owners/all")
+            $scope.displayLocations = function () {
+                $http.get("/location/all")
                     .success(function (data) {
                         $scope.data = data
                     })
             }
 
-            $scope.deleteOwner = function (id) {
-                var url = "/owners/delete/";
+            $scope.deleteLocation = function (id) {
+                var url = "/location/delete/";
                 $http.delete(url.concat(id))
                     .success(function () {
                         $scope.msg = "Data Deletion successful";
-                        $scope.displayOwners();
+                        $scope.displayLocations();
                     })
             }
 
-            $scope.editOwner = function (id) {
-                var url = "/owners/edit/"
-                $http.put(url.concat(id), { 'name': $scope.name, 'type': $scope.type })
+            $scope.editLocation = function (id) {
+                var url = "/location/edit/"
+                $http.put(url.concat(id), { 'latitude': $scope.latitude, 'longitude': $scope.longitude, 'state': $scope.state, 'county': $scope.county })
                     .success(function () {
                         $scope.msg = "Data Edit successful";
-                        $scope.displayOwners();
+                        $scope.displayLocations();
                     })
-                $scope.displayOwners();
+                $scope.displayLocations();
             }
         });
     </script>

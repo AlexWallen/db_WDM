@@ -1,9 +1,5 @@
 {
     "require": {
-<<<<<<< HEAD
-        "slim/slim": "^3.0"
-=======
-        "Slim/Slim": "^3.0"
->>>>>>> e383db9e3414dc615f86c58489a525a17f4dc87c
+        "slim/slim": "3.0"
     }
 }

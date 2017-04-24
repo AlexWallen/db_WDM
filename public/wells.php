@@ -14,7 +14,7 @@
         require_once('db.php');
         $query = "INSERT INTO Wells (well_id, aquifer_code, type_code, owner_id, location_id, pump_type, usage, bottom_elevation, top_elevation, water_elevation, casing_id, diameter, top_depth, bottom_depth, remarks) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
         $stmt = $conn->prepare($query);
-        $stmt->bind_param("ddss",$lat,$long,$state,$county);
+        $stmt->bind_param("isiissdddiddds",$aquifer_code, $type_code, $owner_id, $location_id, $pump_type, $usage, $bottom_elevation, $top_elevation, $water_elevation, $casing_id, $diameter, $top_depth, $bottom_depth, $remarks);
         $well_id = $request->getParsedBody()['well_id'];
         $aquifer_code = $request->getParsedBody()['aquifer_code'];
         $type_code = $request->getParsedBody()['type_code'];
@@ -36,7 +36,7 @@
     $app->put('/wells/edit/{well_id}', function($request){
         require_once('db.php');
         $get_id = $request->getAttribute('well_id');
-        $query = "UPDATE Wells SET aquifer_code = ?, type_code = ?, owner_id = ?, location_id = ?, pump_type = ?, usage = ?, bottom_elevation = ?, top_elevation = ?, water_elevation = ?, casing_id = ?, diameter = ?, top_depth = ?, bottom_depth = ?, remarks = ? WHERE id = $get_id";
+        $query = "UPDATE Wells SET aquifer_code = ?, type_code = ?, owner_id = ?, location_id = ?, pump_type = ?, usage = ?, bottom_elevation = ?, top_elevation = ?, water_elevation = ?, casing_id = ?, diameter = ?, top_depth = ?, bottom_depth = ?, remarks = ? WHERE well_id = $get_id";
         $stmt = $conn->prepare($query);
         $stmt->bind_param("isiissdddiddds",$aquifer_code, $type_code, $owner_id, $location_id, $pump_type, $usage, $bottom_elevation, $top_elevation, $water_elevation, $casing_id, $diameter, $top_depth, $bottom_depth, $remarks);
         $aquifer_code = $request->getParsedBody()['aquifer_code'];
@@ -59,7 +59,7 @@
     $app->delete('/wells/delete/{well_id}', function($request){
         require_once('db.php');
         $get_id = $request->getAttribute('well_id');
-        $query = "DELETE from Wells WHERE id = $get_id";
+        $query = "DELETE from Wells WHERE well_id = $get_id";
         $result = $conn->query($query);
     });
 ?>

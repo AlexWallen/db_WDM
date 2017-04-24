@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<style>
+    body {
+        background-image: url("https://i.ytimg.com/vi/8myYyMg1fFE/maxresdefault.jpg");
+        background-color: #cccccc;
+        color: #ffffff;
+        text-shadow: 1px 1px #000000, -1px 1px #000000, 1px -1px #000000, -1px -1px #000000
+    }
+</style>
+
+<body>
+    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.5/angular.min.js"></script>
+    <div ng-app="myApp" ng-controller="cntrl">
+        <form>
+            <!--Owner ID: <input type="text" ng-model="id" name="ownerid"-->
+            Latitude: <input type="text" ng-model="latitude" name="locLat">
+            Longitude: <input type="text" ng-model="longitude" name="locLong">
+            State: <input type="text" ng-model="state" name="locState">
+            County: <input type="text" ng-model="county" name="locCounty">
+            <input type="button" value="{{btnName}}" ng-click="insertLocation()"> {{msg}}
+            <input type="button" value="Display All" ng-click="displayLocations()">
+        </form>
+        <table>
+            <thead>
+                <tr>
+                    <th>ID</td>
+                    <th>Latitude</th>
+                    <th>Longitude</th>
+                    <th>State</th>
+                    <th>County</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr ng-repeat="location in data">
+                    <td>{{location.id}}</td>
+                    <td>{{location.latitude}}</td>
+                    <td>{{location.longitude}}</td>
+                    <td>{{location.state}}</td>
+                    <td>{{location.county}}
+                        <td><button ng-click="deleteLocation(location.id);">Delete</button></td>
+                        <td><button ng-click="editLocation(location.id);">Edit</button></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    <script>
+        var app = angular.module('myApp', []);
+        app.controller('cntrl', function ($scope, $http) {
+            $scope.obj = { 'idisable': false };
+            $scope.btnName = "Insert";
+
+            $scope.insertLocation = function () {
+                $http.post("/location/add", { 'latitude': $scope.latitude, 'longitude': $scope.longitude, 'state': $scope.state, 'county':$scope.county })
+                    .success(function () {
+                        $scope.msg = "Data Inserted";
+                        $scope.displayLocations();
+                    })
+            }
+
+            $scope.displayLocations = function () {
+                $http.get("/location/all")
+                    .success(function (data) {
+                        $scope.data = data
+                    })
+            }
+
+            $scope.deleteLocation = function (id) {
+                var url = "/location/delete/";
+                $http.delete(url.concat(id))
+                    .success(function () {
+                        $scope.msg = "Data Deletion successful";
+                        $scope.displayLocations();
+                    })
+            }
+
+            $scope.editLocation = function (id) {
+                var url = "/location/edit/"
+                $http.put(url.concat(id), { 'latitude': $scope.latitude, 'longitude': $scope.longitude, 'state': $scope.state, 'county': $scope.county })
+                    .success(function () {
+                        $scope.msg = "Data Edit successful";
+                        $scope.displayLocations();
+                    })
+                $scope.displayLocations();
+            }
+        });
+    </script>
+</body>
+
+</html>

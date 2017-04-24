@@ -12,13 +12,9 @@
     <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.5/angular.min.js"></script>
     <div ng-app="myApp" ng-controller="cntrl">
         <form>
-            Transducer ID: <input type="text" ng-model="transducer_id">
-            Temperature: <input type="text" ng-model="temperature">           
-            Conductivity: <input type="text" ng-model="conductivity">
-            Pressure: <input type="text" ng-model="pressure">
-            Salinity: <input type="text" ng-model="salinity">
-            TDS: <input type="text" ng-model="tds">
-            Recording Date: <input type="datetime-local" ng-model="recording_time">
+            Transducer ID: <input type="text" ng-model="transducer_id"> Temperature: <input type="text" ng-model="temperature">            Conductivity: <input type="text" ng-model="conductivity"> Pressure: <input type="text" ng-model="pressure"> Salinity:
+            <input type="text" ng-model="salinity"> TDS: <input type="text" ng-model="tds"> Recording Date: <input type="datetime-local"
+                ng-model="recording_time">
             <input type="button" value="{{btnName}}" ng-click="insertRecording()"> {{msg}}
             <input type="button" value="Display All" ng-click="displayRecordings()">
         </form>
@@ -26,16 +22,16 @@
             <thead>
                 <tr>
                     <th>Transducer ID</td>
-                    <th>Temperature</th>
-                    <th>Conductivity</th>
-                    <th>Pressure</th>
-                    <th>Salinity</th>
-                    <th>TDS</td>
-                    <th>Recording Time</td>
+                        <th>temperature</th>
+                        <th>Conductivity</th>
+                        <th>Pressure</th>
+                        <th>Salinity</th>
+                        <th>TDS</td>
+                            <th>Recording Time</td>
                 </tr>
             </thead>
             <tbody>
-                <tr ng-repeat="recording in data track by $index">
+                <tr ng-repeat="recording in data">
                     <td>{{recording.transducer_id}}</td>
                     <td>{{recording.temperature}}</td>
                     <td>{{recording.conductivity}}</td>
@@ -43,8 +39,8 @@
                     <td>{{recording.salinity}}</td>
                     <td>{{recording.tds}}</td>
                     <td>{{recording.recording_time}}</td>
-                    <td ng-if="recording.transducer_id"><button ng-click="deleteRecording(recording.transducer_id, recording.recording_time);">Delete</button></td>
-                    <td ng-if="recording.transducer_id"><button ng-click="editRecording(recording.transducer_id, recording.recording_time);">Edit</button></td>
+                    <td><button ng-click="deleteRecording(recording.transducer_id, recording.recording_time);">Delete</button></td>
+                    <td><button ng-click="editRecording(recording.transducer_id, recording.recording_time);">Edit</button></td>
                 </tr>
             </tbody>
         </table>
@@ -67,7 +63,7 @@
             $scope.displayRecordings = function () {
                 $http.get("/recordings/all")
                     .success(function (data) {
-                        $scope.data = data;
+                        $scope.data = data
                         console.log('Got Data');
                     })
             }
@@ -84,7 +80,7 @@
                 url = url.concat("/");
                 url = url.concat($time);
                 $http.delete(url)
-                    .success(function ($response) {
+                    .success(function () {
                         $scope.msg = "Data Deletion successful";
                         $scope.displayRecordings();
                     })
@@ -100,7 +96,8 @@
                 url = url.concat("/");
                 url = url.concat($time);
                 $http.put(url, {
-                    'temperature': $scope.temperature, 'conductivity': $scope.conductivity,'pressure': $scope.pressure, 'salinity': $scope.salinity, 'tds': $scope.tds })
+                    'temperature': $scope.temperature, 'conductivity': $scope.conductivity, 'pressure': $scope.pressure, 'salinity': $scope.salinity, 'tds': $scope.tds
+                })
                     .success(function () {
                         $scope.msg = "Data Edit successful";
                         $scope.displayRecordings();

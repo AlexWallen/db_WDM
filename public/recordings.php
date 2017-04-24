@@ -25,11 +25,13 @@
         $stmt->execute();
     });
 
-    $app->put('/recordings/edit/{transducer_id}/{recording_time}', function($request){
+    $app->put('/recordings/edit/{transducer_id}/{date}/{time}', function($request){
         require_once('db.php');
         $get_id1 = $request->getAttribute('transducer_id');
-        $get_id2 = $request->getAttribute('recording_time');
-        $query = "UPDATE Recordings SET temperature = ?, conductivity = ?, pressure = ?, salinity = ?, tds = ? WHERE transducer_id = $get_id1 AND recording_time = $get_id2";
+        $date = $request->getAttribute('date');
+        $time = $request->getAttribute('time');
+        $get_id2 = "{$date} {$time}";
+        $query = "UPDATE Recordings SET temperature = ?, conductivity = ?, pressure = ?, salinity = ?, tds = ? WHERE transducer_id = $get_id1 AND recording_time = '$get_id2'";
         $stmt = $conn->prepare($query);
         $stmt->bind_param("ddddd", $temperature, $conductivity, $pressure, $salinity, $tds);
         $temperature = $request->getParsedBody()['temperature'];

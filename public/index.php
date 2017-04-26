@@ -13,14 +13,6 @@ require 'rainfall.php';
 require 'owners.php';
 require 'location.php';
 
-/*$app->get('/hello/{name}', function (Request $request, Response $response) {
-    $name = $request->getAttribute('name');
-    $response->getBody()->write("Hello there, $name");
-
-    return $response;
-});
-$app->run();*/
-
 $app->get('/', function() {
     echo '<strong>Welcome to the API</strong>';
 });
@@ -28,14 +20,3 @@ $app->get('/', function() {
 $app->run();
 
 ?>
-
-
-
-
-
-
-
-
-
-
-

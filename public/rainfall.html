@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<style>
+    body {
+        background-image: url("https://i.ytimg.com/vi/8myYyMg1fFE/maxresdefault.jpg");
+        background-color: #cccccc;
+        color: #ffffff;
+        text-shadow: 1px 1px #000000, -1px 1px #000000, 1px -1px #000000, -1px -1px #000000
+    }
+</style>
+
+<body>
+    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.5/angular.min.js"></script>
+    <div ng-app="myApp" ng-controller="cntrl">
+        <form>
+            Location ID: <input type="text" ng-model="location_id"> 
+            Rainfall Amount: <input type="text" ng-model="amount"> 
+            Normal Amount:   <input type="text" ng-model="normal_amount">
+            Time:            <input type="datetime-local" ng-model="rtime">
+                <input type="button" value="{{btnName}}" ng-click="insertRain()"> {{msg}}
+                <input type="button" value="Display All" ng-click="displayRain()">
+        </form>
+        <table>
+            <thead>
+                <tr>
+                    <th>Location</td>
+                        <th>Amount</th>
+                        <th>Normal Amount</th>
+                        <th>Time</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr ng-repeat="rainfall in data track by $index">
+                    <td>{{rainfall.location_id}}</td>
+                    <td>{{rainfall.amount}}</td>
+                    <td>{{rainfall.normal_amount}}</td>
+                    <td>{{rainfall.rtime}}</td>
+                    <td ng-if="rainfall.location_id"><button ng-click="deleteRainfall(rainfall.location_id, rainfall.rtime);">Delete</button></td>
+                    <td ng-if="rainfall.location_id"><button ng-click="editRainfall(rainfall.location_id, rainfall.rtime);">Edit</button></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    <script>
+        var app = angular.module('myApp', []);
+        app.controller('cntrl', function ($scope, $http, $filter) {
+            $scope.btnName = "Insert";
+            $scope.insertRain = function () {
+                $datetime = $filter('date')($scope.rtime, 'yyyy-MM-dd HH:mm:ss');
+                $http.post("/rainfall/add", {'location_id': $scope.location_id, 'amount': $scope.amount, 'normal_amount': $scope.normal_amount, 'rtime': $datetime})
+                    .success(function () {
+                        $scope.msg = "Data Inserted";
+                        $scope.displayRain();
+                    })
+            }
+            $scope.displayRain = function () {
+                $http.get("/rainfall/all")
+                    .success(function (data) {
+                        $scope.data = data
+                    })
+            }
+
+            $scope.deleteRainfall = function (id, rtime) {
+                $date = rtime.substring(0, 10);
+                $time = rtime.substring(11, 19);
+
+                var url = "/rainfall/delete/";
+                url = url.concat(id);
+                url = url.concat("/");
+                url = url.concat($date);
+                url = url.concat("/");
+                url = url.concat($time);
+                $http.delete(url)
+                    .success(function () {
+                        $scope.msg = "Data Deletion successful";
+                        $scope.displayRain();
+                    })
+            }
+
+            $scope.editRainfall = function (id, rtime) {
+                $date = rtime.substring(0, 10);
+                $time = rtime.substring(11, 19);
+                var url = "/rainfall/edit/";
+                url = url.concat(id);
+                url = url.concat("/");
+                url = url.concat($date);
+                url = url.concat("/");
+                url = url.concat($time);
+                $http.put(url, {'amount': $scope.amount, 'normal_amount': $scope.normal_amount})
+                    .success(function () {
+                        $scope.msg = "Data Edit successful";
+                        $scope.displayRain();
+                    })
+                $scope.displayRain();
+            }
+        });
+    </script>
+</body>
+
+</html>

@@ -24,7 +24,7 @@
     $app->put('/owners/edit/{ownerid}', function($request){
         require_once('db.php');
         $get_id = $request->getAttribute('ownerid');
-        $query = "UPDATE Owners SET name = ?, type = ? WHERE d = $get_id";
+        $query = "UPDATE Owners SET name = ?, type = ? WHERE id = $get_id";
         $stmt = $conn->prepare($query);
         $stmt->bind_param("ss",$name,$type);
         $name = $request->getParsedBody()['name'];

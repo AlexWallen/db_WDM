@@ -12,9 +12,12 @@
     <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.5/angular.min.js"></script>
     <div ng-app="myApp" ng-controller="cntrl">
         <form>
-            Location ID: <input type="text" ng-model="location_id"> Rainfall Amount: <input type="text" ng-model="amount">            Normal Amount: <input type="text" ng-model="normal_amount"> Time: <input type="datetime-local" ng-model="rtime">
-            <input type="button" value="{{btnName}}" ng-click="insertRain()"> {{msg}}
-            <input type="button" value="Display All" ng-click="displayRain()">
+            Location ID: <input type="text" ng-model="location_id"> 
+            Rainfall Amount: <input type="text" ng-model="amount"> 
+            Normal Amount:   <input type="text" ng-model="normal_amount">
+            Time:            <input type="datetime-local" ng-model="rtime">
+                <input type="button" value="{{btnName}}" ng-click="insertRain()"> {{msg}}
+                <input type="button" value="Display All" ng-click="displayRain()">
         </form>
         <table>
             <thead>
@@ -33,7 +36,6 @@
                     <td>{{rainfall.rtime}}</td>
                     <td ng-if="rainfall.location_id"><button ng-click="deleteRainfall(rainfall.location_id, rainfall.rtime);">Delete</button></td>
                     <td ng-if="rainfall.location_id"><button ng-click="editRainfall(rainfall.location_id, rainfall.rtime);">Edit</button></td>
-
                 </tr>
             </tbody>
         </table>
@@ -44,7 +46,7 @@
             $scope.btnName = "Insert";
             $scope.insertRain = function () {
                 $datetime = $filter('date')($scope.rtime, 'yyyy-MM-dd HH:mm:ss');
-                $http.post("/rainfall/add", { 'location_id': $scope.location_id, 'amount': $scope.amount, 'normal_amount': $scope.normal_amount, 'rtime': $datetime })
+                $http.post("/rainfall/add", {'location_id': $scope.location_id, 'amount': $scope.amount, 'normal_amount': $scope.normal_amount, 'rtime': $datetime})
                     .success(function () {
                         $scope.msg = "Data Inserted";
                         $scope.displayRain();
@@ -56,9 +58,11 @@
                         $scope.data = data
                     })
             }
+
             $scope.deleteRainfall = function (id, rtime) {
                 $date = rtime.substring(0, 10);
                 $time = rtime.substring(11, 19);
+
                 var url = "/rainfall/delete/";
                 url = url.concat(id);
                 url = url.concat("/");
@@ -71,6 +75,7 @@
                         $scope.displayRain();
                     })
             }
+
             $scope.editRainfall = function (id, rtime) {
                 $date = rtime.substring(0, 10);
                 $time = rtime.substring(11, 19);
@@ -80,9 +85,7 @@
                 url = url.concat($date);
                 url = url.concat("/");
                 url = url.concat($time);
-                $http.put(url, {
-                    'amount': $scope.amount, 'normal_amount': $scope.normal_amount                
-})
+                $http.put(url, {'amount': $scope.amount, 'normal_amount': $scope.normal_amount})
                     .success(function () {
                         $scope.msg = "Data Edit successful";
                         $scope.displayRain();

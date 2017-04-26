@@ -20,6 +20,7 @@
         $rtime = $request->getParsedBody()['rtime'];
         $stmt->execute();
     });
+
     $app->put('/rainfall/edit/{location_id}/{date}/{time}', function($request){
         require_once('db.php');
         $get_id = $request->getAttribute('location_id');
@@ -33,6 +34,7 @@
         $normal_amount = $request->getParsedBody()['normal_amount'];
         $stmt->execute();
     });
+
     $app->delete('/rainfall/delete/{location_id}/{date}/{time}', function($request){
         require_once('db.php');
         $get_id1 = $request->getAttribute('location_id');

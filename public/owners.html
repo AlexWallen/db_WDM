@@ -13,12 +13,21 @@
 </style>
 <body>
     <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.5/angular.min.js"></script>
+    <script src="https://www.w3schools.com/lib/w3data.js"></script>
+    <div w3-include-html="topnav.html"></div>
+    <script>
+        w3IncludeHTML();
+    </script>
     <div ng-app="myApp" ng-controller="cntrl">
         <form>
-            <!--Owner ID: <input type="text" ng-model="id" name="ownerid"-->
             Owner Name: <input type="text" ng-model="name" name="ownername"
                 ng-disabled="obj.idisable">
-            Owner Type: <input type="text" ng-model="type" name="ownertype">
+            Owner Type: <!--input type="text" ng-model="type" name="ownertype"-->
+                        <select ng-model="type">
+                            <option value="person">Person</option>
+                            <option value="company">Company</option>
+                            <option value="government agency">Gov't Agency</option>
+                        </select>
             <input type="button" value="{{btnName}}" ng-click="insertOwner()"> {{msg}}
             <input type="button" value="Display All" ng-click="displayOwners()">
         </form>

@@ -10,99 +10,80 @@
 
 <body>
     <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.5/angular.min.js"></script>
+    <script src="https://www.w3schools.com/lib/w3data.js"></script>
+<div w3-include-html="topnav.html"></div>
+<script>
+    w3IncludeHTML();
+</script>
     <div ng-app="myApp" ng-controller="cntrl">
         <form>
-            Transducer ID: <input type="text" ng-model="transducer_id"> Temperature: <input type="text" ng-model="temperature">            Conductivity: <input type="text" ng-model="conductivity"> Pressure: <input type="text" ng-model="pressure"> Salinity:
-            <input type="text" ng-model="salinity"> TDS: <input type="text" ng-model="tds"> Recording Date: <input type="datetime-local"
-                ng-model="recording_time">
-            <input type="button" value="{{btnName}}" ng-click="insertRecording()"> {{msg}}
-            <input type="button" value="Display All" ng-click="displayRecordings()">
+            Name: <input type="text" ng-model="name">
+            Type: <input type="text" ng-model="type">
+            Well ID: <input type="text" ng-model="well_id">
+            <input type="button" value="{{btnName}}" ng-click="insertTransducer()"> {{msg}}
+            <input type="button" value="Display All" ng-click="displayTransducers()">
         </form>
         <table>
             <thead>
                 <tr>
-                    <th>Transducer ID</td>
-                        <th>temperature</th>
-                        <th>Conductivity</th>
-                        <th>Pressure</th>
-                        <th>Salinity</th>
-                        <th>TDS</td>
-                            <th>Recording Time</td>
+                    <th>ID</td>
+                    <th>Name</th>
+                    <th>Type</th>
+                    <th>Well ID</th>
                 </tr>
             </thead>
             <tbody>
-                <tr ng-repeat="recording in data">
-                    <td>{{recording.transducer_id}}</td>
-                    <td>{{recording.temperature}}</td>
-                    <td>{{recording.conductivity}}</td>
-                    <td>{{recording.pressure}}</td>
-                    <td>{{recording.salinity}}</td>
-                    <td>{{recording.tds}}</td>
-                    <td>{{recording.recording_time}}</td>
-                    <td><button ng-click="deleteRecording(recording.transducer_id, recording.recording_time);">Delete</button></td>
-                    <td><button ng-click="editRecording(recording.transducer_id, recording.recording_time);">Edit</button></td>
+                <tr ng-repeat="transducer in data">
+                    <td>{{transducer.id}}</td>
+                    <td>{{transducer.name}}</td>
+                    <td>{{transducer.type}}</td>
+                    <td>{{transducer.well_id}}</td>
+                    <td><button ng-click="deleteTransducer(transducer.id);">Delete</button></td>
+                    <td><button ng-click="editTransducer(transducer.id);">Edit</button></td>
                 </tr>
             </tbody>
         </table>
     </div>
     <script>
         var app = angular.module('myApp', []);
-        app.controller('cntrl', function ($scope, $http, $filter) {
+        app.controller('cntrl', function ($scope, $http) {
             $scope.btnName = "Insert";
 
-            $scope.insertRecording = function () {
-                $datetime = $filter('date')($scope.recording_time, 'yyyy-MM-dd HH:mm:ss');
-                console.log($datetime);
-                $http.post("/recordings/add", { 'transducer_id': $scope.transducer_id, 'temperature': $scope.temperature, 'conductivity': $scope.conductivity, 'pressure': $scope.pressure, 'salinity': $scope.salinity, 'tds': $scope.tds, 'recording_time': $datetime })
+            $scope.insertTransducer = function () {
+                $http.post("/transducers/add", {'name': $scope.name, 'type': $scope.type, 'well_id': $scope.well_id})
                     .success(function () {
                         $scope.msg = "Data Inserted";
-                        $scope.displayRecordings();
+                        $scope.displayTransducers();
                     })
             }
 
-            $scope.displayRecordings = function () {
-                $http.get("/recordings/all")
+            $scope.displayTransducers = function () {
+                $http.get("/transducers/all")
                     .success(function (data) {
                         $scope.data = data
                         console.log('Got Data');
                     })
             }
 
-            $scope.deleteRecording = function (transducer_id, recording_time) {
-                $date = recording_time.substring(0, 10);
-                $time = recording_time.substring(11, 19);
-                console.log($date);
-                console.log($time);
-                var url = "/recordings/delete/";
-                url = url.concat(transducer_id);
-                url = url.concat("/");
-                url = url.concat($date);
-                url = url.concat("/");
-                url = url.concat($time);
+            $scope.deleteTransducer = function (id) {
+                var url = "/transducers/delete/";
+                url = url.concat(id);
                 $http.delete(url)
                     .success(function () {
                         $scope.msg = "Data Deletion successful";
-                        $scope.displayRecordings();
+                        $scope.displayTransducers();
                     })
             }
 
-            $scope.editRecording = function (transducer_id, recording_time) {
-                $date = recording_time.substring(0, 10);
-                $time = recording_time.substring(11, 19);
-                var url = "/recordings/edit/"
-                url = url.concat(transducer_id);
-                url = url.concat("/");
-                url = url.concat($date);
-                url = url.concat("/");
-                url = url.concat($time);
-                $http.put(url, {
-                    'temperature': $scope.temperature, 'conductivity': $scope.conductivity, 'pressure': $scope.pressure, 'salinity': $scope.salinity, 'tds': $scope.tds
-                })
+            $scope.editTransducer = function (id) {
+                var url = "/transducers/edit/"
+                url = url.concat(id);
+                $http.put(url, {'name': $scope.name, 'type': $scope.type, 'well_id': $scope.well_id})
                     .success(function () {
                         $scope.msg = "Data Edit successful";
-                        $scope.displayRecordings();
+                        $scope.displayTransducers();
                     })
-                $scope.displayRecordings();
+                $scope.displayTransducers();
             }
         });
     </script>

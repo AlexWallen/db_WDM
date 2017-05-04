@@ -23,8 +23,8 @@
 
     $app->put('/transducers/edit/{id}', function($request){
         require_once('db.php');
-        $get_id1 = $request->getAttribute('id');
-        $query = "UPDATE Transducers SET name = ?, type = ?, well_id = ? WHERE id = $get_id1 AND recording_time = $get_id2";
+        $get_id = $request->getAttribute('id');
+        $query = "UPDATE Transducers SET name = ?, type = ?, well_id = ? WHERE id = $get_id";
         $stmt = $conn->prepare($query);
         $stmt->bind_param("ssi", $name, $type, $well_id);
         $name = $request->getParsedBody()['name'];
@@ -35,8 +35,8 @@
 
     $app->delete('/transducers/delete/{id}', function($request, $response){
         require_once('db.php');
-        $get_id1 = $request->getAttribute('id');
-        $query = "DELETE from Transducers WHERE transducer_id = $get_id1 AND recording_time = '$get_id2'";
+        $get_id = $request->getAttribute('id');
+        $query = "DELETE from Transducers WHERE id = $get_id";
         $result = $conn->query($query);
         $response = $query;
         return $response;

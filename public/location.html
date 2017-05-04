@@ -10,9 +10,11 @@
 
 <body>
     <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.5/angular.min.js"></script>
+    <script src="https://www.w3schools.com/lib/w3data.js"></script>
+    <div w3-include-html="topnav.html"></div>
+    <script> w3IncludeHTML(); </script>
     <div ng-app="myApp" ng-controller="cntrl">
         <form>
-            <!--Owner ID: <input type="text" ng-model="id" name="ownerid"-->
             Latitude: <input type="text" ng-model="latitude" name="locLat">
             Longitude: <input type="text" ng-model="longitude" name="locLong">
             State: <input type="text" ng-model="state" name="locState">

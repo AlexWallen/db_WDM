@@ -1,4 +1,5 @@
 <?php
+
     $app->get('/location/all', function() {
         require_once('db.php');
         $query = "select * from Location";

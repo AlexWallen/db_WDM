@@ -10,9 +10,18 @@
 
 <body>
     <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.5/angular.min.js"></script>
+    <script src="https://www.w3schools.com/lib/w3data.js"></script>
+    
+<div w3-include-html="topnav.html"></div>
+<script>
+    w3IncludeHTML();
+</script>
     <div ng-app="myApp" ng-controller="cntrl">
         <form>
-            Location ID: <input type="text" ng-model="location_id"> 
+            Location ID:    <!--input type="text" ng-model="location_id"-->
+                            <select ng-model="location_id">
+                                <option ng-repeat="location in locations" value="{{location.id}}">ID {{location.id}}:({{location.latitude}}, {{location.longitude}})</option> 
+                            </select>
             Rainfall Amount: <input type="text" ng-model="amount"> 
             Normal Amount:   <input type="text" ng-model="normal_amount">
             Time:            <input type="datetime-local" ng-model="rtime">
@@ -43,7 +52,9 @@
     <script>
         var app = angular.module('myApp', []);
         app.controller('cntrl', function ($scope, $http, $filter) {
+            $http.get('/location/all').success(function (data) { $scope.locations = data; });
             $scope.btnName = "Insert";
+            
             $scope.insertRain = function () {
                 $datetime = $filter('date')($scope.rtime, 'yyyy-MM-dd HH:mm:ss');
                 $http.post("/rainfall/add", {'location_id': $scope.location_id, 'amount': $scope.amount, 'normal_amount': $scope.normal_amount, 'rtime': $datetime})
@@ -52,6 +63,7 @@
                         $scope.displayRain();
                     })
             }
+
             $scope.displayRain = function () {
                 $http.get("/rainfall/all")
                     .success(function (data) {

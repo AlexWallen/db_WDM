@@ -1,4 +1,5 @@
 <?php
+
     $app->get('/rainfall/all', function() {
         require_once('db.php');
         $query = "select * from Rainfall";
@@ -9,6 +10,7 @@
         }
         echo json_encode($data);
     });
+
     $app->post('/rainfall/add', function($request){
         require_once('db.php');
         $query = "INSERT INTO Rainfall (location_id, amount, normal_amount, rtime) VALUES (?,?,?,?)";
@@ -44,4 +46,5 @@
         $query = "DELETE from Rainfall WHERE location_id = $get_id1 AND rtime = '$get_id2'";
         $result = $conn->query($query);
     });
+
 ?>

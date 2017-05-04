@@ -10,16 +10,40 @@
 
 <body>
     <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.5/angular.min.js"></script>
+    <script src="https://www.w3schools.com/lib/w3data.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.0.0-alpha1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-csv/0.71/jquery.csv-0.71.min.js"></script>
+    <div w3-include-html="topnav.html"></div>
+    <script> w3IncludeHTML(); </script>
+
+    
+
     <div ng-app="myApp" ng-controller="cntrl">
+        
+        <div id="dvImportSegments" class="fileupload">
+            <fieldset>
+                <legend>Upload your CSV File</legend>
+                    Transducer ID:<select ng-model="upload_id">
+                        <option ng-repeat="transducer in transducers" value="{{transducer.id}}"> ID{{transducer.id}}: {{transducer.name}}
+                        </option>
+                 </select>
+                <input type="file" name="File Upload" id="txtFileUpload" accept=".csv" />
+            </fieldset>
+        </div>
+
         <form>
-            Transducer ID: <input type="text" ng-model="transducer_id">
-            Temperature: <input type="text" ng-model="temperature">           
-            Conductivity: <input type="text" ng-model="conductivity">
-            Pressure: <input type="text" ng-model="pressure">
-            Salinity: <input type="text" ng-model="salinity">
-            TDS: <input type="text" ng-model="tds">
-            Recording Date: <input type="datetime-local" ng-model="recording_time">
-            <input type="button" value="{{btnName}}" ng-click="insertRecording()"> {{msg}}
+            <br>Transducer ID:&emsp;<select ng-model="transducer_id">
+                                <option ng-repeat="transducer in transducers" value="{{transducer.id}}">
+                                    ID{{transducer.id}}: {{transducer.name}}
+                                </option>
+                            </select>
+            <br>Temperature:&emsp;<input type="text" ng-model="temperature">           
+            <br>Conductivity:&emsp;<input type="text" ng-model="conductivity">
+            <br>Pressure:&emsp;<input type="text" ng-model="pressure">
+            <br>Salinity:&emsp;<input type="text" ng-model="salinity">
+            <br>TDS:&emsp;<input type="text" ng-model="tds">
+            <br>Recording Date:&emsp;<input type="datetime-local" ng-model="recording_time">
+            <br><input type="button" value="{{btnName}}" ng-click="insertRecording()"> {{msg}}
             <input type="button" value="Display All" ng-click="displayRecordings()">
         </form>
         <table>
@@ -52,6 +76,7 @@
     <script>
         var app = angular.module('myApp', []);
         app.controller('cntrl', function ($scope, $http, $filter) {
+            $http.get('/transducers/all').success(function (data) { $scope.transducers = data; });
             $scope.btnName = "Insert";
 
             $scope.insertRecording = function () {
@@ -75,8 +100,8 @@
             $scope.deleteRecording = function (transducer_id, recording_time) {
                 $date = recording_time.substring(0, 10);
                 $time = recording_time.substring(11, 19);
-                console.log($date);
-                console.log($time);
+                //console.log($date);
+                //console.log($time);
                 var url = "/recordings/delete/";
                 url = url.concat(transducer_id);
                 url = url.concat("/");
@@ -107,7 +132,65 @@
                     })
                 $scope.displayRecordings();
             }
+
+            $(document).ready(function () {
+
+                function browserSupportFileUpload() {
+                    var isCompatible = false;
+                    if (window.File && window.FileReader && window.FileList && window.Blob) {       isCompatible = true;
+                    }
+                    return isCompatible;
+                }
+
+                document.getElementById('txtFileUpload').addEventListener('change', upload, false);
+
+                function upload(evt) {
+                    if (!browserSupportFileUpload()) {
+                        alert('The File APIs are not fully supported in this browser!');
+                    } else {
+                        var data = null;
+                        var file = evt.target.files[0];
+                        var reader = new FileReader();
+                        reader.readAsText(file);
+                        reader.onload = function (event) {
+                            var csvData = event.target.result;
+                            data = $.csv.toArrays(csvData);
+                            if (data && data.length > 0) { 
+                                var transducer_choice = $scope.upload_id;
+                                for(i = 0; i < data.length; i++) {
+                                    var date = new Date("" + data[i][1] + " " + data[i][2]);
+                                    var milliseconds = date.getTime();
+                                    $datetime = $filter('date')(milliseconds, 'yyyy-MM-dd HH:mm:ss');
+                                    //console.log($datetime);
+                                    $http.post("/recordings/add", {
+                                        'transducer_id': transducer_choice,
+                                        'temperature': data[i][3],
+                                        'conductivity': data[i][4],
+                                        'pressure': data[i][5],
+                                        'salinity': data[i][6],
+                                        'tds': data[i][7],
+                                        'recording_time': $datetime
+                                    }).success(function () {
+                                        $scope.msg = "Data Inserted";
+                                        //$scope.displayRecordings();
+                                    })
+                                }
+                                $scope.displayRecordings();
+                            } else {
+                                alert('No data to import!');
+                            }
+                        };
+                        reader.onerror = function() {
+                            alert('Unable to read ' + file.fileName);
+                        };
+                    }
+                }
+
+            });
+
         });
+        
+        
     </script>
 </body>
 

@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <head>
     <style>
-      body {
+    body {
         background-image: url("https://i.ytimg.com/vi/8myYyMg1fFE/maxresdefault.jpg");
         background-color: #cccccc;
         color: #ffffff;
@@ -15,7 +15,11 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.0.0-alpha1/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-csv/0.71/jquery.csv-0.71.min.js"></script>
     <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.5/angular.min.js"></script>
+    <script src="https://www.w3schools.com/lib/w3data.js"></script>
+    <div w3-include-html="topnav.html"></div>
+
     <script type="text/javascript">  
+    w3IncludeHTML();
     $(document).ready(function() {
 
     // The event listener for the file upload
@@ -43,7 +47,7 @@
                     var csvData = event.target.result;
                     data = $.csv.toArrays(csvData);
                     if (data && data.length > 0) {
-                    /*alert('Imported -' + data.length + data[0] + '- rows successfully!');*/
+                    alert('Imported -' + data.length + "::" + data[0] + '- rows successfully!');
                         
                     } else {
                         alert('No data to import!');
@@ -58,15 +62,14 @@
 </script>
 </head>
     <body>
-    <div id="dvImportSegments" class="fileupload ">
+    <div id="dvImportSegments" class="fileupload">
         <fieldset>
             <legend>Upload your CSV File</legend>
             <input type="file" name="File Upload" id="txtFileUpload" accept=".csv" />
         </fieldset>
     </div>
-    <div ng-app="myApp" ng-controller="cntrl">
+    <!--div ng-app="myApp" ng-controller="cntrl">
         <form>
-            <!--Owner ID: <input type="text" ng-model="id" name="ownerid"-->
             Owner Name: <input type="text" ng-model="name" name="ownername"
                 ng-disabled="obj.idisable">
             Owner Type: <input type="text" ng-model="type" name="ownertype">
@@ -92,7 +95,7 @@
                 </tr>
             </tbody>
         </table>
-    </div>
+    </div-->
     <script>
         var app = angular.module('myApp', []);
         app.controller('cntrl', function ($scope, $http) {

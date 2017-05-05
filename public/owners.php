@@ -17,6 +17,8 @@
         $stmt->bind_param("ss",$name,$type);
         $name = $request->getParsedBody()['name'];
         $type = $request->getParsedBody()['type'];
+        $stmt->execute();
+        return $query;
         $query = "SELECT * FROM Owners WHERE name = '$name' AND type = '$type'";
         $result = $conn->query($query) or die($conn->error);
         if($result) {

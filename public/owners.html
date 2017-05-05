@@ -59,7 +59,8 @@
 
             $scope.insertOwner = function () {
                 $http.post("/owners/add", { 'name': $scope.name, 'type': $scope.type })
-                    .success(function () {
+                    .success(function (response) {
+                        console.log(response);
                         $scope.msg = "Data Inserted";
                         $scope.displayOwners();
                     })

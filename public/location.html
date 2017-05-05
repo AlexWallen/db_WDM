@@ -1,28 +1,40 @@
 <!DOCTYPE html>
-<style>
-    body {
-        /*background-image: url("https://i.ytimg.com/vi/8myYyMg1fFE/maxresdefault.jpg");*/
-        background-color: #cccccc;
-        color: #ffffff;
-        text-shadow: 1px 1px #000000, -1px 1px #000000, 1px -1px #000000, -1px -1px #000000
-    }
-</style>
+<head>
+    <style>
+        body {
+            /*background-image: url("https://i.ytimg.com/vi/8myYyMg1fFE/maxresdefault.jpg");*/
+            background-color: #cccccc;
+            color: #ffffff;           
+        }
+    </style>
+    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.5/angular.min.js"></script>
+    <script src="https://www.w3schools.com/lib/w3data.js"></script>
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
 
+    <!-- jQuery library -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+
+    <!-- Latest compiled JavaScript -->
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+</head>
 <body>
     <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.5/angular.min.js"></script>
     <script src="https://www.w3schools.com/lib/w3data.js"></script>
     <div w3-include-html="topnav.html"></div>
     <script> w3IncludeHTML(); </script>
     <div ng-app="myApp" ng-controller="cntrl">
-        <form>
+        <form class="form-inline" style="padding-top: 10px; padding-bottom: 5px;">
             Latitude: <input type="text" ng-model="latitude" name="locLat">
             Longitude: <input type="text" ng-model="longitude" name="locLong">
             State: <input type="text" ng-model="state" name="locState">
             County: <input type="text" ng-model="county" name="locCounty">
-            <input type="button" value="{{btnName}}" ng-click="insertLocation()"> {{msg}}
-            <input type="button" value="Display All" ng-click="displayLocations()">
+            <div style="padding-top: 10px; padding-bottom: 5px;">
+                <input type="button" class="btn btn-primary" value="{{btnName}}" ng-click="insertLocation()"> {{msg}}
+                <input type="button" class="btn btn-info" value="Display All" ng-click="displayLocations()">
+            </div>
         </form>
-        <table>
+        <table class="table">
             <thead>
                 <tr>
                     <th>ID</td>
@@ -39,8 +51,8 @@
                     <td>{{location.longitude}}</td>
                     <td>{{location.state}}</td>
                     <td>{{location.county}}
-                        <td><button ng-click="deleteLocation(location.id);">Delete</button></td>
-                        <td><button ng-click="editLocation(location.id);">Edit</button></td>
+                        <td><button  class="btn btn-danger" ng-click="deleteLocation(location.id);">Delete</button></td>
+                        <td><button  class="btn btn-primary" ng-click="editLocation(location.id);">Edit</button></td>
                 </tr>
             </tbody>
         </table>

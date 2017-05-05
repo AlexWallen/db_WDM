@@ -1,25 +1,43 @@
 <!DOCTYPE html>
-<style>
-    body {
-        /*background-image: url("https://i.ytimg.com/vi/8myYyMg1fFE/maxresdefault.jpg");*/
-        background-color: #cccccc;
-        color: #ffffff;
-        text-shadow: 1px 1px #000000, -1px 1px #000000, 1px -1px #000000, -1px -1px #000000
-    }
-</style>
-
-<body>
+<head>
+    <style>
+        body {
+            /*background-image: url("https://i.ytimg.com/vi/8myYyMg1fFE/maxresdefault.jpg");*/
+            background-color: #cccccc;
+            color: #ffffff;           
+        }
+        .btn-bs-file{
+            position:relative;
+        }
+        .btn-bs-file input[type="file"]{
+            position: absolute;
+            top: -9999999;
+            filter: alpha(opacity=0);
+            opacity: 0;
+            width:0;
+            height:0;
+            outline: none;
+            cursor: inherit;
+        }
+    </style>
     <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.5/angular.min.js"></script>
     <script src="https://www.w3schools.com/lib/w3data.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.0.0-alpha1/jquery.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-csv/0.71/jquery.csv-0.71.min.js"></script>
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+
+    <!-- jQuery library -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+
+    <!-- Latest compiled JavaScript -->
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+</head>
+<body>
     <div w3-include-html="topnav.html"></div>
     <script> w3IncludeHTML(); </script>
 
     
 
-    <div ng-app="myApp" ng-controller="cntrl">
-        
+    <div ng-app="myApp" ng-controller="cntrl">        
         <div id="dvImportSegments" class="fileupload">
             <fieldset>
                 <legend>Upload your CSV File</legend>
@@ -27,26 +45,45 @@
                         <option ng-repeat="transducer in transducers" value="{{transducer.id}}"> ID{{transducer.id}}: {{transducer.name}}
                         </option>
                  </select>
-                <input type="file" name="File Upload" id="txtFileUpload" accept=".csv" />
+                <div class="col-sm-12" style="margin-bottom:20px; padding-top: 10px; padding-bottom: 5px;">
+                    <label class="btn-bs-file btn btn-primary">
+                         Upload File
+                       <input type="file" accept=".csv"/>
+                    </label>
+                </div>
             </fieldset>
         </div>
-
-        <form>
-            <br>Transducer ID:&emsp;<select ng-model="transducer_id">
-                                <option ng-repeat="transducer in transducers" value="{{transducer.id}}">
-                                    ID{{transducer.id}}: {{transducer.name}}
-                                </option>
-                            </select>
-            <br>Temperature:&emsp;<input type="text" ng-model="temperature">           
-            <br>Conductivity:&emsp;<input type="text" ng-model="conductivity">
-            <br>Pressure:&emsp;<input type="text" ng-model="pressure">
-            <br>Salinity:&emsp;<input type="text" ng-model="salinity">
-            <br>TDS:&emsp;<input type="text" ng-model="tds">
-            <br>Recording Date:&emsp;<input type="datetime-local" ng-model="recording_time">
-            <br><input type="button" value="{{btnName}}" ng-click="insertRecording()"> {{msg}}
-            <input type="button" value="Display All" ng-click="displayRecordings()">
+        <div class="container">
+            <div class="form-group">  
+            <label for="Temperature">Temperature:&emsp;</label>
+             <input type="text" class="form-control" id="text"  placeholder="Enter temperature" ng-model="temperature">         
+            </div>  
+            <div class="form-group">  
+              <label for="Conductivity">Conductivity:&emsp;</label>
+             <input type="text" class="form-control" id="text" placeholder="Enter conductivity" ng-model="conductivity">
+            </div>
+            <div class="form-group">  
+              <label for="Pressure">Pressure:&emsp;</label>
+             <input type="text" class="form-control" id="text" placeholder="Enter pressure" ng-model="pressure">
+            </div>
+            <div class="form-group">  
+              <label for="Salinity">Salinity:&emsp;</label>
+             <input type="text" class="form-control" id="text" placeholder="Enter salinity" ng-model="salinity">
+            </div>
+            <div class="form-group">  
+              <label for="TDS">TDS:&emsp;</label>
+             <input type="text" class="form-control" id="text"  placeholder="Enter TDS" ng-model="tds">
+            </div>  
+            <div class="form-group">  
+              <label for="TDS">Recording Date:&emsp;</label>
+             <input type="datetime-local" class="form-control" id="datetime-local"  ng-model="recording_time" placeholder="Enter Recording Date">
+            </div>              
+        </div>
+            <input type="button" class="btn btn-primary" value="{{btnName}}" ng-click="insertRecording()"> {{msg}}
+             <input type="button" class="btn btn-primary" value="Display All" ng-click="displayRecordings()">
         </form>
-        <table>
+        
+        <table class ="table">
             <thead>
                 <tr>
                     <th>Transducer ID</td>
@@ -67,8 +104,8 @@
                     <td>{{recording.salinity}}</td>
                     <td>{{recording.tds}}</td>
                     <td>{{recording.recording_time}}</td>
-                    <td ng-if="recording.transducer_id"><button ng-click="deleteRecording(recording.transducer_id, recording.recording_time);">Delete</button></td>
-                    <td ng-if="recording.transducer_id"><button ng-click="editRecording(recording.transducer_id, recording.recording_time);">Edit</button></td>
+                    <td ng-if="recording.transducer_id"><button class="btn btn-danger" ng-click="deleteRecording(recording.transducer_id, recording.recording_time);">Delete</button></td>
+                    <td ng-if="recording.transducer_id"><button class="btn btn-primary" ng-click="editRecording(recording.transducer_id, recording.recording_time);">Edit</button></td>
                 </tr>
             </tbody>
         </table>

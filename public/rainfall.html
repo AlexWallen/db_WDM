@@ -1,12 +1,36 @@
 <!DOCTYPE html>
-<style>
-    body {
-        /*background-image: url("https://i.ytimg.com/vi/8myYyMg1fFE/maxresdefault.jpg");*/
-        background-color: #cccccc;
-        color: #ffffff;
-        text-shadow: 1px 1px #000000, -1px 1px #000000, 1px -1px #000000, -1px -1px #000000
-    }
-</style>
+<head>
+    <style>
+        body {
+            /*background-image: url("https://i.ytimg.com/vi/8myYyMg1fFE/maxresdefault.jpg");*/
+            background-color: #cccccc;
+            color: #ffffff;           
+        }
+        .btn-bs-file{
+            position:relative;
+        }
+        .btn-bs-file input[type="file"]{
+            position: absolute;
+            top: -9999999;
+            filter: alpha(opacity=0);
+            opacity: 0;
+            width:0;
+            height:0;
+            outline: none;
+            cursor: inherit;
+        }
+    </style>
+    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.5/angular.min.js"></script>
+    <script src="https://www.w3schools.com/lib/w3data.js"></script>
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+
+    <!-- jQuery library -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+
+    <!-- Latest compiled JavaScript -->
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+</head>
 
 <body>
     <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.5/angular.min.js"></script>
@@ -25,10 +49,10 @@
             Rainfall Amount: <input type="text" ng-model="amount"> 
             Normal Amount:   <input type="text" ng-model="normal_amount">
             Time:            <input type="datetime-local" ng-model="rtime">
-                <input type="button" value="{{btnName}}" ng-click="insertRain()"> {{msg}}
-                <input type="button" value="Display All" ng-click="displayRain()">
+                <input type="button" class="btn btn-primary" value="{{btnName}}" ng-click="insertRain()"> {{msg}}
+                <input type="button" class="btn btn-info" value="Display All" ng-click="displayRain()">
         </form>
-        <table>
+        <table class="table">
             <thead>
                 <tr>
                     <th>Location</td>
@@ -43,8 +67,8 @@
                     <td>{{rainfall.amount}}</td>
                     <td>{{rainfall.normal_amount}}</td>
                     <td>{{rainfall.rtime}}</td>
-                    <td ng-if="rainfall.location_id"><button ng-click="deleteRainfall(rainfall.location_id, rainfall.rtime);">Delete</button></td>
-                    <td ng-if="rainfall.location_id"><button ng-click="editRainfall(rainfall.location_id, rainfall.rtime);">Edit</button></td>
+                    <td ng-if="rainfall.location_id"><button class="btn btn-danger" ng-click="deleteRainfall(rainfall.location_id, rainfall.rtime);">Delete</button></td>
+                    <td ng-if="rainfall.location_id"><button class="btn btn-primary" ng-click="editRainfall(rainfall.location_id, rainfall.rtime);">Edit</button></td>
                 </tr>
             </tbody>
         </table>

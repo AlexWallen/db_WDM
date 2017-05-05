@@ -1,13 +1,36 @@
 <!DOCTYPE html>
-<style>
-    body {
-        /*background-image: url("https://i.ytimg.com/vi/8myYyMg1fFE/maxresdefault.jpg");*/
-        background-color: #cccccc;
-        color: #ffffff;
-        text-shadow: 1px 1px #000000, -1px 1px #000000, 1px -1px #000000, -1px -1px #000000
-    }
-</style>
+<head>
+    <style>
+        body {
+            /*background-image: url("https://i.ytimg.com/vi/8myYyMg1fFE/maxresdefault.jpg");*/
+            background-color: #cccccc;
+            color: #ffffff;           
+        }
+        .btn-bs-file{
+            position:relative;
+        }
+        .btn-bs-file input[type="file"]{
+            position: absolute;
+            top: -9999999;
+            filter: alpha(opacity=0);
+            opacity: 0;
+            width:0;
+            height:0;
+            outline: none;
+            cursor: inherit;
+        }
+    </style>
+    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.5/angular.min.js"></script>
+    <script src="https://www.w3schools.com/lib/w3data.js"></script>
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
 
+    <!-- jQuery library -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+
+    <!-- Latest compiled JavaScript -->
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+</head>
 <body>
     <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.5/angular.min.js"></script>
     <script src="https://www.w3schools.com/lib/w3data.js"></script>
@@ -21,64 +44,106 @@
         
         <div id="dvImportSegments" class="fileupload">
             <fieldset>
+                <div class="col-sm-12" style="margin-bottom:20px; padding-top: 10px; padding-bottom: 5px;">                   
                 <legend>Upload your CSV File</legend>
-                <div id="dvImportSegments" class="fileupload"> 
-                        <input type="file" name="File Upload" id="txtFileUpload" accept=".csv" />
+                    <label class="btn-bs-file btn btn-primary">
+                         Upload File
+                       <input type="file" accept=".csv"/>
+                    </label>
                 </div>
-                How many columns? <input type="number" ng-model="numCol">
-                <button ng-click="setCols()"> Set </button>
-                <div ng-repeat="i in cols track by $index">
-                    Column #{{$index + 1}}:
-                    <select ng-model="cols[$index]"/>
-                            <option value="NaN">N/A</option>
-                            <option value="well_id">Well ID</option>
-                            <option value="aquifer_code">Aquifer Code</option>
-                            <option value="type_code">Type Code</option>
-                            <option value="owner_name">Owner Name</option>
-                            <option value="owner_type">Owner Type</option>
-                            <option value="latitude">Latitude</option>
-                            <option value="longitude">Longitude</option>
-                            <option value="state">State</option>
-                            <option value="county">County</option>
-                            <option value="pump_type">Pump Type</option>
-                            <option value="well_usage">Well Usage</option>
-                            <option value="bottom_elevation">Bottom Elevation</option>
-                            <option value="top_elevation">Top Elevation</option>
-                            <option value="water_elevation">Water Elevation</option>
-                            <option value="casing_id">Casing ID</option>
-                            <option value="diameter">Diameter</option>
-                            <option value="top_depth">Top Depth</option>
-                            <option value="bottom_depth">Bottom Depth</option>
-                            <option value="remarks">Remarks</option>
-                    </select>
-
-                    
+                 <div class="col-sm-12" style="margin-bottom:20px; padding-top: 10px; padding-bottom: 5px;">                   
+                    <legend>Manual Ordering of Input Data</legend>
+                    How many columns? <input type="number" ng-model="numCol">
+                    <button ng-click="setCols()"> Set </button>
+                    <div ng-repeat="i in cols track by $index" style="padding-top: 10px; padding-bottom: 5px;">
+                        Column #{{$index + 1}}:
+                        <select ng-model="cols[$index]"/>
+                                <option value="NaN">N/A</option>
+                                <option value="well_id">Well ID</option>
+                                <option value="aquifer_code">Aquifer Code</option>
+                                <option value="type_code">Type Code</option>
+                                <option value="owner_name">Owner Name</option>
+                                <option value="owner_type">Owner Type</option>
+                                <option value="latitude">Latitude</option>
+                                <option value="longitude">Longitude</option>
+                                <option value="state">State</option>
+                                <option value="county">County</option>
+                                <option value="pump_type">Pump Type</option>
+                                <option value="well_usage">Well Usage</option>
+                                <option value="bottom_elevation">Bottom Elevation</option>
+                                <option value="top_elevation">Top Elevation</option>
+                                <option value="water_elevation">Water Elevation</option>
+                                <option value="casing_id">Casing ID</option>
+                                <option value="diameter">Diameter</option>
+                                <option value="top_depth">Top Depth</option>
+                                <option value="bottom_depth">Bottom Depth</option>
+                                <option value="remarks">Remarks</option>
+                        </select>                       
+                    </div>
                 </div>
-
             </fieldset>
         </div>
-        <div>
-            <form>
-
-                Aquifer Code: <input type="text" ng-model="aquifer_code">
-                Type Code: <input type="text" ng-model="type_code">
-                Owner ID: <input type="text" ng-model="owner_id">
-                Location ID: <input type="text" ng-model="location_id">
-                Pump Type: <input type="text" ng-model="pump_type">
-                Well Usage: <input type="text" ng-model="well_usage">
-                Bottom Elevation: <input type="text" ng-model="bottom_elevation">
-                Top Elevation: <input type="text" ng-model="top_elevation">
-                Water Elevation: <input type="text" ng-model="water_elevation">
-                Casing ID: <input type="text" ng-model="casing_id">
-                Diameter: <input type="text" ng-model="diameter">
-                Top Depth: <input type="text" ng-model="top_depth">
-                Bottom Depth: <input type="text" ng-model="bottom_depth">
-                Remarks: <input type="text" ng-model="remarks">
-                <input type="button" value="{{btnName}}" ng-click="insertWell()"> {{msg}}
-                <input type="button" value="Display All" ng-click="displayWells()">
-            </form>
-        </div>
-        <table>
+         <legend>Input Your Fields Here</legend>
+            <div class="form-group">  
+             <label for="Aquifer code">Aquifer Code:&emsp;</label>
+             <input type="text" class="form-control" id="text" placeholder="Enter Aquifer Code" ng-model="aquifer_code">
+            </div>  
+             <div class="form-group"> 
+                <label for="Type code">Type Code:&emsp;</label>
+                 <input type="text" class="form-control" id="text" placeholder="Enter Type Code" ng-model="type_code">
+            </div>
+             <div class="form-group">
+                 <label for="Owner ID">Owner ID:&emsp;</label>
+                 <input type="text" class="form-control" id="text" placeholder="Enter Owner ID" ng-model="owner_id">               
+            </div>
+             <div class="form-group">
+                <label for="Location ID">Location ID:&emsp;</label>
+                <input type="text" class="form-control" id="text" placeholder="Enter Location ID" ng-model="location_id">
+            </div>
+            <div class="form-group">
+                <label for="Pump Type">Pump Type:&emsp;</label>
+                <input type="text" class="form-control" id="text" placeholder="Enter Pump Type" ng-model="pump_type">  
+            </div>     
+            <div class="form-group">
+                <label for="Well Usage">Well Usage:&emsp;</label>
+                <input type="text" class="form-control" id="text" placeholder="Enter Well Usage" ng-model="well_usage">  
+            </div>             
+            <div class="form-group">
+                <label for="Bottom Elevation">Bottom Elevation:&emsp;</label>
+                <input type="text" class="form-control" id="text" placeholder="Enter Bottom Elevation" ng-model="bottom_elevation">  
+            </div>                        
+            <div class="form-group">
+                <label for="Top Evelation">Top Elevation:&emsp;</label>
+                <input type="text" class="form-control" id="text" placeholder="Enter Top Elevation" ng-model="top_elevation">  
+            </div>  
+            <div class="form-group">
+                <label for="Water Elevation">Water Elevation:&emsp;</label>
+                <input type="text" class="form-control" id="text" placeholder="Water Bottom Elevation" ng-model="water_elevation">  
+            </div>  
+            <div class="form-group">
+                <label for="Casting ID">Casing ID:&emsp;</label>
+                <input type="text" class="form-control" id="text" placeholder="Enter Casing ID" ng-model="casing_id">  
+            </div>  
+            <div class="form-group">
+                <label for="Diameter">Diameter:&emsp;</label>
+                <input type="text" class="form-control" id="text" placeholder="Enter Diameter" ng-model="diameter">  
+            <div class="form-group">
+                <label for="Top Depth">Top Depth:&emsp;</label>
+                <input type="text" class="form-control" id="text" placeholder="Enter Top Depth" ng-model="top_depth">  
+            </div>  
+            <div class="form-group">
+                <label for="Bottom Depth">Bottom Depth:&emsp;</label>
+                <input type="text" class="form-control" id="text" placeholder="Enter Bottom Depth" ng-model="bottom_depth">  
+            </div>  
+            <div class="form-group">
+                <label for="Remarks">Remarks:&emsp;</label>
+                <input type="text" class="form-control" id="text" placeholder="Enter Remarks" ng-model="remarks">  
+            </div>  
+            <div style="padding-top: 10px; padding-bottom: 5px;">
+                <input type="button" class="btn btn-primary"value="{{btnName}}" ng-click="insertWell()"> {{msg}}
+                <input type="button" class="btn btn-primary" value="Display All" ng-click="displayWells()">
+            </div>
+        <table class="table">
             <thead>
                 <tr>
                     <th>Well ID</td>
@@ -115,8 +180,8 @@
                     <td>{{well.top_depth}}</td>
                     <td>{{well.bottom_depth}}</td>
                     <td>{{well.remarks}}
-                        <td><button ng-click="deleteWell(well.well_id);">Delete</button></td>
-                        <td><button ng-click="editWell(well.well_id);">Edit</button></td>
+                        <td><button class="btn btn-danger" ng-click="deleteWell(well.well_id);">Delete</button></td>
+                        <td><button class="btn btn-primary" ng-click="editWell(well.well_id);">Edit</button></td>
                 </tr>
             </tbody>
         </table>

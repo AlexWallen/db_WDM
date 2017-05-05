@@ -35,3 +35,35 @@ Your Pages site will use the layout and styles from the Jekyll theme you have se
 ### Support or Contact
 
 Having trouble with Pages? Check out our [documentation](https://help.github.com/categories/github-pages-basics/) or [contact support](https://github.com/contact) and we’ll help you sort it out.
+
+###TODO
+
+MANDATORY
+------------------
+WALLEN
+Response Messaging
+	On Insert
+	On Delete
+	On Edit
+	On File Upload
+Data analysis
+Be able to view recordings from a single transducer on the 	transducer page (modal maybe), same goes with owner->well, 	well->transducer, etc?
+
+EVANS / FLORES
+Tuple Filtering
+Tuple Sorting (Sort recordings by record time, etc)
+CSV Output
+Make look good
+Change file upload to button instead of change
+Modals for Add/Edit
+CSS For background image (keep pinned)
+
+
+OPTIONAL
+------------------
+Hosting
+README
+
+
+
+GLHF

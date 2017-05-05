@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <style>
     body {
-        background-image: url("https://i.ytimg.com/vi/8myYyMg1fFE/maxresdefault.jpg");
+        /*background-image: url("https://i.ytimg.com/vi/8myYyMg1fFE/maxresdefault.jpg");*/
         background-color: #cccccc;
         color: #ffffff;
         text-shadow: 1px 1px #000000, -1px 1px #000000, 1px -1px #000000, -1px -1px #000000
@@ -11,30 +11,73 @@
 <body>
     <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.5/angular.min.js"></script>
     <script src="https://www.w3schools.com/lib/w3data.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.0.0-alpha1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-csv/0.71/jquery.csv-0.71.min.js"></script>
 <div w3-include-html="topnav.html"></div>
 <script>
     w3IncludeHTML();
 </script>
     <div ng-app="myApp" ng-controller="cntrl">
-        <form>
+        
+        <div id="dvImportSegments" class="fileupload">
+            <fieldset>
+                <legend>Upload your CSV File</legend>
+                <div id="dvImportSegments" class="fileupload"> 
+                        <input type="file" name="File Upload" id="txtFileUpload" accept=".csv" />
+                </div>
+                How many columns? <input type="number" ng-model="numCol">
+                <button ng-click="setCols()"> Set </button>
+                <div ng-repeat="i in cols track by $index">
+                    Column #{{$index + 1}}:
+                    <select ng-model="cols[$index]"/>
+                            <option value="NaN">N/A</option>
+                            <option value="well_id">Well ID</option>
+                            <option value="aquifer_code">Aquifer Code</option>
+                            <option value="type_code">Type Code</option>
+                            <option value="owner_name">Owner Name</option>
+                            <option value="owner_type">Owner Type</option>
+                            <option value="latitude">Latitude</option>
+                            <option value="longitude">Longitude</option>
+                            <option value="state">State</option>
+                            <option value="county">County</option>
+                            <option value="pump_type">Pump Type</option>
+                            <option value="well_usage">Well Usage</option>
+                            <option value="bottom_elevation">Bottom Elevation</option>
+                            <option value="top_elevation">Top Elevation</option>
+                            <option value="water_elevation">Water Elevation</option>
+                            <option value="casing_id">Casing ID</option>
+                            <option value="diameter">Diameter</option>
+                            <option value="top_depth">Top Depth</option>
+                            <option value="bottom_depth">Bottom Depth</option>
+                            <option value="remarks">Remarks</option>
+                    </select>
 
-            Aquifer Code: <input type="text" ng-model="aquifer_code">
-            Type Code: <input type="text" ng-model="type_code">
-            Owner ID: <input type="text" ng-model="owner_id">
-            Location ID: <input type="text" ng-model="location_id">
-            Pump Type: <input type="text" ng-model="pump_type">
-            Usage: <input type="text" ng-model="usage">
-            Bottom Elevation: <input type="text" ng-model="bottom_elevation">
-            Top Elevation: <input type="text" ng-model="top_elevation">
-            Water Elevation: <input type="text" ng-model="water_elevation">
-            Casing ID: <input type="text" ng-model="casing_id">
-            Diameter: <input type="text" ng-model="diameter">
-            Top Depth: <input type="text" ng-model="top_depth">
-            Bottom Depth: <input type="text" ng-model="bottom_depth">
-            Remarks: <input type="text" ng-model="remarks">
-            <input type="button" value="{{btnName}}" ng-click="insertWell()"> {{msg}}
-            <input type="button" value="Display All" ng-click="displayWells()">
-        </form>
+                    
+                </div>
+
+            </fieldset>
+        </div>
+        <div>
+            <form>
+
+                Aquifer Code: <input type="text" ng-model="aquifer_code">
+                Type Code: <input type="text" ng-model="type_code">
+                Owner ID: <input type="text" ng-model="owner_id">
+                Location ID: <input type="text" ng-model="location_id">
+                Pump Type: <input type="text" ng-model="pump_type">
+                Well Usage: <input type="text" ng-model="well_usage">
+                Bottom Elevation: <input type="text" ng-model="bottom_elevation">
+                Top Elevation: <input type="text" ng-model="top_elevation">
+                Water Elevation: <input type="text" ng-model="water_elevation">
+                Casing ID: <input type="text" ng-model="casing_id">
+                Diameter: <input type="text" ng-model="diameter">
+                Top Depth: <input type="text" ng-model="top_depth">
+                Bottom Depth: <input type="text" ng-model="bottom_depth">
+                Remarks: <input type="text" ng-model="remarks">
+                <input type="button" value="{{btnName}}" ng-click="insertWell()"> {{msg}}
+                <input type="button" value="Display All" ng-click="displayWells()">
+            </form>
+        </div>
         <table>
             <thead>
                 <tr>
@@ -44,7 +87,7 @@
                     <th>Owner ID</th>
                     <th>Location ID</th>
                     <th>Pump Type</td>
-                    <th>Usage</td>
+                    <th>Well Usage</td>
                     <th>Bottom Elevation</td>
                     <th>Top Elevation</td>
                     <th>Water Elevation</td>
@@ -63,7 +106,7 @@
                     <td>{{well.owner_id}}</td>
                     <td>{{well.location_id}}</td>
                     <td>{{well.pump_type}}</td>
-                    <td>{{well.usage}}</td>
+                    <td>{{well.well_usage}}</td>
                     <td>{{well.bottom_elevation}}</td>
                     <td>{{well.top_elevation}}</td>
                     <td>{{well.water_elevation}}</td>
@@ -80,15 +123,83 @@
     </div>
     <script>
         var app = angular.module('myApp', []);
-        app.controller('cntrl', function ($scope, $http) {
+        app.filter('range', function () {
+            return function (input, total) {
+                total = parseInt(total);
+                for (var i = 0; i < total; i++)
+                    input.push(i);
+                return input;
+            };
+        });
+
+        app.controller('cntrl', function ($scope, $http, $filter) {
             $scope.btnName = "Insert";
+            $scope.cols = [];
+
+            $scope.setCols = function () {
+                $scope.cols = $filter('range')([], $scope.numCol);
+            }
 
             $scope.insertWell = function () {
-                $http.post("/wells/add", { 'aquifer_code': $scope.aquifer_code, 'type_code': $scope.type_code, 'owner_id': $scope.owner_id, 'location_id': $scope.location_id, 'pump_type': $scope.pump_type, 'usage': $scope.usage, 'bottom_elevation': $scope.bottom_elevation, 'top_elevation': $scope.top_elevation, 'water_elevation': $scope.water_elevation, 'casing_id': $scope.casing_id, 'diameter': $scope.diameter, 'top_depth': $scope.top_depth, 'bottom_depth': $scope.bottom_depth, 'remarks': $scope.remarks })
+                $http.post("/wells/add", { 'aquifer_code': $scope.aquifer_code, 'type_code': $scope.type_code, 'owner_id': $scope.owner_id, 'location_id': $scope.location_id, 'pump_type': $scope.pump_type, 'well_usage': $scope.well_usage, 'bottom_elevation': $scope.bottom_elevation, 'top_elevation': $scope.top_elevation, 'water_elevation': $scope.water_elevation, 'casing_id': $scope.casing_id, 'diameter': $scope.diameter, 'top_depth': $scope.top_depth, 'bottom_depth': $scope.bottom_depth, 'remarks': $scope.remarks })
                     .success(function () {
                         $scope.msg = "Data Inserted";
                         $scope.displayWells();
                     })
+            }
+
+            $scope.insertCompleteWell = function (row) {
+                var locData = {};
+                var ownerData = {};
+                var wellData = {};
+                var key;
+                for(j = 0; j < $scope.numCol; j++) {
+                    key = $scope.cols[j];
+                    switch(key) {
+                        case 'latitude':
+                        case 'longitude':
+                        case 'state':
+                        case 'county':
+                            locData[key] = row[j];
+                            break;
+                        case 'owner_name':
+                            ownerData['name'] = row[j];
+                            break;
+                        case 'owner_type':
+                            ownerData['type'] = row[j];
+                            break;
+                        case 'NaN':
+                            break;
+                        default:
+                            wellData[key] = row[j];
+                    }  
+                }
+                console.log('Loc JSON: ' + JSON.stringify(locData));
+                //First Check For New Location
+                $http.post("/location/add", locData, false)
+                    .success(function(response) {
+                        wellData['location_id'] = response.id;
+                        console.log('location response = ' + response.id);
+                        console.log('Owner JSON: ' + JSON.stringify(ownerData));
+                        //Then check for new Owner
+                        $http.post("/owners/add", ownerData, false)
+                            .success(function (response) {
+                                wellData['owner_id'] = response.id;
+                                console.log('owner response = ' + response.id);
+                                //Delete NULL and Blank key values from well json
+                                $.each(wellData, function (key, value) {
+                                    if (value === "" || value === null) {
+                                        delete wellData[key];
+                                    }
+                                });
+                                console.log('Well JSON: ' + JSON.stringify(wellData));
+                                //Then Insert Well
+                                $http.post("/wells/add", wellData)
+                                    .success(function () {
+                                        //console.log('');
+                                    });
+                            });
+                    });
             }
 
             $scope.displayWells = function () {
@@ -112,7 +223,7 @@
                 var url = "/wells/edit/"
                 $http.put(url.concat(id), {
                         'aquifer_code': $scope.aquifer_code, 'type_code': $scope.type_code, 'owner_id': $scope.owner_id, 'location_id': $scope.location_id,
-                        'pump_type': $scope.pump_type, 'usage': $scope.usage, 'bottom_elevation': $scope.bottom_elevation, 'top_elevation': $scope.top_elevation,
+                        'pump_type': $scope.pump_type, 'well_usage': $scope.well_usage, 'bottom_elevation': $scope.bottom_elevation, 'top_elevation': $scope.top_elevation,
                         'water_elevation': $scope.water_elevation, 'casing_id': $scope.casing_id, 'diameter': $scope.diameter, 'top_depth': $scope.top_depth,
                         'bottom_depth': $scope.bottom_depth, 'remarks': $scope.remarks})
                     .success(function () {
@@ -121,6 +232,43 @@
                     })
                 $scope.displayWells();
             }
+
+            $(document).ready(function () {
+                function browserSupportFileUpload() {
+                    var isCompatible = false; if (window.File && window.FileReader && window.FileList && window.Blob) {
+                        isCompatible = true;
+                    }
+                    return isCompatible;
+                }
+                
+                document.getElementById('txtFileUpload').addEventListener('change', upload, false);
+                
+                function upload(evt) {
+                    if (!browserSupportFileUpload()) {
+                        alert('The File APIs are not fully supported in this browser!');
+                    } else {
+                        var data = null;
+                        var file = evt.target.files[0];
+                        var reader = new FileReader();
+                        reader.readAsText(file);
+                        reader.onload = function (event) {
+                            var csvData = event.target.result;
+                            data = $.csv.toArrays(csvData);
+                            if (data && data.length > 0) {
+                                for (i = 0; i < data.length; i++) {
+                                    $scope.insertCompleteWell(data[i]);
+                                    
+                                }
+                            } else {
+                                alert('No data to import!');
+                            }
+                        };
+                        reader.onerror = function() {
+                            alert('Unable to read ' + file.fileName);
+                        };
+                    }
+                }
+            });
         });
     </script>
 </body>

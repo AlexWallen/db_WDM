@@ -10,18 +10,18 @@
         echo json_encode($data);
     });
 
-    $app->post('/wells/add', function($request){
+    $app->post('/wells/add', function($request, $response){
         require_once('db.php');
-        $query = "INSERT INTO Wells (well_id, aquifer_code, type_code, owner_id, location_id, pump_type, usage, bottom_elevation, top_elevation, water_elevation, casing_id, diameter, top_depth, bottom_depth, remarks) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
+        $query = "INSERT INTO Wells (well_id, aquifer_code, type_code, owner_id, location_id, pump_type, well_usage, bottom_elevation, top_elevation, water_elevation, casing_id, diameter, top_depth, bottom_depth, remarks) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
         $stmt = $conn->prepare($query);
-        $stmt->bind_param("isiissdddiddds",$aquifer_code, $type_code, $owner_id, $location_id, $pump_type, $usage, $bottom_elevation, $top_elevation, $water_elevation, $casing_id, $diameter, $top_depth, $bottom_depth, $remarks);
+        $stmt->bind_param("issiissdddiddds", $well_id, $aquifer_code, $type_code, $owner_id, $location_id, $pump_type, $well_usage, $bottom_elevation, $top_elevation, $water_elevation, $casing_id, $diameter, $top_depth, $bottom_depth, $remarks);
         $well_id = $request->getParsedBody()['well_id'];
         $aquifer_code = $request->getParsedBody()['aquifer_code'];
         $type_code = $request->getParsedBody()['type_code'];
         $owner_id = $request->getParsedBody()['owner_id'];
         $location_id = $request->getParsedBody()['location_id'];
         $pump_type = $request->getParsedBody()['pump_type'];
-        $usage = $request->getParsedBody()['usage'];
+        $well_usage = $request->getParsedBody()['well_usage'];
         $bottom_elevation = $request->getParsedBody()['bottom_elevation'];
         $top_elevation = $request->getParsedBody()['top_elevation'];
         $water_elevation = $request->getParsedBody()['water_elevation'];
@@ -30,21 +30,26 @@
         $top_depth = $request->getParsedBody()['top_depth'];
         $bottom_depth = $request->getParsedBody()['bottom_depth'];
         $remarks = $request->getParsedBody()['remarks'];
-        $stmt->execute();
+        if($stmt->execute()) {
+            $response->getBody()->write("It Worked");    
+        } else {
+            $response->getBody()->write("What the shit");
+        }
+        return $response;
     });
 
     $app->put('/wells/edit/{well_id}', function($request){
         require_once('db.php');
         $get_id = $request->getAttribute('well_id');
-        $query = "UPDATE Wells SET aquifer_code = ?, type_code = ?, owner_id = ?, location_id = ?, pump_type = ?, usage = ?, bottom_elevation = ?, top_elevation = ?, water_elevation = ?, casing_id = ?, diameter = ?, top_depth = ?, bottom_depth = ?, remarks = ? WHERE well_id = $get_id";
+        $query = "UPDATE Wells SET aquifer_code = ?, type_code = ?, owner_id = ?, location_id = ?, pump_type = ?, well_usage = ?, bottom_elevation = ?, top_elevation = ?, water_elevation = ?, casing_id = ?, diameter = ?, top_depth = ?, bottom_depth = ?, remarks = ? WHERE well_id = $get_id";
         $stmt = $conn->prepare($query);
-        $stmt->bind_param("isiissdddiddds",$aquifer_code, $type_code, $owner_id, $location_id, $pump_type, $usage, $bottom_elevation, $top_elevation, $water_elevation, $casing_id, $diameter, $top_depth, $bottom_depth, $remarks);
+        $stmt->bind_param("isiissdddiddds",$aquifer_code, $type_code, $owner_id, $location_id, $pump_type, $well_usage, $bottom_elevation, $top_elevation, $water_elevation, $casing_id, $diameter, $top_depth, $bottom_depth, $remarks);
         $aquifer_code = $request->getParsedBody()['aquifer_code'];
         $type_code = $request->getParsedBody()['type_code'];
         $owner_id = $request->getParsedBody()['owner_id'];
         $location_id = $request->getParsedBody()['location_id'];
         $pump_type = $request->getParsedBody()['pump_type'];
-        $usage = $request->getParsedBody()['usage'];
+        $well_usage = $request->getParsedBody()['well_usage'];
         $bottom_elevation = $request->getParsedBody()['bottom_elevation'];
         $top_elevation = $request->getParsedBody()['top_elevation'];
         $water_elevation = $request->getParsedBody()['water_elevation'];

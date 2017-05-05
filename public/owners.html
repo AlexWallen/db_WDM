@@ -1,42 +1,49 @@
 <!DOCTYPE html>
-<style>
-    body {
-        /*background-image: url("https://i.ytimg.com/vi/8myYyMg1fFE/maxresdefault.jpg");*/
-        background-color: #cccccc;
-        color: #ffffff;
-        text-shadow: 1px 1px #000000,
-                    -1px 1px #000000,
-                    1px -1px #000000,
-                    -1px -1px #000000
-        
-    }
-</style>
-<body>
+<head>
+    <style>
+        body {
+            /*background-image: url("https://i.ytimg.com/vi/8myYyMg1fFE/maxresdefault.jpg");*/
+            background-color: #cccccc;
+            color: #ffffff;           
+        }
+    </style>
     <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.5/angular.min.js"></script>
     <script src="https://www.w3schools.com/lib/w3data.js"></script>
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+
+    <!-- jQuery library -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+
+    <!-- Latest compiled JavaScript -->
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+</head>
+<body>
+    
     <div w3-include-html="topnav.html"></div>
     <script>
         w3IncludeHTML();
     </script>
     <div ng-app="myApp" ng-controller="cntrl">
         <form>
-            Owner Name: <input type="text" ng-model="name" name="ownername"
-                ng-disabled="obj.idisable">
-            Owner Type: <!--input type="text" ng-model="type" name="ownertype"-->
-                        <select ng-model="type">
-                            <option value="person">Person</option>
-                            <option value="company">Company</option>
-                            <option value="government agency">Gov't Agency</option>
-                        </select>
-            <input type="button" value="{{btnName}}" ng-click="insertOwner()"> {{msg}}
-            <input type="button" value="Display All" ng-click="displayOwners()">
+            <h3>Owner Name: <input type="text" ng-model="name" name="ownername"
+                ng-disabled="obj.idisable"></h3>
+           <h3> Owner Type:</h3> <!--input type="text" ng-model="type" name="ownertype"-->
+                <select ng-model="type">
+                    <option value="person">Person</option>
+                    <option value="company">Company</option>
+                    <option value="government agency">Gov't Agency</option>
+                </select>
+             <input type="button" class="btn btn-primary"  value="{{btnName}}" ng-click="insertOwner()"> {{msg}}
+            <input type="button" class="btn btn-info" value="Display All" ng-click="displayOwners()">
         </form>
-        <table>
+        <table class="table">
             <thead>
-                <tr>
-                    <th>ID</td>
-                        <th>Name</th>
-                        <th>Type</th>
+                <tr>                   
+                    <th class="text-muted"><h4>ID</h4></th>
+                    <th class="text-muted"><h4>Name</h4></th>
+                    <th class="text-muted"><h4>Type</h4></th>
+                    </p>
                 </tr>
             </thead>
             <tbody>
@@ -44,8 +51,8 @@
                     <td>{{owner.id}}</td>
                     <td>{{owner.name}}</td>
                     <td>{{owner.type}}
-                        <td><button ng-click="deleteOwner(owner.id);">Delete</button></td>
-                        <td><button ng-click="editOwner(owner.id);">Edit</button></td>
+                        <td><button  class="btn btn-danger" ng-click="deleteOwner(owner.id);">Delete</button></td>
+                        <td><button class="btn btn-primary" ng-click="editOwner(owner.id);">Edit</button></td>
 
                 </tr>
             </tbody>

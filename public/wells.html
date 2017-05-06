@@ -20,6 +20,7 @@
             cursor: inherit;
         }
     </style>
+    <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
     <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.5/angular.min.js"></script>
     <script src="https://www.w3schools.com/lib/w3data.js"></script>
     <!-- Latest compiled and minified CSS -->
@@ -40,8 +41,7 @@
 <script>
     w3IncludeHTML();
 </script>
-    <div ng-app="myApp" ng-controller="cntrl">
-        
+    <div ng-app="myApp" ng-controller="cntrl">        
         <div id="dvImportSegments" class="fileupload">
             <fieldset>
                 <div class="col-sm-12" style="margin-bottom:20px; padding-top: 10px; padding-bottom: 5px;">                   
@@ -51,6 +51,9 @@
                        <input type="file" accept=".csv"/>
                     </label>
                 </div>
+                
+
+                
                  <div class="col-sm-12" style="margin-bottom:20px; padding-top: 10px; padding-bottom: 5px;">                   
                     <legend>Manual Ordering of Input Data</legend>
                     How many columns? <input type="number" ng-model="numCol">
@@ -143,6 +146,9 @@
                 <input type="button" class="btn btn-primary"value="{{btnName}}" ng-click="insertWell()"> {{msg}}
                 <input type="button" class="btn btn-primary" value="Display All" ng-click="displayWells()">
             </div>
+
+
+    <!--table results-->
         <table class="table">
             <thead>
                 <tr>

@@ -24,41 +24,76 @@
     <script src="https://www.w3schools.com/lib/w3data.js"></script>
     <!-- Latest compiled and minified CSS -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
-
+     <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
     <!-- jQuery library -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 
     <!-- Latest compiled JavaScript -->
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <script type="text/javascript">
+        $(document).ready(function(){
+            $(".btn").click(function(){
+                $("#myModal").modal('show');
+            });
+        });
+    </script>
 </head>
 
 <body>
-    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.5/angular.min.js"></script>
-    <script src="https://www.w3schools.com/lib/w3data.js"></script>
-    
 <div w3-include-html="topnav.html"></div>
 <script>
     w3IncludeHTML();
 </script>
+
     <div ng-app="myApp" ng-controller="cntrl">
-        <form>
-            Location ID:    <!--input type="text" ng-model="location_id"-->
-                            <select ng-model="location_id">
-                                <option ng-repeat="location in locations" value="{{location.id}}">ID {{location.id}}:({{location.latitude}}, {{location.longitude}})</option> 
-                            </select>
-            Rainfall Amount: <input type="text" ng-model="amount"> 
-            Normal Amount:   <input type="text" ng-model="normal_amount">
-            Time:            <input type="datetime-local" ng-model="rtime">
-                <input type="button" class="btn btn-primary" value="{{btnName}}" ng-click="insertRain()"> {{msg}}
-                <input type="button" class="btn btn-info" value="Display All" ng-click="displayRain()">
-        </form>
+        <!--begin modal-->
+        
+        <div class="bs w3-center">
+        <!-- Button HTML (to Trigger Modal) -->
+        <a href="#" class="w3-center btn btn-primary">Manual Input</a>
+        
+            <!-- Modal HTML -->
+            <div id="myModal" class="modal fade">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <div class="form-group">
+                                Location ID:    <!--input type="text" ng-model="location_id"-->
+                                <select ng-model="location_id">
+                                    <option ng-repeat="location in locations" value="{{location.id}}">ID {{location.id}}:({{location.latitude}}, {{location.longitude}})</option> 
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                Rainfall Amount: <input type="text" ng-model="amount"> 
+                            </div>
+                            <div class="form-group">
+                                Normal Amount:   <input type="text" ng-model="normal_amount">
+                            </div>
+                            <div class="form-group">
+                            Time:            <input type="datetime-local" ng-model="rtime">
+                            </div>
+                            <div class="form-group">
+                                <input type="button" class="btn btn-primary" value="{{btnName}}" ng-click="insertRain()"> {{msg}}
+                            </div>  
+                        </div>
+                    
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+       
+        <!--end modal-->
+        <input type="button" class="btn btn-info" value="Display All" ng-click="displayRain()">
         <table class="table">
             <thead>
                 <tr>
                     <th>Location</td>
-                        <th>Amount</th>
-                        <th>Normal Amount</th>
-                        <th>Time</th>
+                    <th>Amount</th>
+                    <th>Normal Amount</th>
+                    <th>Time</th>
                 </tr>
             </thead>
             <tbody>
@@ -73,6 +108,7 @@
             </tbody>
         </table>
     </div>
+
     <script>
         var app = angular.module('myApp', []);
         app.controller('cntrl', function ($scope, $http, $filter) {

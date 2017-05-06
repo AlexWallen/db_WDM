@@ -10,6 +10,18 @@
         echo json_encode($data);
     });
 
+    $app->get('/transducers/get/{id}', function($request) {
+        require_once('db.php');
+        $get_id = $request->getAttribute('id');
+        $query = "SELECT * FROM Transducers WHERE well_id = $get_id";
+        $result = $conn->query($query) or die($conn->error);
+        // var_dump($result);
+        while($row = $result->fetch_assoc()){
+            $data[] = $row;
+        }
+        echo json_encode($data);
+    });
+
     $app->post('/transducers/add', function($request){
         require_once('db.php');
         $query = "INSERT INTO Transducers (name, type, well_id) VALUES (?,?,?)";

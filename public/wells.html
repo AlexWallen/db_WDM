@@ -30,6 +30,10 @@
 
     <!-- Latest compiled JavaScript -->
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
+    <!-- W3 For Modal -->
+    <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+
 </head>
 <body>
     <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.5/angular.min.js"></script>
@@ -142,7 +146,13 @@
             <div style="padding-top: 10px; padding-bottom: 5px;">
                 <input type="button" class="btn btn-primary"value="{{btnName}}" ng-click="insertWell()"> {{msg}}
                 <input type="button" class="btn btn-primary" value="Display All" ng-click="displayWells()">
+                <label for="Search">Search:</label>
+                <input type="text" class="text" id="text" placeholder="Search ID" ng-model="search.well_id">
+                <input type="text" class="text" id="text" placeholder="Search Aquifer Code" ng-model="search.aquifer_code">
+                <input type="text" class="text" id="text" placeholder="Search Type Code" ng-model="search.type_code">
+                <input type="text" class="text" id="text" placeholder="Search Owner" ng-model="search.owner_id">
             </div>
+        
         <table class="table">
             <thead>
                 <tr>
@@ -164,7 +174,7 @@
                 </tr>
             </thead>
             <tbody>
-                <tr ng-repeat="well in data">
+                <tr ng-repeat="well in data | filter:search">
                     <td>{{well.well_id}}</td>
                     <td>{{well.aquifer_code}}</td>
                     <td>{{well.type_code}}</td>
@@ -182,10 +192,47 @@
                     <td>{{well.remarks}}
                         <td><button class="btn btn-danger" ng-click="deleteWell(well.well_id);">Delete</button></td>
                         <td><button class="btn btn-primary" ng-click="editWell(well.well_id);">Edit</button></td>
+                        <!--td><button class="btn btn-primary" onclick="document.getElementById('transducerModal').style.display='block'" ng-click="setModalData(well.well_id)">Transducers</button></td-->
+                        <td><button type="button" class="btn btn-info" data-toggle="modal" data-target="#transducerModal" ng-click="setModalData(well.well_id)">Transducers</button></td>
                 </tr>
             </tbody>
         </table>
     </div>
+
+    <!-- Transducer Modal -->
+
+    <div id="transducerModal" class="modal" ng-app="myApp" ng-controller="cntrl">
+        <div class="w3-container w3-modal-content w3-card-4 w3-animate-zoom" style="max-width:600px">
+            <!-- Close modal -->
+            <!--span onclick="document.getElementById('transducerModal').style.display='none'" class="w3-button w3-xlarge w3-hover-red w3-display-topright"
+                    title="Close Modal">&times;</span-->
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>ID</td>
+                            <th>Name</th>
+                            <th>Type</th>
+                            <th>Well ID</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr ng-repeat="transducer in modal_data">
+                        <td>{{transducer.id}}</td>
+                        <td>{{transducer.name}}</td>
+                        <td>{{transducer.type}}</td>
+                        <td>{{transducer.well_id}}</td>
+                    </tr>
+                </tbody>
+            </table>
+            <div class="w3-container w3-border-top w3-padding-16 w3-light-grey">
+                <!-- Close modal -->
+                <button type="button" class="btn btn-info" data-toggle="modal" data-target="#transducerModal">Close</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- End of Transducer Modal -->
+
     <script>
         var app = angular.module('myApp', []);
         app.filter('range', function () {
@@ -203,6 +250,15 @@
 
             $scope.setCols = function () {
                 $scope.cols = $filter('range')([], $scope.numCol);
+            }
+
+            $scope.setModalData = function (id) {
+                var url = "/transducers/get/";
+                $http.get(url.concat(id))
+                    .success(function (modal_data) {
+                        $scope.modal_data = modal_data;
+                        console.log('Got Modal Data');
+                    })
             }
 
             $scope.insertWell = function () {
@@ -270,7 +326,7 @@
             $scope.displayWells = function () {
                 $http.get("/wells/all")
                     .success(function (data) {
-                        $scope.data = data
+                        $scope.data = data;
                         console.log('Got Data');
                     })
             }

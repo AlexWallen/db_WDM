@@ -38,7 +38,7 @@
 </script>
     <div ng-app="myApp" ng-controller="cntrl">
             <div class="form-group">  
-             <label for="Name">Pressure:&emsp;</label>
+             <label for="Name">Name:&emsp;</label>
              <input type="text" class="form-control" id="text" placeholder="Enter name" ng-model="name">
             </div>
             <div class="form-group">  
@@ -51,7 +51,7 @@
             </div>
             <div style="padding-top: 10px; padding-bottom: 5px;">
                 <input type="button" class="btn btn-primary" value="{{btnName}}" ng-click="insertTransducer()"> {{msg}}
-                <input type="button" class="btn btn-info" value="Display All" ng-click="displayTransducers()">
+                <input type="button" class="btn btn-primary" value="Display All" ng-click="displayTransducers()">
             </div>
         <table class="table">
             <thead>

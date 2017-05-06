@@ -1,29 +1,59 @@
 <!DOCTYPE html>
-<style>
-    body {
-        /*background-image: url("https://i.ytimg.com/vi/8myYyMg1fFE/maxresdefault.jpg");*/
-        background-color: #cccccc;
-        color: #ffffff;
-        text-shadow: 1px 1px #000000, -1px 1px #000000, 1px -1px #000000, -1px -1px #000000
-    }
-</style>
-
-<body>
+<head>
+    <style>
+        body {
+            /*background-image: url("https://i.ytimg.com/vi/8myYyMg1fFE/maxresdefault.jpg");*/
+            background-color: #cccccc;
+            color: #ffffff;           
+        }
+        .btn-bs-file{
+            position:relative;
+        }
+        .btn-bs-file input[type="file"]{
+            position: absolute;
+            top: -9999999;
+            filter: alpha(opacity=0);
+            opacity: 0;
+            width:0;
+            height:0;
+            outline: none;
+            cursor: inherit;
+        }
+    </style>
     <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.5/angular.min.js"></script>
     <script src="https://www.w3schools.com/lib/w3data.js"></script>
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+
+    <!-- jQuery library -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+
+    <!-- Latest compiled JavaScript -->
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+</head>
+<body>
 <div w3-include-html="topnav.html"></div>
 <script>
     w3IncludeHTML();
 </script>
     <div ng-app="myApp" ng-controller="cntrl">
-        <form>
-            Name: <input type="text" ng-model="name">
-            Type: <input type="text" ng-model="type">
-            Well ID: <input type="text" ng-model="well_id">
-            <input type="button" value="{{btnName}}" ng-click="insertTransducer()"> {{msg}}
-            <input type="button" value="Display All" ng-click="displayTransducers()">
-        </form>
-        <table>
+            <div class="form-group">  
+             <label for="Name">Pressure:&emsp;</label>
+             <input type="text" class="form-control" id="text" placeholder="Enter name" ng-model="name">
+            </div>
+            <div class="form-group">  
+             <label for="Type">Type:&emsp;</label>
+             <input type="text" class="form-control" id="text" placeholder="Enter type" ng-model="type">
+            </div>
+            <div class="form-group">  
+             <label for="Well ID">Well ID:&emsp;</label>
+             <input type="text" class="form-control" id="text" placeholder="Enter Well ID" ng-model="type">
+            </div>
+            <div style="padding-top: 10px; padding-bottom: 5px;">
+                <input type="button" class="btn btn-primary" value="{{btnName}}" ng-click="insertTransducer()"> {{msg}}
+                <input type="button" class="btn btn-info" value="Display All" ng-click="displayTransducers()">
+            </div>
+        <table class="table">
             <thead>
                 <tr>
                     <th>ID</td>
@@ -38,8 +68,8 @@
                     <td>{{transducer.name}}</td>
                     <td>{{transducer.type}}</td>
                     <td>{{transducer.well_id}}</td>
-                    <td><button ng-click="deleteTransducer(transducer.id);">Delete</button></td>
-                    <td><button ng-click="editTransducer(transducer.id);">Edit</button></td>
+                    <td><button class="btn btn-danger" ng-click="deleteTransducer(transducer.id);">Delete</button></td>
+                    <td><button class="btn btn-primary" ng-click="editTransducer(transducer.id);">Edit</button></td>
                 </tr>
             </tbody>
         </table>

@@ -25,18 +25,22 @@
         w3IncludeHTML();
     </script>
     <div ng-app="myApp" ng-controller="cntrl">
-        <form>
-            <h3>Owner Name: <input type="text" ng-model="name" name="ownername"
-                ng-disabled="obj.idisable"></h3>
-           <h3> Owner Type:</h3> <!--input type="text" ng-model="type" name="ownertype"-->
-                <select ng-model="type">
-                    <option value="person">Person</option>
-                    <option value="company">Company</option>
-                    <option value="government agency">Gov't Agency</option>
-                </select>
-             <input type="button" class="btn btn-primary"  value="{{btnName}}" ng-click="insertOwner()"> {{msg}}
+        <div style="padding-top: 10px; padding-bottom: 5px;">   
+            Owner Name: 
+            <input type="text" ng-model="name" name="ownername" ng-disabled="obj.idisable">
+        </div>
+        <div style="padding-top: 10px; padding-bottom: 5px;">   
+            Owner Type: <!--input type="text" ng-model="type" name="ownertype"-->
+             <select ng-model="type">
+                <option value="person">Person</option>
+                <option value="company">Company</option>
+                <option value="government agency">Gov't Agency</option>
+             </select>
+        </div>
+        <div style="padding-top: 10px; padding-bottom: 5px;">
+            <input type="button" class="btn btn-primary"  value="{{btnName}}" ng-click="insertOwner()"> {{msg}}
             <input type="button" class="btn btn-info" value="Display All" ng-click="displayOwners()">
-        </form>
+        </div>
         <table class="table">
             <thead>
                 <tr>                   

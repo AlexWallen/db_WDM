@@ -104,7 +104,28 @@
                     <td>{{rainfall.normal_amount}}</td>
                     <td>{{rainfall.rdate}}</td>
                     <td ng-if="rainfall.location_id"><button class="btn btn-danger" ng-click="deleteRainfall(rainfall.location_id, rainfall.rdate);">Delete</button></td>
-                    <td ng-if="rainfall.location_id"><button class="btn btn-primary" ng-click="editRainfall(rainfall.location_id, rainfall.rdate);">Edit</button></td>
+                    <td ng-if="rainfall.location_id"><a href="#" class="w3-button w3-blue" data-toggle="modal"  ng-click="setEditInfo(rainfall)" data-target="#basicModal">Edit</a></td>  
+                        
+                        <!-- Start Edit Modal -->
+                        <div class="modal fade" id="basicModal" tabindex="-1" role="dialog" aria-labelledby="basicModal" aria-hidden="true">
+                            <div class="modal-dialog">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                                        <h4 class="modal-title" id="myModalLabel">Basic Modal</h4>
+                                    </div>
+                                    <div class="modal-body">
+                                         Amount:<input ng-model="editRainAmount">
+                                         Normal Amount:<input ng-model="editNormalAmount">
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="w3-button w3-blue" data-dismiss="modal">Close</button>
+                                        <button type="button" class="w3-button w3-blue" ng-click="editRainfall(editId, editDate)">Edit</button>{{msg}}
+                                    </div>
+                                </div>
+                            </div>                        
+                        </div>
+                        <!-- Exit Edit Modal -->
                 </tr>
             </tbody>
         </table>
@@ -134,12 +155,10 @@
              $scope.setEditInfo = function (rainfall) {
                 $scope.editRainAmount = rainfall.amount;
                 $scope.editNormalAmount = rainfall.normal_amount;
+                $scope.editDate = rainfall.rdate;
                 $scope.editId = rainfall.location_id;
-                $scope.editTime = rainfall.rtime;
             }
-            $scope.deleteRainfall = function (id, rtime) {
-                $date = rtime.substring(0, 10);
-                $time = rtime.substring(11, 19);
+            $scope.deleteRainfall = function (id, rdate) {               
                 var url = "/rainfall/delete/";
                 url = url.concat(id);
                 url = url.concat("/");
@@ -151,21 +170,16 @@
                     })
             }
 
-            $scope.editRainfall = function (id, rdate) {
+            $scope.editRainfall = function (editId, editDate) {
                 var url = "/rainfall/edit/";
-                url = url.concat(id);
+                url = url.concat(editId);
                 url = url.concat("/");
-                url = url.concat(rdate);
-                $http.put(url, {'amount': $scope.amount, 'normal_amount': $scope.normal_amount})
-                url = url.concat($date);
-                url = url.concat("/");
-                url = url.concat($time);
+                url = url.concat(editDate);
                 $http.put(url, {'amount': $scope.editRainAmount, 'normal_amount': $scope.editNormalAmount})
                     .success(function () {
                         $scope.msg = "Data Edit successful";
                         $scope.displayRain();
                     })
-                $scope.displayRain();
             }
         });
     </script>

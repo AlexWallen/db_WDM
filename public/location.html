@@ -30,7 +30,8 @@
     <script src="https://www.w3schools.com/lib/w3data.js"></script>
     <div w3-include-html="topnav.html"></div>
     <script> w3IncludeHTML(); </script>
-    <div ng-app="myApp" ng-controller="cntrl">
+     <legend>Input your Location Data</legend>
+    <div ng-app="myApp" ng-controller="cntrl">       
        <!--begin modal-->
        <div class="bs">
         <!-- Button HTML (to Trigger Modal) -->
@@ -40,18 +41,22 @@
                 <div class="modal-dialog">
                     <div class="modal-content">
                         <div class="modal-header">
+                            Location:
                         <div style="padding-top: 10px; padding-bottom: 5px;">
-                            Latitude: <input type="text" ng-model="latitude" name="locLat">
+                          <input type="text" ng-model="latitude" name="locLat">
                         </div>
                         <div style="padding-top: 10px; padding-bottom: 5px;">
-                            Longitude: <input type="text" ng-model="longitude" name="locLong">
+                            Longitude:
                         </div>
+                         <input type="text" ng-model="longitude" name="locLong">
                         <div style="padding-top: 10px; padding-bottom: 5px;">
-                            State: <input type="text" ng-model="state" name="locState">
+                            State:
                         </div>
+                         <input type="text" ng-model="state" name="locState">
                         <div style="padding-top: 10px; padding-bottom: 5px;">
-                            County: <input type="text" ng-model="county" name="locCounty">
+                            County:
                         </div>
+                            <input type="text" ng-model="county" name="locCounty">
                         <div style="padding-top: 10px; padding-bottom: 5px;">
                             <input type="button" class="btn btn-primary" value="{{btnName}}" ng-click="insertLocation()"> {{msg}}
                         </div>    
@@ -84,7 +89,32 @@
                     <td>{{location.state}}</td>
                     <td>{{location.county}}
                         <td><button  class="btn btn-danger" ng-click="deleteLocation(location.id);">Delete</button></td>
-                        <td><button  class="btn btn-primary" ng-click="editLocation(location.id);">Edit</button></td>
+                        
+                        <td>
+                            <a href="#" class="w3-button w3-blue" data-toggle="modal"  ng-click="setEditInfo(location)" data-target="#basicModal">Edit</a>
+                        </td>                         
+                        <!-- Start Edit Modal -->
+                        <div class="modal fade" id="basicModal" tabindex="-1" role="dialog" aria-labelledby="basicModal" aria-hidden="true">
+                            <div class="modal-dialog">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                                        <h4 class="modal-title" id="myModalLabel">Edit</h4>
+                                    </div>
+                                    <div class="modal-body">
+                                         Latitude:<input ng-model="editLat">
+                                         Longitude:<input ng-model="editLong">
+                                         State:<input ng-model="editState">
+                                         County:<input ng-model="editCounty">
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="w3-button w3-blue" data-dismiss="modal">Close</button>
+                                        <button type="button" class="w3-button w3-blue" ng-click="editLocation(editId)">Edit</button>{{msg}}
+                                    </div>
+                                </div>
+                            </div>                        
+                        </div>
+                        <!-- Exit Edit Modal -->
                 </tr>
             </tbody>
         </table>
@@ -101,6 +131,13 @@
                         $scope.msg = "Data Inserted";
                         $scope.displayLocations();
                     })
+            }
+            $scope.setEditInfo = function (location) {
+                $scope.editLat = location.latitude;
+                $scope.editLong = location.longitude;
+                $scope.editState = location.state;
+                $scope.editCounty = location.county;
+                $scope.editId = location.id;
             }
 
             $scope.displayLocations = function () {
@@ -121,10 +158,13 @@
 
             $scope.editLocation = function (id) {
                 var url = "/location/edit/"
-                $http.put(url.concat(id), { 'latitude': $scope.latitude, 'longitude': $scope.longitude, 'state': $scope.state, 'county': $scope.county })
+                $http.put(url.concat(id), { 'latitude': $scope.editLat, 'longitude': $scope.editLong, 'state': $scope.editState, 'county': $scope.editCounty })
                     .success(function () {
                         $scope.msg = "Data Edit successful";
                         $scope.displayLocations();
+                    })
+                     .error(function () {
+                        $scope.msg = "Data Edit Failed";
                     })
                 $scope.displayLocations();
             }

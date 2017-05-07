@@ -89,6 +89,7 @@
                 </div>
             </fieldset>
         </div>
+        <div class="col-xs-6" style="padding-top: 10px; padding-left: 15px;">
          <legend>Input Your Fields Here</legend>
             <div class="form-group">  
              <label for="Aquifer code">Aquifer Code:&emsp;</label>
@@ -143,19 +144,33 @@
                 <input type="text" class="form-control" id="text" placeholder="Enter Bottom Depth" ng-model="bottom_depth">  
             </div>  
             <div class="form-group">
-                <label for="Remarks">Remarks:&emsp;</label>
+                <label for="Remarks" ng-init="displayWells()">Remarks:&emsp;</label>
                 <input type="text" class="form-control" id="text" placeholder="Enter Remarks" ng-model="remarks">  
             </div>  
             <div style="padding-top: 10px; padding-bottom: 5px;">
                 <input type="button" class="btn btn-primary"value="{{btnName}}" ng-click="insertWell()"> {{msg}}
-                <input type="button" class="btn btn-primary" value="Display All" ng-click="displayWells()">
-                <label for="Search">Search:</label>
-                <input type="text" class="text" id="text" placeholder="Search ID" ng-model="search.well_id">
-                <input type="text" class="text" id="text" placeholder="Search Aquifer Code" ng-model="search.aquifer_code">
-                <input type="text" class="text" id="text" placeholder="Search Type Code" ng-model="search.type_code">
-                <input type="text" class="text" id="text" placeholder="Search Owner" ng-model="search.owner_id">
             </div>
-
+            <div style="padding-top: 10px; padding-bottom: 5px;">   
+            <legend><label for="Search"><h2>Search:</h2></label></legend>
+            </div>
+            <div class="mx-auto" style="padding-top: 10px; padding-bottom: 5px;">
+            <label for="Search ID">Search ID:&emsp;</label>
+            </div>
+            <input type="text" class="text" id="text" placeholder="Search ID" ng-model="search.well_id" >
+            <div class="mx-auto" style="padding-top: 10px; padding-bottom: 5px;">     
+            <label for="Search Aquifer Code">Search Aquifer Code:&emsp;</label>  
+            </div>
+            <input type="text" class="text" id="text" placeholder="Search Aquifer Code" ng-model="search.aquifer_code">
+            <div class="mx-auto" style="padding-top: 10px; padding-bottom: 5px;">                
+            <label for="Search Type Code">Search Type Code:&emsp;</label>  
+            </div>
+            <input type="text" class="text" id="text" placeholder="Search Type Code" ng-model="search.type_code">            
+            <div class="mx-auto" style="padding-top: 10px; padding-bottom: 5px;">                
+            <label for="Search Aquifer Code">Search Owner:&emsp;</label>  
+            </div>
+            <input type="text" class="text" id="text" placeholder="Search Owner" ng-model="search.owner_id">
+          </div>
+        </div>
     <!--table results-->
 
         <table class="table">

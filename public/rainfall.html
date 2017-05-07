@@ -44,8 +44,9 @@
 <script>
     w3IncludeHTML();
 </script>
-
+    <legend>Input your Rainfall Data</legend>
     <div ng-app="myApp" ng-controller="cntrl">
+        
         <!--begin modal-->
         
         <div class="bs">
@@ -130,9 +131,15 @@
                         $scope.data = data
                     })
             }
-
-            $scope.deleteRainfall = function (id, rdate) {
-
+             $scope.setEditInfo = function (rainfall) {
+                $scope.editRainAmount = rainfall.amount;
+                $scope.editNormalAmount = rainfall.normal_amount;
+                $scope.editId = rainfall.location_id;
+                $scope.editTime = rainfall.rtime;
+            }
+            $scope.deleteRainfall = function (id, rtime) {
+                $date = rtime.substring(0, 10);
+                $time = rtime.substring(11, 19);
                 var url = "/rainfall/delete/";
                 url = url.concat(id);
                 url = url.concat("/");
@@ -150,6 +157,10 @@
                 url = url.concat("/");
                 url = url.concat(rdate);
                 $http.put(url, {'amount': $scope.amount, 'normal_amount': $scope.normal_amount})
+                url = url.concat($date);
+                url = url.concat("/");
+                url = url.concat($time);
+                $http.put(url, {'amount': $scope.editRainAmount, 'normal_amount': $scope.editNormalAmount})
                     .success(function () {
                         $scope.msg = "Data Edit successful";
                         $scope.displayRain();

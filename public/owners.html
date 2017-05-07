@@ -23,6 +23,11 @@
                 $("#myModal").modal('show');
             });
         });
+        $(document).ready(function(){
+            $(".btn1").click(function(){
+                $("#myModal1").modal('show');
+            });
+        });
     </script>
 </head>
 <body>
@@ -31,12 +36,12 @@
     <script>
         w3IncludeHTML();
     </script>
-    <div ng-app="myApp" ng-controller="cntrl">
-
-        <!--begin modal-->    
+    <legend>Input your Owners Data</legend>
+    <div ng-app="myApp" ng-controller="cntrl">        
+     <!--begin modal-->    
      <div class="bs">
         <!-- Button HTML (to Trigger Modal) -->
-        <a href="#" class="w3-center btn btn-primary">Manual Input</a>
+        <a href="#myModal" class="w3-center btn btn-primary">Manual Input</a>
         
             <!-- Modal HTML -->
             <div id="myModal" class="modal fade">
@@ -65,7 +70,9 @@
                 </div>
             </div>
         </div>
+        </div>
         <!--end modal-->
+       
         <div style="padding-top: 10px; padding-bottom: 5px;" class="w3-center">
             <input type="button" class="w3-button w3-blue" value="Display All" ng-click="displayOwners()">    
         </div> 
@@ -83,9 +90,33 @@
                     <td>{{owner.id}}</td>
                     <td>{{owner.name}}</td>
                     <td>{{owner.type}}
-                        <td><button  class="btn btn-danger" ng-click="deleteOwner(owner.id);">Delete</button></td>
-                        <td><button class="btn btn-primary" ng-click="editOwner(owner.id);">Edit</button></td>
-
+                    <td><button  class="btn btn-danger" ng-click="deleteOwner(owner.id);">Delete</button></td>
+                    <td><a href="#" class="w3-button w3-blue" data-toggle="modal"  ng-click="setEditInfo(owner)" data-target="#basicModal">Edit</a></td>  
+                        
+                        <!-- Start Edit Modal -->
+                        <div class="modal fade" id="basicModal" tabindex="-1" role="dialog" aria-labelledby="basicModal" aria-hidden="true">
+                            <div class="modal-dialog">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                                        <h4 class="modal-title" id="myModalLabel">Basic Modal</h4>
+                                    </div>
+                                    <div class="modal-body">
+                                         Name:<input ng-model="editName">
+                                         Type:<select ng-model="editType">
+                                              <option value="person">Person</option>
+                                                <option value="company">Company</option>
+                                                <option value="government agency">Gov't Agency</option>
+                                              </select>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="w3-button w3-blue" data-dismiss="modal">Close</button>
+                                        <button type="button" class="w3-button w3-blue" ng-click="editOwner(editId)">Edit</button>
+                                    </div>
+                                </div>
+                            </div>                        
+                        </div>
+                        <!-- Exit Edit Modal -->
                 </tr>
             </tbody>
         </table>
@@ -94,8 +125,8 @@
         var app = angular.module('myApp', []);
         app.controller('cntrl', function ($scope, $http) {
             $scope.obj = { 'idisable': false };
-            $scope.btnName = "Insert";
-
+            $scope.btnName = "Insert";            
+            $scope.editName = "Update";
             $scope.insertOwner = function () {
                 $http.post("/owners/add", { 'name': $scope.name, 'type': $scope.type })
                     .success(function (response) {
@@ -103,6 +134,12 @@
                         $scope.msg = "Data Inserted";
                         $scope.displayOwners();
                     })
+            }
+
+            $scope.setEditInfo = function (owner) {
+                $scope.editName = owner.name;
+                $scope.editType = owner.type;
+                $scope.editId = owner.id;
             }
 
             $scope.displayOwners = function () {
@@ -124,7 +161,8 @@
 
             $scope.editOwner = function (id) {
                 var url = "/owners/edit/"
-                $http.put(url.concat(id), { 'name': $scope.name, 'type': $scope.type })
+                console.log('EDITING ID: ' + id);
+                $http.put(url.concat(id), { 'name': $scope.editName, 'type': $scope.editType })
                     .success(function () {
                         $scope.msg = "Data Edit successful";
                         $scope.displayOwners();
@@ -138,6 +176,7 @@
             }
         });
     </script>
+     
 </body>
 
 </html>

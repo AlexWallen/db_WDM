@@ -14,9 +14,16 @@
 
     <!-- jQuery library -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-
+    <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
     <!-- Latest compiled JavaScript -->
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <script type="text/javascript">
+        $(document).ready(function(){
+            $(".btn").click(function(){
+                $("#myModal").modal('show');
+            });
+        });
+    </script>
 </head>
 <body>
     <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.5/angular.min.js"></script>
@@ -24,16 +31,41 @@
     <div w3-include-html="topnav.html"></div>
     <script> w3IncludeHTML(); </script>
     <div ng-app="myApp" ng-controller="cntrl">
-        <form class="form-inline" style="padding-top: 10px; padding-bottom: 5px;">
-            Latitude: <input type="text" ng-model="latitude" name="locLat">
-            Longitude: <input type="text" ng-model="longitude" name="locLong">
-            State: <input type="text" ng-model="state" name="locState">
-            County: <input type="text" ng-model="county" name="locCounty">
-            <div style="padding-top: 10px; padding-bottom: 5px;">
-                <input type="button" class="btn btn-primary" value="{{btnName}}" ng-click="insertLocation()"> {{msg}}
-                <input type="button" class="btn btn-info" value="Display All" ng-click="displayLocations()">
+       <!--begin modal-->
+       <div class="bs w3-center">
+        <!-- Button HTML (to Trigger Modal) -->
+        <a href="#" class="w3-center btn btn-primary">Manual Input</a>
+            <!-- Modal HTML -->
+            <div id="myModal" class="modal fade">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                        <div style="padding-top: 10px; padding-bottom: 5px;">
+                            Latitude: <input type="text" ng-model="latitude" name="locLat">
+                        </div>
+                        <div style="padding-top: 10px; padding-bottom: 5px;">
+                            Longitude: <input type="text" ng-model="longitude" name="locLong">
+                        </div>
+                        <div style="padding-top: 10px; padding-bottom: 5px;">
+                            State: <input type="text" ng-model="state" name="locState">
+                        </div>
+                        <div style="padding-top: 10px; padding-bottom: 5px;">
+                            County: <input type="text" ng-model="county" name="locCounty">
+                        </div>
+                        <div style="padding-top: 10px; padding-bottom: 5px;">
+                            <input type="button" class="btn btn-primary" value="{{btnName}}" ng-click="insertLocation()"> {{msg}}
+                        </div>    
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                        </div>
+                    </div>
+                </div>
             </div>
-        </form>
+        </div>       
+        <!--end modal-->
+       <div style="padding-top: 10px; padding-bottom: 5px;" class="w3-center">
+            <input type="button" class="w3-button w3-blue" value="Display All" ng-click="displayLocations()">    
+       </div> 
         <table class="table">
             <thead>
                 <tr>

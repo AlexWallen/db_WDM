@@ -14,9 +14,16 @@
 
     <!-- jQuery library -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-
+     <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
     <!-- Latest compiled JavaScript -->
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <script type="text/javascript">
+        $(document).ready(function(){
+            $(".btn").click(function(){
+                $("#myModal").modal('show');
+            });
+        });
+    </script>
 </head>
 <body>
     
@@ -25,22 +32,43 @@
         w3IncludeHTML();
     </script>
     <div ng-app="myApp" ng-controller="cntrl">
-        <div style="padding-top: 10px; padding-bottom: 5px;">   
-            Owner Name: 
-            <input type="text" ng-model="name" name="ownername" ng-disabled="obj.idisable">
+
+        <!--begin modal-->    
+     <div class="bs w3-center">
+        <!-- Button HTML (to Trigger Modal) -->
+        <a href="#" class="w3-center btn btn-primary">Manual Input</a>
+        
+            <!-- Modal HTML -->
+            <div id="myModal" class="modal fade">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <div style="padding-top: 10px; padding-bottom: 5px;">   
+                                Owner Name: 
+                                <input type="text" ng-model="name" name="ownername" ng-disabled="obj.idisable">
+                            </div>
+                            <div style="padding-top: 10px; padding-bottom: 5px;">   
+                                Owner Type: <!--input type="text" ng-model="type" name="ownertype"-->
+                                <select ng-model="type">
+                                    <option value="person">Person</option>
+                                    <option value="company">Company</option>
+                                    <option value="government agency">Gov't Agency</option>
+                                </select>
+                            </div>
+                            <div style="padding-top: 10px; padding-bottom: 5px;">
+                                <input type="button" class="btn btn-primary"  value="{{btnName}}" ng-click="insertOwner()"> {{msg}}    
+                            </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
-        <div style="padding-top: 10px; padding-bottom: 5px;">   
-            Owner Type: <!--input type="text" ng-model="type" name="ownertype"-->
-             <select ng-model="type">
-                <option value="person">Person</option>
-                <option value="company">Company</option>
-                <option value="government agency">Gov't Agency</option>
-             </select>
-        </div>
-        <div style="padding-top: 10px; padding-bottom: 5px;">
-            <input type="button" class="btn btn-primary"  value="{{btnName}}" ng-click="insertOwner()"> {{msg}}
-            <input type="button" class="btn btn-info" value="Display All" ng-click="displayOwners()">
-        </div>
+        <!--end modal-->
+        <div style="padding-top: 10px; padding-bottom: 5px;" class="w3-center">
+            <input type="button" class="w3-button w3-blue" value="Display All" ng-click="displayOwners()">    
+        </div> 
         <table class="table">
             <thead>
                 <tr>                   

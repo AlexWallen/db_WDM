@@ -100,8 +100,10 @@
         <div>
             <fieldset>
                 <legend>Calculate Pearson's Correlation Coefficient</legend>
-                <button class="btn btn-primary" ng-click="pearsonCorrelation()">Calculate</button>
-                Result: <text ng-model="pearsonResult">
+                Pearson One = {{pearsonOne}} <br>
+                Pearson Two = {{pearsonTwo}} <br>
+                <button class="btn btn-primary" ng-click="pearsonCorrelation(data, pearsonOne, pearsonTwo)">Calculate</button>
+                Result: {{pearsonResult}}
             </fieldset>
         </div>
         
@@ -129,8 +131,8 @@
                     <td ng-if="recording.transducer_id"><button class="btn btn-danger" ng-click="deleteRecording(recording.transducer_id, recording.recording_time);">Delete</button></td>
                     <td ng-if="recording.transducer_id"><button class="btn btn-primary" ng-click="editRecording(recording.transducer_id, recording.recording_time);">Edit</button></td>
                     <td><button type="button" class="btn btn-info" data-toggle="modal" data-target="#rainModal" ng-click="getLocation(recording.transducer_id, recording.recording_time)">Rainfall</button></td>
-                    <td ng-if="recording.transducer_id"><button class="btn btn-primary" ng-click="setPearsonTwo($index)">Set Pearson #1</button></td
-                    <td ng-if="recording.transducer_id"><button class="btn btn-primary" ng-click="setPearsonOne($index)">Set Pearson #2</button></td>>
+                    <td ng-if="recording.transducer_id"><button class="btn btn-primary" ng-click="setPearsonOne($index)">Set Pearson #1</button></td>
+                    <td ng-if="recording.transducer_id"><button class="btn btn-primary" ng-click="setPearsonTwo($index)">Set Pearson #2</button></td>
                 </tr>
             </tbody>
         </table>
@@ -177,7 +179,33 @@
             $http.get('/transducers/all').success(function (data) { $scope.transducers = data; });
             $scope.btnName = "Insert";
 
-            $scope.pearsonCorrelation = function (prefs, p1, p2) {
+            $scope.setPearsonOne = function (index) {
+                $scope.pearsonOne = index;
+            }
+
+            $scope.setPearsonTwo = function (index) {
+                $scope.pearsonTwo = index;
+            }
+
+            $scope.pearsonCorrelation = function (json, p1, p2) {
+
+                var prefs = [[],[]]; 
+
+                prefs[0].push(parseFloat(json[p1]['temperature']));
+                prefs[0].push(parseFloat(json[p1]['conductivity']));
+                prefs[0].push(parseFloat(json[p1]['pressure']));
+                prefs[0].push(parseFloat(json[p1]['salinity']));
+                prefs[0].push(parseFloat(json[p1]['tds']));
+
+                prefs[1].push(parseFloat(json[p2]['temperature']));
+                prefs[1].push(parseFloat(json[p2]['conductivity']));
+                prefs[1].push(parseFloat(json[p2]['pressure']));
+                prefs[1].push(parseFloat(json[p2]['salinity']));
+                prefs[1].push(parseFloat(json[p2]['tds'])); 
+                
+                p1 = 0;
+                p2 = 1;
+
                 var si = [];
 
                 for (var key in prefs[p1]) {
@@ -213,9 +241,11 @@
                 var den = Math.sqrt((sum1Sq - Math.pow(sum1, 2) / n) *
                     (sum2Sq - Math.pow(sum2, 2) / n));
 
-                if (den == 0) return 0;
-
-                return num / den;
+                if (den == 0){
+                    $scope.pearsonResult = 0;
+                } else {
+                    $scope.pearsonResult = num / den;
+                }
             }
 
             $scope.getRainfall = function (transducer_id, recording_time) {

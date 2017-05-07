@@ -33,6 +33,9 @@
 
     <!-- W3 For Modal -->
     <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+
+    <!-- CVS Upload -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-csv/0.71/jquery.csv-0.71.min.js"></script>
 </head>
 <body>
     <div w3-include-html="topnav.html"></div>
@@ -51,7 +54,7 @@
                 <div class="col-sm-12" style="margin-bottom:20px; padding-top: 10px; padding-bottom: 5px;">
                     <label class="btn-bs-file btn btn-primary">
                          Upload File
-                       <input type="file" accept=".csv"/>
+                       <input type="file" name="File Upload" id="txtFileUpload" accept=".csv"/>
                     </label>
                 </div>
             </fieldset>
@@ -99,8 +102,42 @@
         <div>
             <fieldset>
                 <legend>Calculate Pearson's Correlation Coefficient</legend>
-                Pearson One = {{pearsonOne}} <br>
-                Pearson Two = {{pearsonTwo}} <br>
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>Index</th>
+                            <th>Transducer ID</th>
+                            <th>Temperature</th>
+                            <th>Conductivity</th>
+                            <th>Pressure</th>
+                            <th>Salinity</th>
+                            <th>TDS</td>
+                            <th>Recording Time</td>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>{{pearsonOne}}</td>
+                            <td>{{data[pearsonOne].transducer_id}}</td>
+                            <td>{{data[pearsonOne].temperature}}</td>
+                            <td>{{data[pearsonOne].conductivity}}</td>
+                            <td>{{data[pearsonOne].pressure}}</td>
+                            <td>{{data[pearsonOne].salinity}}</td>
+                            <td>{{data[pearsonOne].tds}}</td>
+                            <td>{{data[pearsonOne].recording_time}}</td>
+                        </tr>
+                        <tr>
+                            <td>{{pearsonTwo}}</td>
+                            <td>{{data[pearsonTwo].transducer_id}}</td>
+                            <td>{{data[pearsonTwo].temperature}}</td>
+                            <td>{{data[pearsonTwo].conductivity}}</td>
+                            <td>{{data[pearsonTwo].pressure}}</td>
+                            <td>{{data[pearsonTwo].salinity}}</td>
+                            <td>{{data[pearsonTwo].tds}}</td>
+                            <td>{{data[pearsonTwo].recording_time}}</td>
+                        </tr>
+                    </tbody>
+                </table>
                 <button class="btn btn-primary" ng-click="pearsonCorrelation(data, pearsonOne, pearsonTwo)">Calculate</button>
                 Result: {{pearsonResult}}
             </fieldset>

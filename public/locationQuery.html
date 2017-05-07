@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+
+<head>
+    <style>
+        body {
+            /*background-image: url("https://i.ytimg.com/vi/8myYyMg1fFE/maxresdefault.jpg");*/
+            background-color: #cccccc;
+            color: #ffffff;
+        }
+
+        .btn-bs-file {
+            position: relative;
+        }
+
+        .btn-bs-file input[type="file"] {
+            position: absolute;
+            top: -9999999;
+            filter: alpha(opacity=0);
+            opacity: 0;
+            width: 0;
+            height: 0;
+            outline: none;
+            cursor: inherit;
+        }
+    </style>
+    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.5/angular.min.js"></script>
+    <script src="https://www.w3schools.com/lib/w3data.js"></script>
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+
+    <!-- jQuery library -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+
+    <!-- Latest compiled JavaScript -->
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
+    <!-- W3 For Modal -->
+    <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+
+</head>
+
+<body>
+
+    <div w3-include-html="topnav.html"></div>
+    <script>
+        w3IncludeHTML();
+
+    </script>
+    <div ng-app="myApp" ng-controller="cntrl">
+        <div class="form-group">
+            <label for="MinLat">Minimum Latitude:&emsp;</label>
+            <input type="text" class="form-control" id="text" placeholder="Enter Minimum Latitude" ng-model="minLat">
+        </div>
+        <div class="form-group">
+            <label for="MinLat">Maximum Latitude:&emsp;</label>
+            <input type="text" class="form-control" id="text" placeholder="Enter Maximum Latitude" ng-model="maxLat">
+        </div>
+        <div class="form-group">
+            <label for="MinLong">Minimum Longitude:&emsp;</label>
+            <input type="text" class="form-control" id="text" placeholder="Enter Minimum Longitude" ng-model="minLong">
+        </div>
+        <div class="form-group">
+            <label for="MaxLong">Maximum Longitude:&emsp;</label>
+            <input type="text" class="form-control" id="text" placeholder="Enter Maximum Longitude" ng-model="maxLong">
+        </div>
+        <div style="padding-top: 10px; padding-bottom: 5px;">
+            <input type="button" class="btn btn-primary" value="Search" ng-click="searchWells(minLat, maxLat, minLong, maxLong)">
+        </div>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Wells</td>
+                </tr>
+            </thead>
+            <tbody>
+                <tr ng-repeat="well in wellList">
+                    <td><button type="button" class="btn btn-info" data-toggle="modal" data-target="#wellModal" ng-click="setWellData(well.well_id)">{{well.well_id}}</button></td>
+                </tr>
+            </tbody>
+        </table>
+
+        <!-- Start Well Modal -->
+
+        <div id="wellModal" class="modal">
+            <div class="w3-container w3-modal-content w3-card-4 w3-animate-zoom" style="max-width:600px">
+                <!--table class="table">
+                    <thead>
+                        <tr>
+                            <th>Temperature</th>
+                            <th>Conductivity</th>
+                            <th>Pressure</th>
+                            <th>Salinity</th>
+                            <th>TDS</th>
+                            <th>Recording Time</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr ng-repeat="recording in recording_data">
+                            <td>{{recording.temperature}}</td>
+                            <td>{{recording.conductivity}}</td>
+                            <td>{{recording.pressure}}</td>
+                            <td>{{recording.salinity}}</td>
+                            <td>{{recording.tds}}</td>
+                            <td>{{recording.recording_time}}</td>
+                        </tr>
+                    </tbody>
+                </table-->
+                
+                Transducers
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>Transducer ID</th>
+                            <th>Name</th>
+                            <th>Type</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr ng-repeat="transducer in transducers">
+                            <td>{{transducer.id}}</td>
+                            <td>{{transducer.name}}</td>
+                            <td>{{transducer.type}}</td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <div class="w3-container w3-border-top w3-padding-16 w3-light-grey">
+                    <!-- Close modal -->
+                    <button type="button" class="btn btn-info" data-toggle="modal" data-target="#wellModal">Close</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- End Well Modal -->
+
+    </div>
+
+    <script>
+        var app = angular.module('myApp', []);
+        app.controller('cntrl', function ($scope, $http) {
+
+            $scope.searchWells = function (minLat, maxLat, minLong, maxLong) {
+                $scope.wellList = [];
+                var url = "/wells/location/";
+                url = url.concat(minLat + "/" + maxLat + "/" + minLong + "/" + maxLong);
+                $http.get(url)
+                    .success(function (wellList) {
+                        $scope.wellList = wellList;
+                        console.log('Got WelL List');
+                        console.log($scope.wellList);
+                    })
+                    .error(function (wellList) {
+                        $scope.wellList = [
+                            {
+
+                            }
+                        ];
+                        console.log("No Wells Found");
+                    })
+            }
+
+            $scope.getTransducers = function (well_id) {
+                $scope.transducers = [];
+                var url = '/transducers/get/';
+                $http.get(url.concat(well_id))
+                    .success(function (transducers) {
+                        $scope.transducers = transducers;
+                        console.log('Got Transducers For ' + well_id);
+                    })
+            }
+
+            $scope.setWellData = function (well_id) {
+                $scope.thisWell = {};
+                var url = '/wells/get/';
+                $http.get(url.concat(well_id))
+                    .success(function (data) {
+                        $scope.thisWell = data;
+                    })
+                $scope.getTransducers(well_id);
+            }
+
+        });
+    </script>
+</body>
+
+</html>

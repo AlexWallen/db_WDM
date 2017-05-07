@@ -30,6 +30,9 @@
 
     <!-- Latest compiled JavaScript -->
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
+    <!-- W3 For Modal -->
+    <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
 </head>
 <body>
     <div w3-include-html="topnav.html"></div>
@@ -82,6 +85,25 @@
             <input type="button" class="btn btn-primary" value="{{btnName}}" ng-click="insertRecording()"> {{msg}}
              <input type="button" class="btn btn-primary" value="Display All" ng-click="displayRecordings()">
         </form>
+
+        <div>
+            <fieldset>
+                <legend>Search</legend>
+                Transducer ID:<input type="number" ng-model="id_search">
+                Start:<input type="datetime-local" ng-model="start_time_search">
+                End:<input type="datetime-local" ng-model="end_time_search">
+                <button class="btn btn-primary" ng-click="searchRecordingsByID(id_search)">Search By ID</button>
+                <button class="btn btn-primary" ng-click="searchRecordingsByTime(id_search, start_time_search, end_time_search)">Search By ID And Time</button>
+            </fieldset>
+        </div>
+
+        <div>
+            <fieldset>
+                <legend>Calculate Pearson's Correlation Coefficient</legend>
+                <button class="btn btn-primary" ng-click="pearsonCorrelation()">Calculate</button>
+                Result: <text ng-model="pearsonResult">
+            </fieldset>
+        </div>
         
         <table class ="table">
             <thead>
@@ -106,15 +128,137 @@
                     <td>{{recording.recording_time}}</td>
                     <td ng-if="recording.transducer_id"><button class="btn btn-danger" ng-click="deleteRecording(recording.transducer_id, recording.recording_time);">Delete</button></td>
                     <td ng-if="recording.transducer_id"><button class="btn btn-primary" ng-click="editRecording(recording.transducer_id, recording.recording_time);">Edit</button></td>
+                    <td><button type="button" class="btn btn-info" data-toggle="modal" data-target="#rainModal" ng-click="getLocation(recording.transducer_id, recording.recording_time)">Rainfall</button></td>
+                    <td ng-if="recording.transducer_id"><button class="btn btn-primary" ng-click="setPearsonTwo($index)">Set Pearson #1</button></td
+                    <td ng-if="recording.transducer_id"><button class="btn btn-primary" ng-click="setPearsonOne($index)">Set Pearson #2</button></td>>
                 </tr>
             </tbody>
         </table>
+
+        <!-- Start Rain Modal -->
+
+        <div id="rainModal" class="modal">
+            <div class="w3-container w3-modal-content w3-card-4 w3-animate-zoom" style="max-width:600px">
+                <div class="modal-header">
+                    Nearest Rainfall For {{rainfall.rdate}}
+                </div>
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>Latitude</th>
+                            <th>Longitude</th>
+                            <th>Amount</th>
+                            <th>Normal Amount</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>{{rainfall.latitude}}</td>
+                            <td>{{rainfall.longitude}}</td>
+                            <td>{{rainfall.amount}}</td>
+                            <td>{{rainfall.normal_amount}}</td>
+                        </tr>
+                    </tbody>
+                </table>
+                <div class="w3-container w3-border-top w3-padding-16 w3-light-grey">
+                    <!-- Close modal -->
+                    <button type="button" class="btn btn-info" data-toggle="modal" data-target="#rainModal">Close</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- End Rain Modal -->
+
     </div>
+
     <script>
         var app = angular.module('myApp', []);
-        app.controller('cntrl', function ($scope, $http, $filter) {
+        app.controller('cntrl', function ($scope, $http, $filter, $window) {
             $http.get('/transducers/all').success(function (data) { $scope.transducers = data; });
             $scope.btnName = "Insert";
+
+            $scope.pearsonCorrelation = function (prefs, p1, p2) {
+                var si = [];
+
+                for (var key in prefs[p1]) {
+                    if (prefs[p2][key]) si.push(key);
+                }
+
+                var n = si.length;
+
+                if (n == 0) return 0;
+
+                var sum1 = 0;
+                for (var i = 0; i < si.length; i++) sum1 += prefs[p1][si[i]];
+
+                var sum2 = 0;
+                for (var i = 0; i < si.length; i++) sum2 += prefs[p2][si[i]];
+
+                var sum1Sq = 0;
+                for (var i = 0; i < si.length; i++) {
+                    sum1Sq += Math.pow(prefs[p1][si[i]], 2);
+                }
+
+                var sum2Sq = 0;
+                for (var i = 0; i < si.length; i++) {
+                    sum2Sq += Math.pow(prefs[p2][si[i]], 2);
+                }
+
+                var pSum = 0;
+                for (var i = 0; i < si.length; i++) {
+                    pSum += prefs[p1][si[i]] * prefs[p2][si[i]];
+                }
+
+                var num = pSum - (sum1 * sum2 / n);
+                var den = Math.sqrt((sum1Sq - Math.pow(sum1, 2) / n) *
+                    (sum2Sq - Math.pow(sum2, 2) / n));
+
+                if (den == 0) return 0;
+
+                return num / den;
+            }
+
+            $scope.getRainfall = function (transducer_id, recording_time) {
+                $scope.rainfall = {};
+                $date = recording_time.substring(0, 10);
+                var url = "/rainfall/get/";
+                url = url.concat($date);
+                $http.get(url)
+                    .success(function (rain) {
+                        rain.sort(function (a, b) {
+                            return $scope.calculateDistance(a.latitude, a.longitude, $scope.location.latitude, $scope.location.longitude) - $scope.calculateDistance(b.latitude, b.longitude, $scope.location.latitude, $scope.location.longitude);
+                        });
+                        $scope.rainfall = rain[0];
+                        $scope.msg = "Got Rainfall";
+                        console.log($scope.rainfall);
+                    })
+            }
+
+            $scope.getLocation = function (transducer_id, recording_time) {
+                var url = "/transducers/location/";
+                $http.get(url.concat(transducer_id))
+                    .success(function (location) {
+                        $scope.location = location;
+                        $scope.getRainfall(transducer_id, recording_time);
+                    })
+            }
+
+            $scope.calculateDistance = function (lat1, lat2, lon1, lon2) {
+                var R = 6371e3; // metres
+                var phi1 = lat1.toRadians();
+                var phi2 = lat2.toRadians();
+                var deltaphi = (lat2 - lat1).toRadians();
+                var deltalambda = (lon2 - lon1).toRadians();
+
+                var a = Math.sin(deltaphi / 2) * Math.sin(deltaphi / 2) +
+                    Math.cos(phi1) * Math.cos(phi2) *
+                    Math.sin(deltalambda / 2) * Math.sin(deltalambda / 2);
+                var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+
+                var d = R * c;
+
+                return d;
+            }
 
             $scope.insertRecording = function () {
                 $datetime = $filter('date')($scope.recording_time, 'yyyy-MM-dd HH:mm:ss');
@@ -134,6 +278,32 @@
                     })
             }
 
+            $scope.searchRecordingsByID = function (transducer_id) {
+                    var url = "/recordings/get/"
+                    url = url.concat(transducer_id);
+                    $http.get(url)
+                        .success(function (data) {
+                            $scope.data = data;
+                            $scope.msg = "Search Successful";
+                        })
+                }
+            
+            $scope.searchRecordingsByTime = function (transducer_id, start_time, end_time) {
+                    $start = $filter('date')(start_time, 'yyyy-MM-dd HH:mm:ss');
+                    $end = $filter('date')(end_time, 'yyyy-MM-dd HH:mm:ss');
+                    $startDate = $start.substring(0, 10);
+                    $startTime = $start.substring(11, 19);
+                    $endDate = $end.substring(0, 10);
+                    $endTime = $end.substring(11, 19);
+                    var url = "/recordings/get/"
+                    url = url.concat(transducer_id + "/" + $startDate + "/" + $startTime + "/" + $endDate + "/" + $endTime);
+                    $http.get(url)
+                        .success(function (data) {
+                            $scope.data = data;
+                            $scope.msg = "Search Successful";
+                        })
+                }
+
             $scope.deleteRecording = function (transducer_id, recording_time) {
                 $date = recording_time.substring(0, 10);
                 $time = recording_time.substring(11, 19);
@@ -148,7 +318,6 @@
                 $http.delete(url)
                     .success(function ($response) {
                         $scope.msg = "Data Deletion successful";
-                        $scope.displayRecordings();
                     })
             }
 
@@ -165,9 +334,7 @@
                     'temperature': $scope.temperature, 'conductivity': $scope.conductivity,'pressure': $scope.pressure, 'salinity': $scope.salinity, 'tds': $scope.tds })
                     .success(function () {
                         $scope.msg = "Data Edit successful";
-                        $scope.displayRecordings();
                     })
-                $scope.displayRecordings();
             }
 
             $(document).ready(function () {

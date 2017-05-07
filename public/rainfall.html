@@ -69,7 +69,7 @@
                                 Normal Amount:   <input type="text" ng-model="normal_amount">
                             </div>
                             <div class="form-group">
-                            Time:            <input type="datetime-local" ng-model="rtime">
+                            Date:            <input type="date" ng-model="rdate">
                             </div>
                             <div class="form-group">
                                 <input type="button" class="btn btn-primary" value="{{btnName}}" ng-click="insertRain()"> {{msg}}
@@ -93,7 +93,7 @@
                     <th>Location</td>
                     <th>Amount</th>
                     <th>Normal Amount</th>
-                    <th>Time</th>
+                    <th>Date</th>
                 </tr>
             </thead>
             <tbody>
@@ -101,9 +101,9 @@
                     <td>{{rainfall.location_id}}</td>
                     <td>{{rainfall.amount}}</td>
                     <td>{{rainfall.normal_amount}}</td>
-                    <td>{{rainfall.rtime}}</td>
-                    <td ng-if="rainfall.location_id"><button class="btn btn-danger" ng-click="deleteRainfall(rainfall.location_id, rainfall.rtime);">Delete</button></td>
-                    <td ng-if="rainfall.location_id"><button class="btn btn-primary" ng-click="editRainfall(rainfall.location_id, rainfall.rtime);">Edit</button></td>
+                    <td>{{rainfall.rdate}}</td>
+                    <td ng-if="rainfall.location_id"><button class="btn btn-danger" ng-click="deleteRainfall(rainfall.location_id, rainfall.rdate);">Delete</button></td>
+                    <td ng-if="rainfall.location_id"><button class="btn btn-primary" ng-click="editRainfall(rainfall.location_id, rainfall.rdate);">Edit</button></td>
                 </tr>
             </tbody>
         </table>
@@ -116,8 +116,8 @@
             $scope.btnName = "Insert";
             
             $scope.insertRain = function () {
-                $datetime = $filter('date')($scope.rtime, 'yyyy-MM-dd HH:mm:ss');
-                $http.post("/rainfall/add", {'location_id': $scope.location_id, 'amount': $scope.amount, 'normal_amount': $scope.normal_amount, 'rtime': $datetime})
+                $date = $filter('date')($scope.rdate, 'yyyy-MM-dd');
+                $http.post("/rainfall/add", {'location_id': $scope.location_id, 'amount': $scope.amount, 'normal_amount': $scope.normal_amount, 'rdate': $date})
                     .success(function () {
                         $scope.msg = "Data Inserted";
                         $scope.displayRain();
@@ -131,16 +131,12 @@
                     })
             }
 
-            $scope.deleteRainfall = function (id, rtime) {
-                $date = rtime.substring(0, 10);
-                $time = rtime.substring(11, 19);
+            $scope.deleteRainfall = function (id, rdate) {
 
                 var url = "/rainfall/delete/";
                 url = url.concat(id);
                 url = url.concat("/");
-                url = url.concat($date);
-                url = url.concat("/");
-                url = url.concat($time);
+                url = url.concat(rdate);
                 $http.delete(url)
                     .success(function () {
                         $scope.msg = "Data Deletion successful";
@@ -148,15 +144,11 @@
                     })
             }
 
-            $scope.editRainfall = function (id, rtime) {
-                $date = rtime.substring(0, 10);
-                $time = rtime.substring(11, 19);
+            $scope.editRainfall = function (id, rdate) {
                 var url = "/rainfall/edit/";
                 url = url.concat(id);
                 url = url.concat("/");
-                url = url.concat($date);
-                url = url.concat("/");
-                url = url.concat($time);
+                url = url.concat(rdate);
                 $http.put(url, {'amount': $scope.amount, 'normal_amount': $scope.normal_amount})
                     .success(function () {
                         $scope.msg = "Data Edit successful";

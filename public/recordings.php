@@ -1,7 +1,7 @@
 <?php
     $app->get('/recordings/all', function() {
         require_once('db.php');
-        $query = "select * from Recordings";
+        $query = "SELECT * FROM Recordings ORDER BY recording_time ASC";
         $result = $conn->query($query) or die($conn->error);
         // var_dump($result);
         while($row = $result->fetch_assoc()){
@@ -13,7 +13,25 @@
     $app->get('/recordings/get/{id}', function($request) {
         require_once('db.php');
         $get_id = $request->getAttribute('id');
-        $query = "select * from Recordings where transducer_id = $get_id";
+        $query = "SELECT * FROM Recordings WHERE transducer_id = $get_id ORDER BY recording_time ASC";
+        $result = $conn->query($query) or die($conn->error);
+        // var_dump($result);
+        while($row = $result->fetch_assoc()){
+            $data[] = $row;
+        }
+        echo json_encode($data);
+    });
+
+    $app->get('/recordings/get/{transducer_id}/{startDate}/{startTime}/{endDate}/{endTime}', function($request){
+        require_once('db.php');
+        $get_id = $request->getAttribute('transducer_id');
+        $startDate = $request->getAttribute('startDate');
+        $startTime = $request->getAttribute('startTime');
+        $endDate = $request->getAttribute('endDate');
+        $endTime = $request->getAttribute('endTime');
+        $start = "{$startDate} {$startTime}";
+        $end = "{$endDate} {$endTime}";
+        $query = "SELECT * FROM Recordings WHERE transducer_id = $get_id AND recording_time >= '$start' AND recording_time <= '$end' ORDER BY recording_time ASC";
         $result = $conn->query($query) or die($conn->error);
         // var_dump($result);
         while($row = $result->fetch_assoc()){

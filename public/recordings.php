@@ -10,6 +10,18 @@
         echo json_encode($data);
     });
 
+    $app->get('/recordings/get/{id}', function($request) {
+        require_once('db.php');
+        $get_id = $request->getAttribute('id');
+        $query = "select * from Recordings where transducer_id = $get_id";
+        $result = $conn->query($query) or die($conn->error);
+        // var_dump($result);
+        while($row = $result->fetch_assoc()){
+            $data[] = $row;
+        }
+        echo json_encode($data);
+    });
+
     $app->post('/recordings/add', function($request){
         require_once('db.php');
         $query = "INSERT INTO Recordings (transducer_id, temperature, conductivity, pressure, salinity, tds, recording_time) VALUES (?,?,?,?,?,?,?)";

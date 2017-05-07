@@ -30,8 +30,13 @@
 
     <!-- Latest compiled JavaScript -->
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
+    <!-- W3 For Modal -->
+    <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+
 </head>
 <body>
+
 <div w3-include-html="topnav.html"></div>
 <script>
     w3IncludeHTML();
@@ -70,14 +75,76 @@
                     <td>{{transducer.well_id}}</td>
                     <td><button class="btn btn-danger" ng-click="deleteTransducer(transducer.id);">Delete</button></td>
                     <td><button class="btn btn-primary" ng-click="editTransducer(transducer.id);">Edit</button></td>
+                    <td><button type="button" class="btn btn-info" data-toggle="modal" data-target="#recordingModal" ng-click="setRecordingData(transducer.id)">Recordings</button></td>
                 </tr>
             </tbody>
         </table>
+
+        <!-- Start Recording Modal -->
+
+        <div id="recordingModal" class="modal">
+            <div class="w3-container w3-modal-content w3-card-4 w3-animate-zoom" style="max-width:600px">
+                <!-- Close modal -->
+                <!--span onclick="document.getElementById('recordingModal').style.display='none'" class="w3-button w3-xlarge w3-hover-red w3-display-topright"
+                    title="Close Modal">&times;</span-->
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>Temperature</th>
+                            <th>Conductivity</th>
+                            <th>Pressure</th>
+                            <th>Salinity</th>
+                            <th>TDS</th>
+                            <th>Recording Time</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr ng-repeat="recording in recording_data">
+                            <td>{{recording.temperature}}</td>
+                            <td>{{recording.conductivity}}</td>
+                            <td>{{recording.pressure}}</td>
+                            <td>{{recording.salinity}}</td>
+                            <td>{{recording.tds}}</td>
+                            <td>{{recording.recording_time}}</td>
+                        </tr>
+                    </tbody>
+                </table>
+                <div class="w3-container w3-border-top w3-padding-16 w3-light-grey">
+                    <!-- Close modal -->
+                    <button type="button" class="btn btn-info" data-toggle="modal" data-target="#recordingModal">Close</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- End Recording Modal -->
+
     </div>
+
+    
+
     <script>
         var app = angular.module('myApp', []);
         app.controller('cntrl', function ($scope, $http) {
             $scope.btnName = "Insert";
+
+            $scope.setRecordingData = function (id) {
+                $scope.recording_data = [];
+                var url = "/recordings/get/";
+                $http.get(url.concat(id))
+                    .success(function (recording_data) {
+                        $scope.recording_data = recording_data;
+                        console.log('Got Recording Data');
+                        console.log($scope.recording_data);
+                    })
+                    .error(function (recording_data) {
+                        $scope.recording_data = [
+                            {
+
+                            }
+                        ];
+                        console.log(id + ": No Recordings");
+                    })
+            }
 
             $scope.insertTransducer = function () {
                 $http.post("/transducers/add", {'name': $scope.name, 'type': $scope.type, 'well_id': $scope.well_id})

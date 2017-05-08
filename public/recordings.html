@@ -211,8 +211,8 @@
                 Transducer ID:<input type="number" ng-model="id_search">
                 Start:<input type="datetime-local" ng-model="start_time_search">
                 End:<input type="datetime-local" ng-model="end_time_search">
-                <button class="w3-button w3-blue" ng-click="searchRecordingsByID(id_search)">Search By ID</button>
-                <button class="w3-button w3-blue" ng-click="searchRecordingsByTime(id_search, start_time_search, end_time_search)">Search By ID And Time</button>
+                <input type="submit" ng-click="searchRecordingsByID(id_search)">Search By ID
+                <input type="submit" ng-click="searchRecordingsByTime(id_search, start_time_search, end_time_search)">Search By ID And Time
             </fieldset>
         </div>
 
@@ -468,14 +468,14 @@
                 }
             
             $scope.searchRecordingsByTime = function (transducer_id, start_time, end_time) {
-                    $start = $filter('date')(start_time, 'yyyy-MM-dd HH:mm:ss');
-                    $end = $filter('date')(end_time, 'yyyy-MM-dd HH:mm:ss');
-                    $startDate = $start.substring(0, 10);
-                    $startTime = $start.substring(11, 19);
-                    $endDate = $end.substring(0, 10);
-                    $endTime = $end.substring(11, 19);
+                    var start = $filter('date')(start_time, 'yyyy-MM-dd HH:mm:ss');
+                    var end = $filter('date')(end_time, 'yyyy-MM-dd HH:mm:ss');
+                    var startDate = start.substring(0, 10);
+                    var startTime = start.substring(11, 19);
+                    var endDate = end.substring(0, 10);
+                    var endTime = end.substring(11, 19);
                     var url = "/recordings/get/"
-                    url = url.concat(transducer_id + "/" + $startDate + "/" + $startTime + "/" + $endDate + "/" + $endTime);
+                    url = url.concat(transducer_id + "/" + startDate + "/" + startTime + "/" + endDate + "/" + endTime);
                     $http.get(url)
                         .success(function (data) {
                             $scope.data = data;

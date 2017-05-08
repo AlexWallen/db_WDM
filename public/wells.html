@@ -57,106 +57,58 @@
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-csv/0.71/jquery.csv-0.71.min.js"></script>
 
-
-
 </head>
 
 <body>
-
 
     <div w3-include-html="topnav.html"></div>
 
     <script>
         w3IncludeHTML();
-
     </script>
 
     <div ng-app="myApp" ng-controller="cntrl">
-
         <div id="dvImportSegments" class="fileupload">
-
             <fieldset>
-
                 <div class="col-sm-12" style="margin-bottom:20px; padding-top: 10px; padding-bottom: 5px;">
-
                     <legend>Upload your CSV File</legend>
-
                     <label class="btn-bs-file btn btn-primary">
+                    Upload File
 
-Upload File
-
-<input type="file" id="txtFileUpload" accept=".csv"/>
-
-</label>
-
+                    <input type="file" id="txtFileUpload" accept=".csv"/>
+                    </label>
                 </div>
-
-
-
-
-
                 <div class="col-sm-12" style="margin-bottom:20px; padding-top: 10px; padding-bottom: 5px;">
-
                     <legend>Manual Ordering of Input Data</legend>
-
                     How many columns? <input type="number" ng-model="numCol">
-
                     <button ng-click="setCols()"> Set </button>
-
                     <div ng-repeat="i in cols track by $index" style="padding-top: 10px; padding-bottom: 5px;">
-
                         Column #{{$index + 1}}:
-
-                        <select ng-model="cols[$index]" />
-
+                        <select ng-model="cols[$index]">
                         <option value="NaN">N/A</option>
-
                         <option value="well_id">Well ID</option>
-
                         <option value="aquifer_code">Aquifer Code</option>
-
                         <option value="type_code">Type Code</option>
-
                         <option value="owner_name">Owner Name</option>
-
                         <option value="owner_type">Owner Type</option>
-
                         <option value="latitude">Latitude</option>
-
                         <option value="longitude">Longitude</option>
-
                         <option value="state">State</option>
-
                         <option value="county">County</option>
-
                         <option value="pump_type">Pump Type</option>
-
                         <option value="well_usage">Well Usage</option>
-
                         <option value="bottom_elevation">Bottom Elevation</option>
-
                         <option value="top_elevation">Top Elevation</option>
-
                         <option value="water_elevation">Water Elevation</option>
-
                         <option value="casing_id">Casing ID</option>
-
                         <option value="diameter">Diameter</option>
-
                         <option value="top_depth">Top Depth</option>
-
                         <option value="bottom_depth">Bottom Depth</option>
-
                         <option value="remarks">Remarks</option>
-
                         </select>
-
                     </div>
-
                 </div>
-
             </fieldset>
-
         </div>
 
         <legend>Input Your Fields Here</legend>
@@ -178,19 +130,17 @@ Upload File
         </div>
 
         <div class="form-group">
-
             <label for="Owner ID">Owner ID:&emsp;</label>
-
-            <input type="text" class="form-control" id="text" placeholder="Enter Owner ID" ng-model="owner_id">
-
+            <select class="form-control" id="text" ng-model="owner_id">
+                <option ng-repeat="owner in owners" value="{{owner.id}}">ID {{owner.id}}: {{owner.name}}, {{owner.type}}</option> 
+             </select>
         </div>
 
         <div class="form-group">
-
             <label for="Location ID">Location ID:&emsp;</label>
-
-            <input type="text" class="form-control" id="text" placeholder="Enter Location ID" ng-model="location_id">
-
+            <select class="form-control" id="text" ng-model="location_id">
+                <option ng-repeat="location in locations" value="{{location.id}}">ID {{location.id}}: ({{location.latitude}}, {{location.longitude}}), {{location.county}}, {{location.state}}</option> 
+             </select>
         </div>
 
         <div class="form-group">
@@ -300,501 +250,251 @@ Upload File
         <table class="table">
 
             <thead>
-
                 <tr>
-
                     <th>Well ID</td>
-
-                        <th>Aquifer Code</th>
-
-                        <th>Type Code</th>
-
-                        <th>Owner ID</th>
-
-                        <th>Location ID</th>
-
-                        <th>Pump Type</td>
-
-                            <th>Well Usage</td>
-
-                                <th>Bottom Elevation</td>
-
-                                    <th>Top Elevation</td>
-
-                                        <th>Water Elevation</td>
-
-                                            <th>Casing ID</td>
-
-                                                <th>Diameter</td>
-
-                                                    <th>Top Depth</td>
-
-                                                        <th>Bottom Depth</td>
-
-                                                            <th>Remarks</td>
-
-                </tr>
-
+                    <th>Aquifer Code</th>
+                    <th>Type Code</th>
+                    <th>Owner ID</th>
+                    <th>Location ID</th>
+                    <th>Pump Type</td>
+                    <th>Well Usage</td>
+                    <th>Bottom Elevation</td>
+                    <th>Top Elevation</td>
+                    <th>Water Elevation</td>
+                    <th>Casing ID</td>
+                    <th>Diameter</td>
+                    <th>Top Depth</td>
+                    <th>Bottom Depth</td>
+                    <th>Remarks</td>
+               </tr>
             </thead>
-
-            <tbody>
-
+        <tbody>
                 <tr ng-repeat="well in data | filter:search">
-
                     <td>{{well.well_id}}</td>
-
                     <td>{{well.aquifer_code}}</td>
-
                     <td>{{well.type_code}}</td>
-
                     <td>{{well.owner_id}}</td>
-
                     <td>{{well.location_id}}</td>
-
                     <td>{{well.pump_type}}</td>
-
                     <td>{{well.well_usage}}</td>
-
                     <td>{{well.bottom_elevation}}</td>
-
                     <td>{{well.top_elevation}}</td>
-
                     <td>{{well.water_elevation}}</td>
-
                     <td>{{well.casing_id}}</td>
-
                     <td>{{well.diameter}}</td>
-
                     <td>{{well.top_depth}}</td>
-
                     <td>{{well.bottom_depth}}</td>
-
                     <td>{{well.remarks}}
-
                         <td><button class="btn btn-danger" ng-click="deleteWell(well.well_id);">Delete</button></td>
-
                         <td><button class="btn btn-primary" ng-click="editWell(well.well_id);">Edit</button></td>
-
-                        <!--td><button class="btn btn-primary" onclick="document.getElementById('transducerModal').style.display='block'" ng-click="setModalData(well.well_id)">Transducers</button></td-->
-
                         <td><button type="button" class="btn btn-info" data-toggle="modal" data-target="#transducerModal" ng-click="setModalData(well.well_id)">Transducers</button></td>
-
                 </tr>
-
             </tbody>
-
         </table>
 
-
-
         <!-- Transducer Modal -->
-
-
-
         <div id="transducerModal" class="modal">
-
             <div class="w3-container w3-modal-content w3-card-4 w3-animate-zoom" style="max-width:600px">
-
                 <!-- Close modal -->
-
                 <!--span onclick="document.getElementById('transducerModal').style.display='none'" class="w3-button w3-xlarge w3-hover-red w3-display-topright"
-
 title="Close Modal">&times;</span-->
-
                 <table class="table">
-
                     <thead>
-
                         <tr>
-
                             <th>ID</td>
-
                                 <th>Name</th>
-
                                 <th>Type</th>
-
                         </tr>
-
                     </thead>
-
                     <tbody>
-
                         <tr ng-repeat="transducer in modal_data">
-
                             <td>{{transducer.id}}</td>
-
                             <td>{{transducer.name}}</td>
-
                             <td>{{transducer.type}}</td>
-
                             <td><button type="button" class="btn btn-info" data-toggle="modal" data-target="#recordingModal"
                                     ng-click="setRecordingData(transducer.id)">Recordings</button></td>
-
                         </tr>
-
                     </tbody>
-
                 </table>
-
                 <div class="w3-container w3-border-top w3-padding-16 w3-light-grey">
-
                     <!-- Close modal -->
-
                     <button type="button" class="btn btn-info" data-toggle="modal" data-target="#transducerModal">Close</button>
-
                 </div>
-
             </div>
-
-
 
             <!-- Recording Modal -->
 
-
-
             <div id="recordingModal" class="modal">
-
                 <div class="w3-container w3-modal-content w3-card-4 w3-animate-zoom" style="max-width:600px">
-
                     <!-- Close modal -->
-
                     <!--span onclick="document.getElementById('recordingModal').style.display='none'" class="w3-button w3-xlarge w3-hover-red w3-display-topright"
-
 title="Close Modal">&times;</span-->
-
                     <table class="table">
-
                         <thead>
-
                             <tr>
-
                                 <th>Temperature</th>
-
                                 <th>Conductivity</th>
-
                                 <th>Pressure</th>
-
                                 <th>Salinity</th>
-
                                 <th>TDS</th>
-
                                 <th>Recording Time</th>
-
                             </tr>
-
                         </thead>
-
                         <tbody>
-
                             <tr ng-repeat="recording in recording_data">
-
                                 <td>{{recording.temperature}}</td>
-
                                 <td>{{recording.conductivity}}</td>
-
                                 <td>{{recording.pressure}}</td>
-
                                 <td>{{recording.salinity}}</td>
-
                                 <td>{{recording.tds}}</td>
-
                                 <td>{{recording.recording_time}}</td>
-
                             </tr>
-
                         </tbody>
-
                     </table>
 
                     <div class="w3-container w3-border-top w3-padding-16 w3-light-grey">
-
                         <!-- Close modal -->
-
                         <button type="button" class="btn btn-info" data-toggle="modal" data-target="#recordingModal">Close</button>
-
                     </div>
-
                 </div>
-
             </div>
-<<<<<<< HEAD
-
-
 
             <!-- End of Recording Modal -->
 
-
-
         </div>
-
-
 
         <!-- End of Transducer Modal -->
 
-
-
     </div>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
     <script>
         var app = angular.module('myApp', []);
-
         app.filter('range', function () {
-
             return function (input, total) {
-
                 total = parseInt(total);
-
                 for (var i = 0; i < total; i++)
-
                     input.push(i);
-
                 return input;
-
             };
-
         });
 
-
-
         app.controller('cntrl', function ($scope, $http, $filter) {
-
+            $http.get('/owners/all').success(function (data) { $scope.owners = data; });
+            $http.get('/location/all').success(function (data) { $scope.locations = data; });
             $scope.btnName = "Insert";
-
             $scope.cols = [];
-
-
-
+            
             $scope.setCols = function () {
-
                 $scope.cols = $filter('range')([], $scope.numCol);
-
             }
 
-
-
             $scope.setModalData = function (id) {
-
                 $scope.modal_data = [];
-
                 var url = "/transducers/get/";
-
                 $http.get(url.concat(id))
-
                     .success(function (modal_data) {
-
                         $scope.modal_data = modal_data;
-
                         console.log('Got Modal Data');
-
                     })
 
                     .error(function (modal_data) {
-
                         $scope.modal_data = [
-
                             {
-
                                 "id": "Well",
-
                                 "name": "Has",
-
                                 "type": "No",
-
                                 "well_id": "Transducers"
-
                             }
-
                         ];
-
                         console.log(id + ": No Transducers");
-
                     })
-
             }
-
-
 
             $scope.setRecordingData = function (id) {
-
                 $scope.recording_data = [];
-
                 var url = "/recordings/get/";
-
                 $http.get(url.concat(id))
-
                     .success(function (recording_data) {
-
                         $scope.recording_data = recording_data;
-
                         console.log('Got Recording Data');
-
                         console.log($scope.recording_data);
-
                     })
-
                     .error(function (recording_data) {
-
                         $scope.recording_data = [
-
                             {
 
-
                             }
-
                         ];
-
                         console.log(id + ": No Recordings");
-
                     })
-
             }
-
-
 
             $scope.insertWell = function () {
-
                 $http.post("/wells/add", { 'aquifer_code': $scope.aquifer_code, 'type_code': $scope.type_code, 'owner_id': $scope.owner_id, 'location_id': $scope.location_id, 'pump_type': $scope.pump_type, 'well_usage': $scope.well_usage, 'bottom_elevation': $scope.bottom_elevation, 'top_elevation': $scope.top_elevation, 'water_elevation': $scope.water_elevation, 'casing_id': $scope.casing_id, 'diameter': $scope.diameter, 'top_depth': $scope.top_depth, 'bottom_depth': $scope.bottom_depth, 'remarks': $scope.remarks })
-
                     .success(function () {
-
                         $scope.msg = "Data Inserted";
-
                         $scope.displayWells();
-
                     })
-
             }
 
-
-
             $scope.insertCompleteWell = function (row) {
-
                 var locData = {};
-
                 var ownerData = {};
-
                 var wellData = {};
-
                 var key;
-
                 for (j = 0; j < $scope.numCol; j++) {
-
                     key = $scope.cols[j];
-
                     switch (key) {
-
                         case 'latitude':
-
                         case 'longitude':
-
                         case 'state':
-
                         case 'county':
-
                             locData[key] = row[j];
-
                             break;
-
                         case 'owner_name':
-
                             ownerData['name'] = row[j];
-
                             break;
-
                         case 'owner_type':
-
                             ownerData['type'] = row[j];
-
                             break;
-
                         case 'NaN':
-
                             break;
-
                         default:
-
                             wellData[key] = row[j];
-
                     }
-
                 }
-
                 console.log('Loc JSON: ' + JSON.stringify(locData));
-
                 //First Check For New Location
-
                 $http.post("/location/add", locData, false)
-
                     .success(function (response) {
-
-                        wellData['location_id'] = response.id;
-
+                       wellData['location_id'] = response.id;
                         console.log('location response = ' + response.id);
-
                         console.log('Owner JSON: ' + JSON.stringify(ownerData));
 
                         //Then check for new Owner
-
                         $http.post("/owners/add", ownerData, false)
-
-                            .success(function (response) {
-
+                           .success(function (response) {
                                 wellData['owner_id'] = response.id;
-
                                 console.log('owner response = ' + response.id);
-
                                 //Delete NULL and Blank key values from well json
-
                                 $.each(wellData, function (key, value) {
-
                                     if (value === "" || value === null) {
-
                                         delete wellData[key];
-
-                                    }
-
+                                   }
                                 });
-
                                 console.log('Well JSON: ' + JSON.stringify(wellData));
-
                                 //Then Insert Well
-
-                                $http.post("/wells/add", wellData)
-
-                                    .success(function () {
-
+                               $http.post("/wells/add", wellData)
+                                   .success(function () {
                                         //console.log('');
-
                                     });
-
                             });
-
                     });
-
             }
 
-
-
             $scope.displayWells = function () {
-
                 $http.get("/wells/all")
-
                     .success(function (data) {
-
                         $scope.data = data;
 
                         console.log('Got Data');
@@ -803,325 +503,68 @@ title="Close Modal">&times;</span-->
 
             }
 
-
-
             $scope.deleteWell = function (id) {
-
                 var url = "/wells/delete/";
-
                 $http.delete(url.concat(id))
-
                     .success(function () {
-
                         $scope.msg = "Data Deletion successful";
-
                         $scope.displayWells();
-
                     })
-
             }
-
-
 
             $scope.editWell = function (id) {
-
                 var url = "/wells/edit/"
-
                 $http.put(url.concat(id), {
-
                     'aquifer_code': $scope.aquifer_code, 'type_code': $scope.type_code, 'owner_id': $scope.owner_id, 'location_id': $scope.location_id,
-
                     'pump_type': $scope.pump_type, 'well_usage': $scope.well_usage, 'bottom_elevation': $scope.bottom_elevation, 'top_elevation': $scope.top_elevation,
-
                     'water_elevation': $scope.water_elevation, 'casing_id': $scope.casing_id, 'diameter': $scope.diameter, 'top_depth': $scope.top_depth,
-
                     'bottom_depth': $scope.bottom_depth, 'remarks': $scope.remarks
                 })
-
                     .success(function () {
-
                         $scope.msg = "Data Edit successful";
-
                         $scope.displayWells();
-
                     })
-
                 $scope.displayWells();
-
             }
 
-
-
             $(document).ready(function () {
-
                 function browserSupportFileUpload() {
-
                     var isCompatible = false; if (window.File && window.FileReader && window.FileList && window.Blob) {
-
                         isCompatible = true;
-
                     }
-
                     return isCompatible;
-
                 }
-
 
                 document.getElementById('txtFileUpload').addEventListener('change', upload, false);
 
-
                 function upload(evt) {
-
                     if (!browserSupportFileUpload()) {
-
                         alert('The File APIs are not fully supported in this browser!');
-
                     } else {
-
                         var data = null;
-
                         var file = evt.target.files[0];
-
                         var reader = new FileReader();
-
                         reader.readAsText(file);
-
                         reader.onload = function (event) {
-
                             var csvData = event.target.result;
-
                             data = $.csv.toArrays(csvData);
-
                             if (data && data.length > 0) {
-
                                 for (i = 0; i < data.length; i++) {
-
                                     $scope.insertCompleteWell(data[i]);
-
-
                                 }
-
                             } else {
-
                                 alert('No data to import!');
-
                             }
-
                         };
-
                         reader.onerror = function () {
-
                             alert('Unable to read ' + file.fileName);
-
                         };
-
                     }
-
                 }
-
             });
-
         });
-
     </script>
-
-=======
-         </div>
-         <!-- End of Recording Modal -->
-      </div>
-      <!-- End of Transducer Modal -->
-   </div>
-   <script>
-      var app = angular.module('myApp', []);     
-      app.filter('range', function () {      
-          return function (input, total) {      
-              total = parseInt(total);      
-              for (var i = 0; i < total; i++)      
-                  input.push(i);      
-              return input;      
-          };      
-      });      
-            
-      app.controller('cntrl', function ($scope, $http, $filter) {      
-          $scope.btnName = "Insert";      
-          $scope.cols = [];      
-           
-          $scope.setCols = function () {     
-              $scope.cols = $filter('range')([], $scope.numCol);     
-          }           
-
-          $scope.setModalData = function (id) {      
-              $scope.modal_data = [];      
-              var url = "/transducers/get/";      
-              $http.get(url.concat(id))      
-                  .success(function (modal_data) {      
-                      $scope.modal_data = modal_data;      
-                      console.log('Got Modal Data');      
-                  })     
-                  .error(function (modal_data) {     
-                      $scope.modal_data = [      
-                          {      
-                              "id": "Well",      
-                              "name": "Has",      
-                              "type": "No",      
-                              "well_id": "Transducers"      
-                          }      
-                      ];      
-                      console.log(id + ": No Transducers");      
-                  })      
-          }      
-            
-          $scope.setRecordingData = function (id) {      
-              $scope.recording_data = [];      
-              var url = "/recordings/get/";      
-              $http.get(url.concat(id))      
-                  .success(function (recording_data) {      
-                      $scope.recording_data = recording_data;      
-                      console.log('Got Recording Data');      
-                      console.log($scope.recording_data);      
-                  })      
-                  .error(function (recording_data) {      
-                      $scope.recording_data = [
-                          {
-                          }
-                      ];
-                      console.log(id + ": No Recordings");
-                  })
-          }
-      
-          $scope.insertWell = function () {
-              $http.post("/wells/add", { 'aquifer_code': $scope.aquifer_code, 'type_code': $scope.type_code, 'owner_id': $scope.owner_id, 'location_id': $scope.location_id, 'pump_type': $scope.pump_type, 'well_usage': $scope.well_usage, 'bottom_elevation': $scope.bottom_elevation, 'top_elevation': $scope.top_elevation, 'water_elevation': $scope.water_elevation, 'casing_id': $scope.casing_id, 'diameter': $scope.diameter, 'top_depth': $scope.top_depth, 'bottom_depth': $scope.bottom_depth, 'remarks': $scope.remarks })
-                  .success(function () {
-                      $scope.msg = "Data Inserted";
-                      $scope.displayWells();
-                  })
-          }
-      
-          $scope.insertCompleteWell = function (row) {
-              var locData = {};
-              var ownerData = {};
-              var wellData = {};
-              var key;
-              for (j = 0; j < $scope.numCol; j++) {
-                  key = $scope.cols[j];
-                  switch (key) {
-                      case 'latitude':
-                      case 'longitude':
-                      case 'state':
-                      case 'county':
-                          locData[key] = row[j];
-                          break;
-                      case 'owner_name':
-                          ownerData['name'] = row[j];
-                          break;
-                      case 'owner_type':
-                          ownerData['type'] = row[j];
-                          break;
-                      case 'NaN':
-                          break;
-                      default:
-                          wellData[key] = row[j];
-                  }
-              }
-              console.log('Loc JSON: ' + JSON.stringify(locData));
-              //First Check For New Location
-              $http.post("/location/add", locData, false)
-                  .success(function (response) {
-                      wellData['location_id'] = response.id;
-                      console.log('location response = ' + response.id);
-                      console.log('Owner JSON: ' + JSON.stringify(ownerData));
-                      //Then check for new Owner
-                      $http.post("/owners/add", ownerData, false)
-                          .success(function (response) {
-                              wellData['owner_id'] = response.id;
-                              console.log('owner response = ' + response.id);
-                              //Delete NULL and Blank key values from well json
-                              $.each(wellData, function (key, value) {
-                                  if (value === "" || value === null) {
-                                      delete wellData[key];
-                                  }
-                              });
-                              console.log('Well JSON: ' + JSON.stringify(wellData));
-                              //Then Insert Well
-                              $http.post("/wells/add", wellData)
-                                  .success(function () {
-                                      //console.log('');
-                                  });
-                          });
-                  });
-          }
-      
-          $scope.displayWells = function () {
-              $http.get("/wells/all")
-                  .success(function (data) {
-                      $scope.data = data;
-                      console.log('Got Data');
-                  })
-          }
-      
-          $scope.deleteWell = function (id) {
-              var url = "/wells/delete/";
-              $http.delete(url.concat(id))
-                  .success(function () {
-                      $scope.msg = "Data Deletion successful";
-                      $scope.displayWells();
-                  })
-          }
-      
-          $scope.editWell = function (id) {
-              var url = "/wells/edit/"
-              $http.put(url.concat(id), {
-                  'aquifer_code': $scope.aquifer_code, 'type_code': $scope.type_code, 'owner_id': $scope.owner_id, 'location_id': $scope.location_id,
-                  'pump_type': $scope.pump_type, 'well_usage': $scope.well_usage, 'bottom_elevation': $scope.bottom_elevation, 'top_elevation': $scope.top_elevation,
-                  'water_elevation': $scope.water_elevation, 'casing_id': $scope.casing_id, 'diameter': $scope.diameter, 'top_depth': $scope.top_depth,
-                  'bottom_depth': $scope.bottom_depth, 'remarks': $scope.remarks
-              })
-                  .success(function () {
-                      $scope.msg = "Data Edit successful";
-                      $scope.displayWells();
-                  })
-              $scope.displayWells();
-          }
-      
-          $(document).ready(function () {
-              function browserSupportFileUpload() {
-                  var isCompatible = false; if (window.File && window.FileReader && window.FileList && window.Blob) {
-                      isCompatible = true;
-                  }
-                  return isCompatible;
-              }
-      
-              document.getElementById('txtFileUpload').addEventListener('change', upload, false);
-      
-              function upload(evt) {
-                  if (!browserSupportFileUpload()) {
-                      alert('The File APIs are not fully supported in this browser!');
-                  } else {
-                      var data = null;
-                      var file = evt.target.files[0];
-                      var reader = new FileReader();
-                      reader.readAsText(file);
-                      reader.onload = function (event) {
-                          var csvData = event.target.result;
-                          data = $.csv.toArrays(csvData);
-                          if (data && data.length > 0) {
-                              for (i = 0; i < data.length; i++) {
-                                  $scope.insertCompleteWell(data[i]);
-      
-                              }
-                          } else {
-                              alert('No data to import!');
-                          }
-                      };
-                      reader.onerror = function () {
-                          alert('Unable to read ' + file.fileName);
-                      };
-                  }
-              }
-          });
-      });
-   </script>
->>>>>>> 51b54cf3c33b0e372a99697ea7be0b398dca05e6
+   
 </body>
 
 

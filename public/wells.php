@@ -70,7 +70,7 @@
         $get_id = $request->getAttribute('well_id');
         $query = "UPDATE Wells SET aquifer_code = ?, type_code = ?, owner_id = ?, location_id = ?, pump_type = ?, well_usage = ?, bottom_elevation = ?, top_elevation = ?, water_elevation = ?, casing_id = ?, diameter = ?, top_depth = ?, bottom_depth = ?, remarks = ? WHERE well_id = $get_id";
         $stmt = $conn->prepare($query);
-        $stmt->bind_param("isiissdddiddds",$aquifer_code, $type_code, $owner_id, $location_id, $pump_type, $well_usage, $bottom_elevation, $top_elevation, $water_elevation, $casing_id, $diameter, $top_depth, $bottom_depth, $remarks);
+        $stmt->bind_param("ssiissdddiddds",$aquifer_code, $type_code, $owner_id, $location_id, $pump_type, $well_usage, $bottom_elevation, $top_elevation, $water_elevation, $casing_id, $diameter, $top_depth, $bottom_depth, $remarks);
         $aquifer_code = $request->getParsedBody()['aquifer_code'];
         $type_code = $request->getParsedBody()['type_code'];
         $owner_id = $request->getParsedBody()['owner_id'];

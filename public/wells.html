@@ -63,6 +63,13 @@
             });
         });
     </script>
+     <script type="text/javascript">
+        $(document).ready(function () {
+            $(".btn1").click(function () {
+                $("#myModal").modal('show');
+            });
+        });
+    </script>
 </head>
 
 <body>
@@ -78,10 +85,9 @@
             <fieldset>
                 <div class="col-sm-12" style="margin-bottom:20px; padding-top: 10px; padding-bottom: 5px;">
                     <legend>Upload your CSV File</legend>
-                    <label class="btn-bs-file btn btn-primary">
-                    Upload File
-
-                    <input type="file" id="txtFileUpload" accept=".csv"/>
+                    <label class="btn-bs-file w3-button w3-blue">
+                    Upload File                
+                        <input type="file" id="txtFileUpload" accept=".csv"/>
                     </label>
                 </div>
                 <div class="col-sm-12" style="margin-bottom:20px; padding-top: 10px; padding-bottom: 5px;">
@@ -116,7 +122,6 @@
                 </div>
             </fieldset>
         </div>
-     <!--begin modal-->
     <!--begin modal-->
     <div class="bs">
         <!-- Modal HTML -->
@@ -125,123 +130,70 @@
                 <div class="modal-content">
                     <div class="modal-header">
                 <legend>Input Your Fields Here</legend>
-
                 <div class="form-group">
-
                     <label for="Well ID">*Well ID:&emsp;</label>
-
                     <input type="text" class="form-control" id="text" placeholder="Enter Well ID" ng-model="well_id">
-
                 </div>
-
                 <div class="form-group">
-
                     <label for="Aquifer code">*Aquifer Code:&emsp;</label>
-
                     <input type="text" class="form-control" id="text" placeholder="Enter Aquifer Code" ng-model="aquifer_code">
-
                 </div>
-
                 <div class="form-group">
-
                     <label for="Type code">*Type Code:&emsp;</label>
-
                     <input type="text" class="form-control" id="text" placeholder="Enter Type Code" ng-model="type_code">
 
                 </div>
-
                 <div class="form-group">
                     <label for="Owner ID">Owner ID:&emsp;</label>
                     <select class="form-control" id="text" ng-model="owner_id">
                         <option ng-repeat="owner in owners" value="{{owner.id}}">ID {{owner.id}}: {{owner.name}}, {{owner.type}}</option> 
                     </select>
                 </div>
-
                 <div class="form-group">
                     <label for="Location ID">*Location ID:&emsp;</label>
                     <select class="form-control" id="text" ng-model="location_id">
                         <option ng-repeat="location in locations" value="{{location.id}}">ID {{location.id}}: ({{location.latitude}}, {{location.longitude}}), {{location.county}}, {{location.state}}</option> 
                     </select>
                 </div>
-
                 <div class="form-group">
-
                     <label for="Pump Type">Pump Type:&emsp;</label>
-
                     <input type="text" class="form-control" id="text" placeholder="Enter Pump Type" ng-model="pump_type">
-
                 </div>
-
                 <div class="form-group">
-
                     <label for="Well Usage">*Well Usage:&emsp;</label>
-
                     <input type="text" class="form-control" id="text" placeholder="Enter Well Usage" ng-model="well_usage">
-
                 </div>
-
                 <div class="form-group">
-
                     <label for="Bottom Elevation">*Bottom Elevation:&emsp;</label>
-
                     <input type="text" class="form-control" id="text" placeholder="Enter Bottom Elevation" ng-model="bottom_elevation">
-
                 </div>
-
                 <div class="form-group">
-
                     <label for="Top Evelation">*Top Elevation:&emsp;</label>
-
                     <input type="text" class="form-control" id="text" placeholder="Enter Top Elevation" ng-model="top_elevation">
-
                 </div>
-
                 <div class="form-group">
-
                     <label for="Water Elevation">*Water Elevation:&emsp;</label>
-
                     <input type="text" class="form-control" id="text" placeholder="Water Bottom Elevation" ng-model="water_elevation">
-
                 </div>
-
                 <div class="form-group">
-
                     <label for="Casting ID">Casing ID:&emsp;</label>
-
                     <input type="text" class="form-control" id="text" placeholder="Enter Casing ID" ng-model="casing_id">
-
                 </div>
-
                 <div class="form-group">
-
                     <label for="Diameter">Diameter:&emsp;</label>
-
                     <input type="text" class="form-control" id="text" placeholder="Enter Diameter" ng-model="diameter">
-
                 </div>
-
                 <div class="form-group">
-
                     <label for="Top Depth">Top Depth:&emsp;</label>
-
                     <input type="text" class="form-control" id="text" placeholder="Enter Top Depth" ng-model="top_depth">
-
                 </div>
-
                 <div class="form-group">
-
                     <label for="Bottom Depth">Bottom Depth:&emsp;</label>
-
                     <input type="text" class="form-control" id="text" placeholder="Enter Bottom Depth" ng-model="bottom_depth">
-
                 </div>
-
                 <div class="form-group">
-
                     <label for="Remarks">Remarks:&emsp;</label>
-
                     <input type="text" class="form-control" id="text" placeholder="Enter Remarks" ng-model="remarks">
-
                 </div>
                 <input type="button" class="btn btn-primary" value="{{btnName}}" ng-click="insertWell()"> {{msg}}
                 <div class="modal-footer">
@@ -255,34 +207,20 @@
                 <a href="#myModal" class="btn btn-primary">Manual Input</a
                     <input type="button" class="btn btn-primary" value="{{btnName}}" ng-click="insertWell()"> {{msg}}
             </div>
-
         <div style="padding-top: 10px; padding-bottom: 5px;">
-
             <div style="padding-top: 10px; padding-bottom: 5px;">
-
             <input type="button" class="w3-button w3-blue" value="Display All" ng-click="displayWells()">
-            </div>
+        </div>
             <legend>Input Your Search Fields Here</legend>
             <label for="Search">Search:</label>
-
             <input type="text" class="text" id="text" placeholder="Search ID" ng-model="search.well_id">
-
             <input type="text" class="text" id="text" placeholder="Search Aquifer Code" ng-model="search.aquifer_code">
-
             <input type="text" class="text" id="text" placeholder="Search Type Code" ng-model="search.type_code">
-
             <input type="text" class="text" id="text" placeholder="Search Owner" ng-model="search.owner_id">
 
         </div>
-
-
-
         <!--table results-->
-
-
-
         <table class="table">
-
             <thead>
                 <tr>
                     <th>Well ID</td>
@@ -320,7 +258,9 @@
                     <td>{{well.bottom_depth}}</td>
                     <td>{{well.remarks}}
                         <td><button class="btn btn-danger" ng-click="deleteWell(well.well_id);">Delete</button></td>
-                        <td><button class="btn btn-primary" ng-click="editWell(well.well_id);">Edit</button></td>
+                        <td>
+                            <a href="#" class="w3-button w3-blue" data-toggle="modal"  ng-click="setEditInfo(well)" data-target="#basicModal">Edit</a>
+                        </td>   
                         <td><button type="button" class="btn btn-info" data-toggle="modal" data-target="#transducerModal" ng-click="setModalData(well.well_id)">Transducers</button></td>
                 </tr>
             </tbody>
@@ -352,7 +292,7 @@ title="Close Modal">&times;</span-->
                 </table>
                 <div class="w3-container w3-border-top w3-padding-16 w3-light-grey">
                     <!-- Close modal -->
-                    <button type="button" class="btn btn-info" data-toggle="modal" data-target="#transducerModal">Close</button>
+                    <button type="button" class="w3-button w3-blue" data-toggle="modal" data-target="#transducerModal">Close</button>
                 </div>
             </div>
 
@@ -388,17 +328,97 @@ title="Close Modal">&times;</span-->
 
                     <div class="w3-container w3-border-top w3-padding-16 w3-light-grey">
                         <!-- Close modal -->
-                        <button type="button" class="btn btn-info" data-toggle="modal" data-target="#recordingModal">Close</button>
+                        <button type="button" class="w3-button w3-blue" data-toggle="modal" data-target="#recordingModal">Close</button>
                     </div>
                 </div>
             </div>
-
             <!-- End of Recording Modal -->
-
         </div>
-
         <!-- End of Transducer Modal -->
 
+        <!-- Start Edit Modal -->
+        <div class="modal fade" id="basicModal" tabindex="-1" role="dialog" aria-labelledby="basicModal" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                        <h4 class="modal-title" id="myModalLabel">Edit</h4>
+                    </div>
+                    <div class="modal-body">
+                            <div class="form-group">
+                                <label for="Well ID">*Well ID:&emsp;</label>
+                                <input type="text" class="form-control" id="text" placeholder="Enter Well ID" ng-model="well_id">
+                            </div>
+                            <div class="form-group">
+                                <label for="Aquifer code">*Aquifer Code:&emsp;</label>
+                                <input type="text" class="form-control" id="text" placeholder="Enter Aquifer Code" ng-model="aquifer_code">
+                            </div>
+                            <div class="form-group">
+                                <label for="Type code">*Type Code:&emsp;</label>
+                                <input type="text" class="form-control" id="text" placeholder="Enter Type Code" ng-model="type_code">
+
+                            </div>
+                            <div class="form-group">
+                                <label for="Owner ID">Owner ID:&emsp;</label>
+                                <select class="form-control" id="text" ng-model="owner_id">
+                                    <option ng-repeat="owner in owners" value="{{owner.id}}">ID {{owner.id}}: {{owner.name}}, {{owner.type}}</option> 
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="Location ID">*Location ID:&emsp;</label>
+                                <select class="form-control" id="text" ng-model="location_id">
+                                    <option ng-repeat="location in locations" value="{{location.id}}">ID {{location.id}}: ({{location.latitude}}, {{location.longitude}}), {{location.county}}, {{location.state}}</option> 
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="Pump Type">Pump Type:&emsp;</label>
+                                <input type="text" class="form-control" id="text" placeholder="Enter Pump Type" ng-model="pump_type">
+                            </div>
+                            <div class="form-group">
+                                <label for="Well Usage">*Well Usage:&emsp;</label>
+                                <input type="text" class="form-control" id="text" placeholder="Enter Well Usage" ng-model="well_usage">
+                            </div>
+                            <div class="form-group">
+                                <label for="Bottom Elevation">*Bottom Elevation:&emsp;</label>
+                                <input type="text" class="form-control" id="text" placeholder="Enter Bottom Elevation" ng-model="bottom_elevation">
+                            </div>
+                            <div class="form-group">
+                                <label for="Top Evelation">*Top Elevation:&emsp;</label>
+                                <input type="text" class="form-control" id="text" placeholder="Enter Top Elevation" ng-model="top_elevation">
+                            </div>
+                            <div class="form-group">
+                                <label for="Water Elevation">*Water Elevation:&emsp;</label>
+                                <input type="text" class="form-control" id="text" placeholder="Water Bottom Elevation" ng-model="water_elevation">
+                            </div>
+                            <div class="form-group">
+                                <label for="Casting ID">Casing ID:&emsp;</label>
+                                <input type="text" class="form-control" id="text" placeholder="Enter Casing ID" ng-model="casing_id">
+                            </div>
+                            <div class="form-group">
+                                <label for="Diameter">Diameter:&emsp;</label>
+                                <input type="text" class="form-control" id="text" placeholder="Enter Diameter" ng-model="diameter">
+                            </div>
+                            <div class="form-group">
+                                <label for="Top Depth">Top Depth:&emsp;</label>
+                                <input type="text" class="form-control" id="text" placeholder="Enter Top Depth" ng-model="top_depth">
+                            </div>
+                            <div class="form-group">
+                                <label for="Bottom Depth">Bottom Depth:&emsp;</label>
+                                <input type="text" class="form-control" id="text" placeholder="Enter Bottom Depth" ng-model="bottom_depth">
+                            </div>
+                            <div class="form-group">
+                                <label for="Remarks">Remarks:&emsp;</label>
+                                <input type="text" class="form-control" id="text" placeholder="Enter Remarks" ng-model="remarks">
+                            </div>
+                    </div>
+                        <div class="modal-footer">
+                            <button type="button" class="w3-button w3-blue" data-dismiss="modal" >Close</button>
+                            <button type="button" class="w3-button w3-blue"ng-click="editWell(well_id);">Edit</button>{{msg}}
+                        </div>
+                    </div>
+                </div>                        
+            </div>
+            <!--end modal-->
     </div>
 
     <script>
@@ -462,7 +482,22 @@ title="Close Modal">&times;</span-->
                         console.log(id + ": No Recordings");
                     })
             }
-
+            $scope.setEditInfo = function (well) {
+                $scope.aquifer_code = well.aquifer_code;
+                $scope.well_id = well.well_id;
+                $scope.type_code = well.type_code;
+                $scope.location_id = location.id;
+                $scope.pump_type = well.pump_type;
+                $scope.well_usage = well.well_usage;
+                $scope.bottom_elevation = well.bottom_elevation;
+                $scope.top_elevation = well.top_elevation;
+                $scope.water_elevation = well.water_elevation;
+                $scope.casing_id = well.casing_id;
+                $scope.diameter = well.diameter;
+                $scope.top_depth = well.top_depth;
+                $scope.bottom_depth = well.bottom_depth;
+                $scope.remarks = well.remarks;
+            }
             $scope.insertWell = function () {
                 $http.post("/wells/add", { 'well_id': $scope.well_id, 'aquifer_code': $scope.aquifer_code, 'type_code': $scope.type_code, 'owner_id': $scope.owner_id, 'location_id': $scope.location_id, 'pump_type': $scope.pump_type, 'well_usage': $scope.well_usage, 'bottom_elevation': $scope.bottom_elevation, 'top_elevation': $scope.top_elevation, 'water_elevation': $scope.water_elevation, 'casing_id': $scope.casing_id, 'diameter': $scope.diameter, 'top_depth': $scope.top_depth, 'bottom_depth': $scope.bottom_depth, 'remarks': $scope.remarks })
                     .success(function () {
@@ -558,7 +593,6 @@ title="Close Modal">&times;</span-->
                         $scope.msg = "Data Edit successful";
                         $scope.displayWells();
                     })
-                $scope.displayWells();
             }
 
             $(document).ready(function () {

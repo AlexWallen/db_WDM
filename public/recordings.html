@@ -167,13 +167,8 @@
                     <td ng-if="recording.transducer_id"><button class="btn btn-danger" ng-click="deleteRecording(recording.transducer_id, recording.recording_time);">Delete</button></td>
                     <td ng-if="recording.transducer_id"><button class="btn btn-primary" ng-click="editRecording(recording.transducer_id, recording.recording_time);">Edit</button></td>
                     <td><button type="button" class="btn btn-info" data-toggle="modal" data-target="#rainModal" ng-click="getLocation(recording.transducer_id, recording.recording_time)">Rainfall</button></td>
-<<<<<<< HEAD
-                    <td ng-if="recording.transducer_id"><button class="btn btn-primary" ng-click="setPearsonTwo($index)">Set Pearson #1</button></td>
-                    <td ng-if="recording.transducer_id"><button class="btn btn-primary" ng-click="setPearsonOne($index)">Set Pearson #2</button></td>
-=======
                     <td ng-if="recording.transducer_id"><button class="btn btn-primary" ng-click="setPearsonOne($index)">Set Pearson #1</button></td>
                     <td ng-if="recording.transducer_id"><button class="btn btn-primary" ng-click="setPearsonTwo($index)">Set Pearson #2</button></td>
->>>>>>> 51b54cf3c33b0e372a99697ea7be0b398dca05e6
                 </tr>
             </tbody>
         </table>

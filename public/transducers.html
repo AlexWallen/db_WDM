@@ -53,7 +53,9 @@
             </div>
             <div class="form-group" style="margin-bottom:20px; padding-left: 15px;">  
              <label for="Well ID">Well ID:&emsp;</label>
-             <input type="text" class="form-control" id="text" placeholder="Enter Well ID" ng-model="well_id">
+             <select class="form-control" id="text" ng-model="well_id">
+                <option ng-repeat="well in wells" value="{{well.well_id}}">ID {{well.well_id}}: {{well.type_code}}, {{well.aquifer_code}}, {{well.well_usage}}</option> 
+             </select>
             </div>
             <div style="padding-top: 10px; padding-bottom: 5px;">
                 <input type="button" class="btn btn-primary" value="{{btnName}}" ng-click="insertTransducer()"> {{msg}}
@@ -126,6 +128,7 @@
     <script>
         var app = angular.module('myApp', []);
         app.controller('cntrl', function ($scope, $http) {
+            $http.get('/wells/all').success(function (data) { $scope.wells = data; });
             $scope.btnName = "Insert";
 
             $scope.setRecordingData = function (id) {

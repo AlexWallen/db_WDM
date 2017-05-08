@@ -36,6 +36,13 @@
 
     <!-- CVS Upload -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-csv/0.71/jquery.csv-0.71.min.js"></script>
+     <script type="text/javascript">
+        $(document).ready(function(){
+            $(".btn").click(function(){
+                $("#myModal").modal('show');
+            });
+        });
+    </script>
 </head>
 <body>
     <div w3-include-html="topnav.html"></div>
@@ -59,35 +66,57 @@
                 </div>
             </fieldset>
         </div>
-        <legend>Input Your Recording Data Manually</legend>
-            <div class="form-group" style="margin-bottom:20px; padding-left: 15px;">  
-            <label for="Temperature">Temperature:&emsp;</label>
-             <input type="text" class="form-control" id="text"  placeholder="Enter temperature" ng-model="temperature">         
-            </div>  
-            <div class="form-group" style="margin-bottom:20px; padding-left: 15px;">  
-              <label for="Conductivity">Conductivity:&emsp;</label>
-             <input type="text" class="form-control" id="text" placeholder="Enter conductivity" ng-model="conductivity">
+        <!-- begin modal -->
+         <!--begin modal-->
+       <div class="bs">
+            <!-- Modal HTML -->
+            <div id="myModal" class="modal fade">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <legend>Input Your Recording Data Manually</legend>
+                             <div class="form-group" style="margin-bottom:20px; padding-left: 15px;">  
+                                <label for="TransID">Transducer ID:&emsp;</label>
+                                <input type="text" class="form-control" id="text"  placeholder="Enter Transducer ID" ng-model="transducer_id">         
+                                </div> 
+                                <div class="form-group" style="margin-bottom:20px; padding-left: 15px;">  
+                                <label for="Temperature">Temperature:&emsp;</label>
+                                <input type="text" class="form-control" id="text"  placeholder="Enter temperature" ng-model="temperature">         
+                                </div>  
+                                <div class="form-group" style="margin-bottom:20px; padding-left: 15px;">  
+                                <label for="Conductivity">Conductivity:&emsp;</label>
+                                <input type="text" class="form-control" id="text" placeholder="Enter conductivity" ng-model="conductivity">
+                                </div>
+                                <div class="form-group" style="margin-bottom:20px; padding-left: 15px;">   
+                                <label for="Pressure">Pressure:&emsp;</label>
+                                <input type="text" class="form-control" id="text" placeholder="Enter pressure" ng-model="pressure">
+                                </div>
+                                <div class="form-group" style="margin-bottom:20px; padding-left: 15px;">  
+                                <label for="Salinity">Salinity:&emsp;</label>
+                                <input type="text" class="form-control" id="text" placeholder="Enter salinity" ng-model="salinity">
+                                </div>
+                                <div class="form-group" style="margin-bottom:20px; padding-left: 15px;">  
+                                <label for="TDS">TDS:&emsp;</label>
+                                <input type="text" class="form-control" id="text"  placeholder="Enter TDS" ng-model="tds">
+                                </div>  
+                            <div class="form-group" style="margin-bottom:20px; padding-left: 15px;">   
+                                <label for="TDS">Recording Date:&emsp;</label>
+                                <input type="datetime-local" class="form-control" id="datetime-local"  ng-model="recording_time" placeholder="Enter Recording Date">
+                            </div>   
+                                <input type="button" class="btn btn-primary" value="{{btnName}}" ng-click="insertRecording()"> {{msg}}
+                            </form>
+                            <div class="modal-footer">
+                            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                            </div>
+                    </div>
+                </div>
             </div>
-            <div class="form-group" style="margin-bottom:20px; padding-left: 15px;">   
-              <label for="Pressure">Pressure:&emsp;</label>
-             <input type="text" class="form-control" id="text" placeholder="Enter pressure" ng-model="pressure">
-            </div>
-            <div class="form-group" style="margin-bottom:20px; padding-left: 15px;">  
-              <label for="Salinity">Salinity:&emsp;</label>
-             <input type="text" class="form-control" id="text" placeholder="Enter salinity" ng-model="salinity">
-            </div>
-            <div class="form-group" style="margin-bottom:20px; padding-left: 15px;">  
-              <label for="TDS">TDS:&emsp;</label>
-             <input type="text" class="form-control" id="text"  placeholder="Enter TDS" ng-model="tds">
-            </div>  
-           <div class="form-group" style="margin-bottom:20px; padding-left: 15px;">   
-              <label for="TDS">Recording Date:&emsp;</label>
-             <input type="datetime-local" class="form-control" id="datetime-local"  ng-model="recording_time" placeholder="Enter Recording Date">
-            </div>   
-            <input type="button" class="btn btn-primary" value="{{btnName}}" ng-click="insertRecording()"> {{msg}}
-             <input type="button" class="btn btn-primary" value="Display All" ng-click="displayRecordings()">
-        </form>
-
+        </div>   
+        <div class="w3-center">
+            <a href="#myModal" class="w3-center btn btn-primary">Manual Input</a>        
+            <input type="button" class="w3-button w3-blue" value="Display All" ng-click="displayRecordings()">    
+        </div> 
+        <!--end modal-->
         <div>
             <fieldset>
                 <legend>Search</legend>

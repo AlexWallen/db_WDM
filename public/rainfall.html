@@ -58,7 +58,7 @@
                     <div class="modal-content">
                         <div class="modal-header">
                             <div class="form-group">
-                                Location ID:    <!--input type="text" ng-model="location_id"-->
+                                *Location ID:    <!--input type="text" ng-model="location_id"-->
                                 <select ng-model="location_id">
                                     <option ng-repeat="location in locations" value="{{location.id}}">ID {{location.id}}:({{location.latitude}}, {{location.longitude}})</option> 
                                 </select>
@@ -70,7 +70,7 @@
                                 Normal Amount:   <input type="text" ng-model="normal_amount">
                             </div>
                             <div class="form-group">
-                            Date:            <input type="date" ng-model="rdate">
+                            *Date:            <input type="date" ng-model="rdate">
                             </div>
                             <div class="form-group">
                                 <input type="button" class="btn btn-primary" value="{{btnName}}" ng-click="insertRain()"> {{msg}}

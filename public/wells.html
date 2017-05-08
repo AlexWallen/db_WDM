@@ -517,6 +517,7 @@ title="Close Modal">&times;</span-->
                 </div>
 
             </div>
+<<<<<<< HEAD
 
 
 
@@ -924,6 +925,203 @@ title="Close Modal">&times;</span-->
 
     </script>
 
+=======
+         </div>
+         <!-- End of Recording Modal -->
+      </div>
+      <!-- End of Transducer Modal -->
+   </div>
+   <script>
+      var app = angular.module('myApp', []);     
+      app.filter('range', function () {      
+          return function (input, total) {      
+              total = parseInt(total);      
+              for (var i = 0; i < total; i++)      
+                  input.push(i);      
+              return input;      
+          };      
+      });      
+            
+      app.controller('cntrl', function ($scope, $http, $filter) {      
+          $scope.btnName = "Insert";      
+          $scope.cols = [];      
+           
+          $scope.setCols = function () {     
+              $scope.cols = $filter('range')([], $scope.numCol);     
+          }           
+
+          $scope.setModalData = function (id) {      
+              $scope.modal_data = [];      
+              var url = "/transducers/get/";      
+              $http.get(url.concat(id))      
+                  .success(function (modal_data) {      
+                      $scope.modal_data = modal_data;      
+                      console.log('Got Modal Data');      
+                  })     
+                  .error(function (modal_data) {     
+                      $scope.modal_data = [      
+                          {      
+                              "id": "Well",      
+                              "name": "Has",      
+                              "type": "No",      
+                              "well_id": "Transducers"      
+                          }      
+                      ];      
+                      console.log(id + ": No Transducers");      
+                  })      
+          }      
+            
+          $scope.setRecordingData = function (id) {      
+              $scope.recording_data = [];      
+              var url = "/recordings/get/";      
+              $http.get(url.concat(id))      
+                  .success(function (recording_data) {      
+                      $scope.recording_data = recording_data;      
+                      console.log('Got Recording Data');      
+                      console.log($scope.recording_data);      
+                  })      
+                  .error(function (recording_data) {      
+                      $scope.recording_data = [
+                          {
+                          }
+                      ];
+                      console.log(id + ": No Recordings");
+                  })
+          }
+      
+          $scope.insertWell = function () {
+              $http.post("/wells/add", { 'aquifer_code': $scope.aquifer_code, 'type_code': $scope.type_code, 'owner_id': $scope.owner_id, 'location_id': $scope.location_id, 'pump_type': $scope.pump_type, 'well_usage': $scope.well_usage, 'bottom_elevation': $scope.bottom_elevation, 'top_elevation': $scope.top_elevation, 'water_elevation': $scope.water_elevation, 'casing_id': $scope.casing_id, 'diameter': $scope.diameter, 'top_depth': $scope.top_depth, 'bottom_depth': $scope.bottom_depth, 'remarks': $scope.remarks })
+                  .success(function () {
+                      $scope.msg = "Data Inserted";
+                      $scope.displayWells();
+                  })
+          }
+      
+          $scope.insertCompleteWell = function (row) {
+              var locData = {};
+              var ownerData = {};
+              var wellData = {};
+              var key;
+              for (j = 0; j < $scope.numCol; j++) {
+                  key = $scope.cols[j];
+                  switch (key) {
+                      case 'latitude':
+                      case 'longitude':
+                      case 'state':
+                      case 'county':
+                          locData[key] = row[j];
+                          break;
+                      case 'owner_name':
+                          ownerData['name'] = row[j];
+                          break;
+                      case 'owner_type':
+                          ownerData['type'] = row[j];
+                          break;
+                      case 'NaN':
+                          break;
+                      default:
+                          wellData[key] = row[j];
+                  }
+              }
+              console.log('Loc JSON: ' + JSON.stringify(locData));
+              //First Check For New Location
+              $http.post("/location/add", locData, false)
+                  .success(function (response) {
+                      wellData['location_id'] = response.id;
+                      console.log('location response = ' + response.id);
+                      console.log('Owner JSON: ' + JSON.stringify(ownerData));
+                      //Then check for new Owner
+                      $http.post("/owners/add", ownerData, false)
+                          .success(function (response) {
+                              wellData['owner_id'] = response.id;
+                              console.log('owner response = ' + response.id);
+                              //Delete NULL and Blank key values from well json
+                              $.each(wellData, function (key, value) {
+                                  if (value === "" || value === null) {
+                                      delete wellData[key];
+                                  }
+                              });
+                              console.log('Well JSON: ' + JSON.stringify(wellData));
+                              //Then Insert Well
+                              $http.post("/wells/add", wellData)
+                                  .success(function () {
+                                      //console.log('');
+                                  });
+                          });
+                  });
+          }
+      
+          $scope.displayWells = function () {
+              $http.get("/wells/all")
+                  .success(function (data) {
+                      $scope.data = data;
+                      console.log('Got Data');
+                  })
+          }
+      
+          $scope.deleteWell = function (id) {
+              var url = "/wells/delete/";
+              $http.delete(url.concat(id))
+                  .success(function () {
+                      $scope.msg = "Data Deletion successful";
+                      $scope.displayWells();
+                  })
+          }
+      
+          $scope.editWell = function (id) {
+              var url = "/wells/edit/"
+              $http.put(url.concat(id), {
+                  'aquifer_code': $scope.aquifer_code, 'type_code': $scope.type_code, 'owner_id': $scope.owner_id, 'location_id': $scope.location_id,
+                  'pump_type': $scope.pump_type, 'well_usage': $scope.well_usage, 'bottom_elevation': $scope.bottom_elevation, 'top_elevation': $scope.top_elevation,
+                  'water_elevation': $scope.water_elevation, 'casing_id': $scope.casing_id, 'diameter': $scope.diameter, 'top_depth': $scope.top_depth,
+                  'bottom_depth': $scope.bottom_depth, 'remarks': $scope.remarks
+              })
+                  .success(function () {
+                      $scope.msg = "Data Edit successful";
+                      $scope.displayWells();
+                  })
+              $scope.displayWells();
+          }
+      
+          $(document).ready(function () {
+              function browserSupportFileUpload() {
+                  var isCompatible = false; if (window.File && window.FileReader && window.FileList && window.Blob) {
+                      isCompatible = true;
+                  }
+                  return isCompatible;
+              }
+      
+              document.getElementById('txtFileUpload').addEventListener('change', upload, false);
+      
+              function upload(evt) {
+                  if (!browserSupportFileUpload()) {
+                      alert('The File APIs are not fully supported in this browser!');
+                  } else {
+                      var data = null;
+                      var file = evt.target.files[0];
+                      var reader = new FileReader();
+                      reader.readAsText(file);
+                      reader.onload = function (event) {
+                          var csvData = event.target.result;
+                          data = $.csv.toArrays(csvData);
+                          if (data && data.length > 0) {
+                              for (i = 0; i < data.length; i++) {
+                                  $scope.insertCompleteWell(data[i]);
+      
+                              }
+                          } else {
+                              alert('No data to import!');
+                          }
+                      };
+                      reader.onerror = function () {
+                          alert('Unable to read ' + file.fileName);
+                      };
+                  }
+              }
+          });
+      });
+   </script>
+>>>>>>> 51b54cf3c33b0e372a99697ea7be0b398dca05e6
 </body>
 
 

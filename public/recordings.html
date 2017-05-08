@@ -411,7 +411,7 @@
                     return isCompatible;
                 }
 
-                document.getElementById('txtFileUpload').addEventListener('change', upload, false);
+                document.getElementById('file').addEventListener('change', upload, false);
 
                 function upload(evt) {
                     if (!browserSupportFileUpload()) {

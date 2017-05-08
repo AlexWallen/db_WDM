@@ -59,9 +59,7 @@
         $remarks = $request->getParsedBody()['remarks'];
         if($stmt->execute()) {
             $response->getBody()->write("It Worked");    
-        } else {
-            $response->getBody()->write("What the shit");
-        }
+        } 
         return $response;
     });
 

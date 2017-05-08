@@ -33,7 +33,13 @@
 
     <!-- W3 For Modal -->
     <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
-
+     <script type="text/javascript">
+        $(document).ready(function(){
+            $(".btn").click(function(){
+                $("#myModal").modal('show');
+            });
+        });
+    </script>
 </head>
 <body>
 
@@ -43,22 +49,42 @@
 </script>
     <legend>Input your Transducer Data Manually</legend>
     <div ng-app="myApp" ng-controller="cntrl">
-            <div class="form-group" style="margin-bottom:20px; padding-left: 15px;"> 
-             <label for="Name">Name:&emsp;</label>
-             <input type="text" class="form-control" id="text" placeholder="Enter name" ng-model="name">
+        <!--begin modal-->
+         <div class="bs">
+            <!-- Modal HTML -->
+            <div id="myModal" class="modal fade">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <div class="form-group" style="margin-bottom:20px; padding-left: 15px;"> 
+                            <label for="Name">Name:&emsp;</label>
+                            <input type="text" class="form-control" id="text" placeholder="Enter name" ng-model="name">
+                            </div>
+                            <div class="form-group" style="margin-bottom:20px; padding-left: 15px;">  
+                            <label for="Type">Type:&emsp;</label>
+                            <input type="text" class="form-control" id="text" placeholder="Enter type" ng-model="type">
+                            </div>
+                            <div class="form-group" style="margin-bottom:20px; padding-left: 15px;">  
+                            <label for="Well ID">Well ID:&emsp;</label>
+                            <select class="form-control" id="text" ng-model="well_id">
+                                <option ng-repeat="well in wells" value="{{well.well_id}}">ID {{well.well_id}}: {{well.type_code}}, {{well.aquifer_code}}, {{well.well_usage}}</option> 
+                            </select>
+                            </div>
+                            <input type="button" class="btn btn-primary" value="{{btnName}}" ng-click="insertTransducer()"> {{msg}}
+                            <div class="modal-footer">
+                            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                            </div>
+                    </div>
+                </div>
             </div>
-            <div class="form-group" style="margin-bottom:20px; padding-left: 15px;">  
-             <label for="Type">Type:&emsp;</label>
-             <input type="text" class="form-control" id="text" placeholder="Enter type" ng-model="type">
-            </div>
-            <div class="form-group" style="margin-bottom:20px; padding-left: 15px;">  
-             <label for="Well ID">Well ID:&emsp;</label>
-             <select class="form-control" id="text" ng-model="well_id">
-                <option ng-repeat="well in wells" value="{{well.well_id}}">ID {{well.well_id}}: {{well.type_code}}, {{well.aquifer_code}}, {{well.well_usage}}</option> 
-             </select>
-            </div>
+        </div>   
+        <div class="w3-center">
+            <a href="#myModal" class="w3-center btn btn-primary">Manual Input</a>        
+            <input type="button" class="w3-button w3-blue" value="Display All" ng-click="displayRecordings()">    
+        </div> 
+        <!--end modal-->
             <div style="padding-top: 10px; padding-bottom: 5px;">
-                <input type="button" class="btn btn-primary" value="{{btnName}}" ng-click="insertTransducer()"> {{msg}}
+                
                 <input type="button" class="btn btn-primary" value="Display All" ng-click="displayTransducers()">
             </div>
         <table class="table">
